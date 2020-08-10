@@ -1,7 +1,6 @@
 import * as sh from './spellHelper.js'
 import * as util from './dwUtils.js'
 import {getColors} from "./dwUtils.js";
-import {DWMacrosConfig} from './DWMacrosConfig.js'
 
 /**
  * ClericSpell

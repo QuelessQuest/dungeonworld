@@ -769,12 +769,12 @@ export class DwActorSheet extends ActorSheet {
   async _onRollable(event) {
     // Initialize variables.
     event.preventDefault();
-    const actorData = this.actor.data.data;
+    const a = event.currentTarget;
     const itemId = $(a).parents('.item').attr('data-item-id');
     const item = this.actor.getOwnedItem(itemId);
     let itemNoSpace = item.name.replace(/\s+/g, '');
     let macro = "do" + itemNoSpace;
-    DWMacros[macro](actorData);
+    DWBase[macro](this.actor);
   }
 
   /**

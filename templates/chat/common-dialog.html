@@ -1,0 +1,65 @@
+<section class="dw-chat-card">
+    <div class="cell cell--chat">
+        <h2 class="cell__title">{{title}}</h2>
+        {{#if flavor}}
+        <div class="row">
+            <em>{{flavor}}</em>
+        </div>
+        {{/if}}
+        <div class="dice-mod dialogBox">
+            <div class="mod-flex">
+                {{#if ability}}
+                <div class="marg-left">
+                    <b>Ability:</b> {{ability}}
+                </div>
+                {{/if}}
+                {{#if mod}}
+                <div class="marg-left">
+                    <b>Ability Mod:</b> {{mod}}
+                </div>
+                {{/if}}
+                {{#if base}}
+                <div class="marg-left">
+                    <b>Base:</b> {{base}}
+                </div>
+                {{/if}}
+                {{#if misc}}
+                <div class="marg-left">
+                    <b>Misc:</b> {{misc}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="mod-flex">
+                {{#if ongoing}}
+                <div class="marg-left">
+                    <b>Ongoing Mod:</b> {{ongoing}}
+                </div>
+                {{/if}}
+                {{#if sustained}}
+                <div class="marg-left">
+                    <b>Sustained Mod:</b> {{sustained}}
+                </div>
+                {{/if}}
+                {{#if forward}}
+                <div class="marg-left">
+                    <b>Forward Mod:</b> {{forward}}
+                </div>
+                {{/if}}
+                {{#if bonus}}
+                <div class="marg-left">
+                    <b>Bonus:</b> {{bonus}}
+                </div>
+                {{/if}}
+            </div>
+        </div>
+        <div class="row words">
+            {{startingWords}}<span style="color:{{sourceColor}}">{{sourceName}}</span> {{middleWords}} <span style="color:{{targetColor}}">{{targetName}}</span> {{endWords}}
+        </div>
+        {{#if rollDw}}
+        <div class="roll" style="{{style}}">
+            {{{rollDw}}}
+        </div>
+        {{/if}}
+    </div>
+    <div class="dialogType {{dialogType}}"></div>
+</section>

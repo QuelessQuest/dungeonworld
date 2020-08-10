@@ -6,6 +6,7 @@
 
 // Import Modules
 import { DW } from "./config.js";
+import { Base } from "./base.js";
 import { DwClassList } from "./config.js";
 import { ActorDw } from "./actor/actor.js";
 import { ItemDw } from "./item/item.js";
@@ -20,6 +21,8 @@ import { CombatSidebarDw } from "./combat/combat.js";
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
 /* -------------------------------------------- */
+
+export const DWBase = Base();
 
 Hooks.once("init", async function() {
   console.log(`Initializing Dungeon World!`);
@@ -65,8 +68,10 @@ Hooks.once("ready", async function() {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => createDwMacro(data, slot));
 
+  window.DWBase = DWBase;
   DW.classlist = await DwClassList.getClasses();
   CONFIG.DW = DW;
+  CONFIG.DWBase = DWBase;
 
   // Add a lang class to the body.
   const lang = game.settings.get('core', 'language');

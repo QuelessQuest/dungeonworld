@@ -356,8 +356,23 @@
   font-family: "Metamorphous", serif;
   font-weight: bold; }
 
+.vtt #chat-log .words {
+  margin-bottom: 10px; }
+
 .vtt #chat-log .row {
   font-size: 13px; }
+
+.vtt #chat-log .dice-roll .diePartial {
+  background: #EEDD9980; }
+
+.vtt #chat-log .dice-roll .dieFail {
+  background: #EEAA8880; }
+
+.vtt #chat-log .dice-roll .dieSuccess {
+  background: #BBBB8880; }
+
+.vtt #chat-log .dice-roll .dieDamage {
+  background: #DBE6EC; }
 
 .vtt #chat-log .dice-roll .dice-formula {
   cursor: pointer; }

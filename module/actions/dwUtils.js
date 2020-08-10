@@ -1,5 +1,3 @@
-import {DWMacrosConfig} from './DWMacrosConfig.js'
-
 /**
  * GET COLORS
  * If the actor and or target are characters, return the player color
@@ -75,10 +73,10 @@ export async function coloredChat({
 
 /**
  * GET TARGETS
- * @param actorData
+ * @param actor
  * @returns {{targetActor: *, targetToken: PlaceableObject}}
  */
-export function getTargets(actorData) {
+export function getTargets(actor) {
     let targetActor;
     let targetToken;
     if (game.user.targets.size > 0) {
@@ -86,7 +84,7 @@ export function getTargets(actorData) {
         let xx = canvas.tokens.placeables.filter(placeable => placeable.isTargeted);
         targetToken = xx[0];
     } else {
-        targetActor = actorData;
+        targetActor = actor;
         targetToken = canvas.tokens.controlled[0];
     }
     return {
@@ -192,8 +190,6 @@ export async function renderDiceResults({
         templateData.startingWords = details.startingWords ? details.startingWords : "";
         templateData.middleWords = details.middleWords ? details.middleWords : "";
         templateData.endWords = details.endWords ? details.endWords : "";
-        console.log("TEMPLATE DATA");
-        console.log(templateData);
         chatData.content = await renderTemplate(template, templateData);
         await ChatMessage.create(chatData);
         return options.result;
@@ -262,7 +258,7 @@ export async function doDamage({actorData = null, targetData = null, damageMod =
         let tName = targetData.targetActor ? targetData.targetActor.name : "";
 
         let templateData = {
-            dialogType: CONFIG.DWMacros.dialogTypes.damage,
+            dialogType: CONFIG.DW.dialogTypes.damage,
             sourceColor: gColors.source,
             sourceName: sName,
             targetColor: gColors.target,
@@ -302,7 +298,7 @@ export async function doDamage({actorData = null, targetData = null, damageMod =
             }];
 
         await TokenMagic.addFiltersOnTargeted(params);
-        renderTemplate(DWMacrosConfig.template, templateData).then(content => {
+        renderTemplate(CONFIG.DW.template, templateData).then(content => {
             let chatData = {
                 speaker: ChatMessage.getSpeaker(),
                 content: content

@@ -1,7 +1,7 @@
-import * as util from './dwUtils.js'
+import * as util from './dwUtils.js';
 
 export async function basicMove({
-                                    actorData = {},
+                                    actor = {},
                                     targetActor = {},
                                     flavor = null,
                                     title = null,
@@ -10,12 +10,16 @@ export async function basicMove({
                                     options = []
                                 }) {
     let baseFormula = '2d6';
+    let actorData = actor.data;
+    console.log(move);
     let moveData = actorData.items.find(i => i.name.toLowerCase() === move.toLowerCase());
-    let ability = moveData.data.data.rollType.toLowerCase();
-    let mod = moveData.data.data.rollMod;
-    let abilityMod = actorData.data.data.abilities[ability].mod;
+    console.log("moveData");
+    console.log(moveData);
+    let ability = moveData.data.rollType.toLowerCase();
+    let mod = moveData.data.rollMod;
+    let abilityMod = actorData.data.abilities[ability].mod;
     let formula = `${baseFormula}+${abilityMod}`;
-    let forward = actorData.getFlag("world", "forward");
+    let forward = actor.getFlag("world", "forward");
     let frw = 0;
     if (forward) {
         frw = forward.reduce(function (a, b) {
@@ -71,7 +75,7 @@ export async function basicMove({
     if (cRoll.total >= 10) {
         return await util.renderDiceResults({
             options: options.success,
-            template: CONFIG.DWMacros.template,
+            template: CONFIG.DW.template,
             templateData: templateData,
             speaker: speaker,
             flavor: flavor,
@@ -80,7 +84,7 @@ export async function basicMove({
     } else if (cRoll.total <= 6) {
         return await util.renderDiceResults({
             options: options.fail,
-            template: CONFIG.DWMacros.template,
+            template: CONFIG.DW.template,
             templateData: templateData,
             speaker: speaker,
             flavor: flavor,
@@ -89,7 +93,7 @@ export async function basicMove({
     } else {
         return await util.renderDiceResults({
             options: options.pSuccess,
-            template: CONFIG.DWMacros.template,
+            template: CONFIG.DW.template,
             templateData: templateData,
             speaker: speaker,
             flavor: flavor,
@@ -100,35 +104,35 @@ export async function basicMove({
 
 /**
  * HACK AND SLASH
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function hackAndSlash(actorData) {
-    if (actorData) {
+export async function hackAndSlash(actor) {
+    if (actor) {
         if (game.user.targets.size === 0) {
             ui.notifications.warn("Action requires a target.");
             return;
         }
 
-        let targetData = util.getTargets(actorData);
+        let targetData = util.getTargets(actor);
         let flavor = "Your attack is successful, chose an option.";
         let options = {
             fail: {
-                dialogType: CONFIG.DWMacros.dialogTypes.fail,
+                dialogType: CONFIG.DW.dialogTypes.fail,
                 details: {
                     middleWords: "Failed to Attack"
                 },
                 result: null
             },
             pSuccess: {
-                dialogType: CONFIG.DWMacros.dialogTypes.partial,
+                dialogType: CONFIG.DW.dialogTypes.partial,
                 details: {
                     middleWords: "Successfully Attacks, but opens themselves up to Attacks from"
                 },
                 result: "0"
             },
             success: {
-                dialogType: CONFIG.DWMacros.dialogTypes.success,
+                dialogType: CONFIG.DW.dialogTypes.success,
                 result: [
                     {
                         key: "opt1",
@@ -154,9 +158,11 @@ export async function hackAndSlash(actorData) {
             }
         };
 
-        let attack = await basicMove(({actorData: actorData, targetActor: targetData.targetActor, flavor: flavor, options: options, title: "Hack And Slash", move: "Hack & Slash"}));
+        console.log("ACTOR");
+        console.log(actor);
+        let attack = await basicMove(({actor: actor, targetActor: targetData.targetActor, flavor: flavor, options: options, title: "Hack And Slash", move: "Hack And Slash"}));
         if (attack) {
-            await util.doDamage({actorData: actorData, targetData: targetData, damageMod: attack, title: "Hack And Slash"});
+            await util.doDamage({actorData: actor, targetData: targetData, damageMod: attack, title: "Hack And Slash"});
         }
     } else {
         ui.notifications.warn("Please select a token.");
@@ -177,18 +183,18 @@ export async function volley(actorData) {
                 details: {
                     middleWords: "Failed to Attack"
                 },
-                dialogType: CONFIG.DWMacros.dialogTypes.fail,
+                dialogType: CONFIG.DW.dialogTypes.fail,
                 result: null
             },
             success: {
                 details: {
                     middleWords: "Successfully Attacks"
                 },
-                dialogType: CONFIG.DWMacros.dialogTypes.success,
+                dialogType: CONFIG.DW.dialogTypes.success,
                 result: "0"
             },
             pSuccess: {
-                dialogType: CONFIG.DWMacros.dialogTypes.partial,
+                dialogType: CONFIG.DW.dialogTypes.partial,
                 result: [
                     {
                         key: "opt1",

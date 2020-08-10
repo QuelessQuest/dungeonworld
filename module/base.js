@@ -1,10 +1,10 @@
-import * as sh from './spellHelper.js'
-import * as cs from './clericSpells.js'
-import * as ws from './wizardSpells.js'
-import * as cmn from './commonSpells.js'
-import * as dm from './druidMoves.js'
-import * as basic from './basicMoves.js'
-import * as tm from './thiefMoves.js'
+import * as sh from './actions/spellHelper.js'
+import * as cs from './actions/clericSpells.js'
+import * as ws from './actions/wizardSpells.js'
+import * as cmn from './actions/commonSpells.js'
+import * as dm from './actions/druidMoves.js'
+import * as basic from './actions/basicMoves.js'
+import * as tm from './actions/thiefMoves.js'
 
 export function Base() {
 
@@ -176,26 +176,13 @@ export function Base() {
     }
 }
 
-export const DWM = Base();
-
-Hooks.on("ready", () => {
-    console.log("DW Hook -> ready");
-    window.DWMacros = DWM;
-});
-
-Hooks.on("canvasReady", (canvas) => {
-    if (!window.hasOwnProperty("DWM")) {
-        window.DWMacros = DWM;
-    }
-});
-
 Hooks.on('renderChatMessage', (data, html, options) => {
     const type = html.find(".dialogType")
     let dieClass = "";
-    for (const dType in CONFIG.DWMacros.dialogTypes) {
-        const dd = CONFIG.DWMacros.dialogTypes[dType];
+    for (const dType in CONFIG.DW.dialogTypes) {
+        const dd = CONFIG.DW.dialogTypes[dType];
         if (type.hasClass(dd)) {
-            dieClass = CONFIG.DWMacros.dialogClasses[dd];
+            dieClass = CONFIG.DW.dialogClasses[dd];
             html.find(".dice-formula").addClass(dieClass);
             html.find(".dice-total").addClass(dieClass);
         }

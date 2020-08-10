@@ -27,11 +27,32 @@
     font-weight: bold;
   }
 
+  .words {
+    margin-bottom: 10px;
+  }
+
   .row {
     font-size: 13px;
   }
 
   .dice-roll {
+
+    .diePartial {
+      background: $dw-partial;
+    }
+
+    .dieFail {
+      background: $dw-fail;
+    }
+
+    .dieSuccess {
+      background: $dw-success;
+    }
+
+    .dieDamage {
+      background: $dw-damage;
+    }
+
     .dice-formula {
       cursor: pointer;
 

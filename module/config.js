@@ -1,6 +1,6 @@
 export const DW = {};
 
-DW.template = "modules/dwmacros/templates/chat/common-dialog.html";
+DW.template = "systems/dungeonworld/templates/chat/common-dialog.html";
 
 DW.dialogTypes = {
   normal: "",
