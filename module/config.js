@@ -1,5 +1,22 @@
 export const DW = {};
 
+DW.template = "modules/dwmacros/templates/chat/common-dialog.html";
+
+DW.dialogTypes = {
+  normal: "",
+  damage: "damage",
+  success: "success",
+  fail: "fail",
+  partial: "partial"
+}
+
+DW.dialogClasses = {
+  damage: "dieDamage",
+  success: "dieSuccess",
+  fail: "dieFail",
+  partial: "diePartial"
+}
+
 DW.abilities = {
   "str": "DW.AbilityStr",
   "dex": "DW.AbilityDex",

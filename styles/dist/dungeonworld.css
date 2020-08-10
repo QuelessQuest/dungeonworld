@@ -1222,6 +1222,68 @@
         -webkit-transform: scale(1.2);
         -ms-transform: scale(1.2);
         transform: scale(1.2); }
+  .dungeonworld.sheet .cell--basic-moves .img-move,
+  .dungeonworld.sheet .cell--starting-moves .img-move,
+  .dungeonworld.sheet .cell--advanced-moves .img-move,
+  .dungeonworld.sheet .cell--other-moves .img-move,
+  .dungeonworld.sheet .cell--equipment .img-move,
+  .dungeonworld.sheet .cell--spells .img-move {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0;
+    flex: 0 0;
+    border: 2px solid #2d3748; }
+    .dungeonworld.sheet .cell--basic-moves .img-move .rollable,
+    .dungeonworld.sheet .cell--starting-moves .img-move .rollable,
+    .dungeonworld.sheet .cell--advanced-moves .img-move .rollable,
+    .dungeonworld.sheet .cell--other-moves .img-move .rollable,
+    .dungeonworld.sheet .cell--equipment .img-move .rollable,
+    .dungeonworld.sheet .cell--spells .img-move .rollable {
+      display: inline-block;
+      -webkit-transition: all ease-in-out 0.25s;
+      -o-transition: all ease-in-out 0.25s;
+      transition: all ease-in-out 0.25s;
+      min-width: 40px;
+      text-align: center; }
+      .dungeonworld.sheet .cell--basic-moves .img-move .rollable:hover,
+      .dungeonworld.sheet .cell--starting-moves .img-move .rollable:hover,
+      .dungeonworld.sheet .cell--advanced-moves .img-move .rollable:hover,
+      .dungeonworld.sheet .cell--other-moves .img-move .rollable:hover,
+      .dungeonworld.sheet .cell--equipment .img-move .rollable:hover,
+      .dungeonworld.sheet .cell--spells .img-move .rollable:hover {
+        -webkit-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+        transform: scale(1.2); }
+  .dungeonworld.sheet .cell--basic-moves .img-item,
+  .dungeonworld.sheet .cell--starting-moves .img-item,
+  .dungeonworld.sheet .cell--advanced-moves .img-item,
+  .dungeonworld.sheet .cell--other-moves .img-item,
+  .dungeonworld.sheet .cell--equipment .img-item,
+  .dungeonworld.sheet .cell--spells .img-item {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0;
+    flex: 0 0;
+    border: 0; }
+    .dungeonworld.sheet .cell--basic-moves .img-item .rollable,
+    .dungeonworld.sheet .cell--starting-moves .img-item .rollable,
+    .dungeonworld.sheet .cell--advanced-moves .img-item .rollable,
+    .dungeonworld.sheet .cell--other-moves .img-item .rollable,
+    .dungeonworld.sheet .cell--equipment .img-item .rollable,
+    .dungeonworld.sheet .cell--spells .img-item .rollable {
+      display: inline-block;
+      -webkit-transition: all ease-in-out 0.25s;
+      -o-transition: all ease-in-out 0.25s;
+      transition: all ease-in-out 0.25s;
+      min-width: 40px;
+      text-align: center; }
+      .dungeonworld.sheet .cell--basic-moves .img-item .rollable:hover,
+      .dungeonworld.sheet .cell--starting-moves .img-item .rollable:hover,
+      .dungeonworld.sheet .cell--advanced-moves .img-item .rollable:hover,
+      .dungeonworld.sheet .cell--other-moves .img-item .rollable:hover,
+      .dungeonworld.sheet .cell--equipment .img-item .rollable:hover,
+      .dungeonworld.sheet .cell--spells .img-item .rollable:hover {
+        -webkit-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+        transform: scale(1.2); }
   .dungeonworld.sheet .cell--basic-moves .item-controls,
   .dungeonworld.sheet .cell--starting-moves .item-controls,
   .dungeonworld.sheet .cell--advanced-moves .item-controls,
@@ -1282,7 +1344,6 @@
   .dungeonworld.sheet .cell--other-moves .item-label,
   .dungeonworld.sheet .cell--equipment .item-label,
   .dungeonworld.sheet .cell--spells .item-label {
-    border-left: 2px solid;
     padding-left: 4px; }
     .dungeonworld.sheet .cell--basic-moves .item-label::after,
     .dungeonworld.sheet .cell--starting-moves .item-label::after,

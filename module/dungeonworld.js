@@ -112,17 +112,17 @@ Hooks.once("setup", function() {
 /* -------------------------------------------- */
 Hooks.on('createActor', async (actor, options, id) => {
   // Allow the character to levelup up when their level changes.
-  if (actor.data.type == 'character') {
+  if (actor.data.type === 'character') {
     actor.setFlag('dungeonworld', 'levelup', true);
 
     // Get the item moves as the priority.
-    let moves = game.items.entities.filter(i => i.type == 'move' && i.data.data.moveType == 'basic');
+    let moves = game.items.entities.filter(i => i.type === 'move' && i.data.data.moveType === 'basic');
     let pack = game.packs.get(`dungeonworld.basic-moves`);
     let compendium = pack ? await pack.getContent() : [];
-    const actorMoves = actor.data.items.filter(i => i.type == 'move');
+    const actorMoves = actor.data.items.filter(i => i.type === 'move');
     // Get the compendium moves next.
     let moves_compendium = compendium.filter(m => {
-      const notTaken = actorMoves.filter(i => i.name == m.data.name);
+      const notTaken = actorMoves.filter(i => i.name === m.data.name);
       return notTaken.length < 1;
     });
     // Append compendium moves to the item moves.
@@ -157,7 +157,7 @@ Hooks.on('createActor', async (actor, options, id) => {
 });
 
 Hooks.on('preUpdateActor', (actor, data, options, id) => {
-  if (actor.data.type == 'character') {
+  if (actor.data.type === 'character') {
     // Allow the character to levelup up when their level changes.
     if (data.data && data.data.attributes && data.data.attributes.level) {
       if (data.data.attributes.level.value > actor.data.data.attributes.level.value) {
@@ -172,7 +172,7 @@ Hooks.on('preUpdateActor', (actor, data, options, id) => {
 /* -------------------------------------------- */
 Hooks.on('renderDialog', (dialog, html, options) => {
   // If this is the levelup dialog, we need to add listeners to it.
-  if (dialog.data.id && dialog.data.id == 'level-up') {
+  if (dialog.data.id && dialog.data.id === 'level-up') {
     // If an ability score is chosen, we need to update the available options.
     html.find('.cell--ability-scores select').on('change', () => {
       // Build the list of selected score values.
@@ -191,7 +191,7 @@ Hooks.on('renderDialog', (dialog, html, options) => {
           let $opt = $(opt_item);
           let val = $opt.attr('value');
           if (val) {
-            if (scores.includes(val) && $self.val() != val) {
+            if (scores.includes(val) && $self.val() !== val) {
               $opt.attr('disabled', true);
             }
             else {

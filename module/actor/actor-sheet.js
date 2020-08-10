@@ -39,7 +39,7 @@ export class DwActorSheet extends ActorSheet {
     this._prepareNpcItems(data);
 
     // Add classlist.
-    if (this.actor.data.type == 'character') {
+    if (this.actor.data.type === 'character') {
       data.data.classlist = await DwClassList.getClasses();
 
       let xpSvg = {
@@ -58,7 +58,7 @@ export class DwActorSheet extends ActorSheet {
         if (Number(data.data.attributes.level.value) === 1) {
           let hasStarting = false;
           for (let i = 0; i < data.items.length; i++) {
-            if (data.items[i].type == 'move' && data.items[i].data.moveType == 'starting') {
+            if (data.items[i].type === 'move' && data.items[i].data.moveType === 'starting') {
               hasStarting = true;
               break;
             }
@@ -91,7 +91,7 @@ export class DwActorSheet extends ActorSheet {
   /**
    * Organize and classify Items for Character sheets.
    *
-   * @param {Object} actorData The actor to prepare.
+   * @param {Object} sheetData The actor to prepare.
    *
    * @return {undefined}
    */
@@ -141,7 +141,7 @@ export class DwActorSheet extends ActorSheet {
         }
       }
       else if (i.type === 'spell') {
-        if (i.data.spellLevel != undefined) {
+        if (i.data.spellLevel !== undefined) {
           spells[i.data.spellLevel].push(i);
         }
       }
@@ -170,13 +170,13 @@ export class DwActorSheet extends ActorSheet {
   /**
    * Prepare tagging.
    *
-   * @param {Object} actorData The actor to prepare.
+   * @param {Object} data The actor to prepare.
    */
   _prepareNpcItems(data) {
     // Handle preprocessing for tagify data.
-    if (data.entity.type == 'npc') {
+    if (data.entity.type === 'npc') {
       // If there are tags, convert it into a string.
-      if (data.data.tags != undefined && data.data.tags != '') {
+      if (data.data.tags !== undefined && data.data.tags !== '') {
         let tagArray = [];
         try {
           tagArray = JSON.parse(data.data.tags);
@@ -232,7 +232,7 @@ export class DwActorSheet extends ActorSheet {
       });
     }
 
-    if (this.actor.data.type == 'npc') {
+    if (this.actor.data.type === 'npc') {
       this._activateTagging(html);
     }
   }
@@ -300,15 +300,15 @@ export class DwActorSheet extends ActorSheet {
     let char_level = Number(actorData.attributes.level.value);
 
     // Handle level 1 > 2.
-    if (actorData.attributes.xp.value != 0) {
+    if (actorData.attributes.xp.value !== 0) {
       char_level = char_level + 1;
     }
 
     // Get the original class name if this was a translation.
     if (game.babele) {
-      let babele_classes = game.babele.translations.find(p => p.collection == 'dungeonworld.classes');
+      let babele_classes = game.babele.translations.find(p => p.collection === 'dungeonworld.classes');
       if (babele_classes) {
-        let babele_pack = babele_classes.entries.find(p => p.name == char_class_name);
+        let babele_pack = babele_classes.entries.find(p => p.name === char_class_name);
         if (babele_pack) {
           char_class_name = babele_pack.id;
           char_class = DwUtility.cleanClass(babele_pack.id);
@@ -325,7 +325,7 @@ export class DwActorSheet extends ActorSheet {
 
     let compendium = pack ? await pack.getContent() : [];
 
-    let class_item = class_list_items.find(i => i.data.name == orig_class_name);
+    let class_item = class_list_items.find(i => i.data.name === orig_class_name);
     let blurb = class_item ? class_item.data.data.description : null;
 
     // Get races.
@@ -361,7 +361,7 @@ export class DwActorSheet extends ActorSheet {
     // Get equipment.
     let equipment = null;
     let equipment_list = [];
-    if (actorData.attributes.xp.value == 0) {
+    if (actorData.attributes.xp.value === 0) {
       if (typeof class_item.data.data.equipment == 'object') {
         let equipmentObjects = await class_item._getEquipmentObjects();
         for (let [group, group_items] of Object.entries(equipmentObjects)) {
@@ -383,15 +383,15 @@ export class DwActorSheet extends ActorSheet {
     });
 
     // Retrieve the actor's current moves so that we can hide them.
-    const actorMoves = this.actor.data.items.filter(i => i.type == 'move');
+    const actorMoves = this.actor.data.items.filter(i => i.type === 'move');
 
     // Get the item moves as the priority.
-    let moves = game.items.entities.filter(i => i.type == 'move' && i.data.data.class == char_class_name);
+    let moves = game.items.entities.filter(i => i.type === 'move' && i.data.data.class === char_class_name);
     // Get the compendium moves next.
     let moves_compendium = compendium.filter(m => {
       const available_level = m.data.data.requiresLevel <= char_level;
       // TODO: Babele: `const not_taken = actorMoves.filter(i => i.name == m.data.name || i.name === m.data.originalName);`
-      const not_taken = actorMoves.filter(i => i.name == m.data.name);
+      const not_taken = actorMoves.filter(i => i.name === m.data.name);
       return available_level && not_taken.length < 1;
     });
 
@@ -440,10 +440,10 @@ export class DwActorSheet extends ActorSheet {
     // Determine if spells can be cast.
     let cast_spells = [];
     let spells = null;
-    if (char_class == 'the-wizard') {
+    if (char_class === 'the-wizard') {
       cast_spells.push('wizard');
     }
-    else if (char_class == 'the-cleric') {
+    else if (char_class === 'the-cleric') {
       cast_spells.push('cleric');
     }
     else {
@@ -452,7 +452,7 @@ export class DwActorSheet extends ActorSheet {
 
     if (cast_spells.length > 0) {
       // Retrieve the actor's current moves so that we can hide them.
-      const actorSpells = this.actor.data.items.filter(i => i.type == 'spell');
+      const actorSpells = this.actor.data.items.filter(i => i.type === 'spell');
       let caster_level = char_level;
       let spell_preparation_type = null;
       spells = [];
@@ -460,7 +460,7 @@ export class DwActorSheet extends ActorSheet {
         // Get the item spells as the priority.
         let spells_items = game.items.entities.filter(i => {
           // Return true for custom spell items that have a class.
-          return i.type == 'spell'
+          return i.type === 'spell'
             && i.data.data.class
             // Check if this spell has either `classname` or `the classname` as its class.
             && [caster_class, `the ${caster_class}`].includes(i.data.data.class.toLowerCase());
@@ -470,7 +470,7 @@ export class DwActorSheet extends ActorSheet {
         // Get the compendium spells next.
         let spells_compendium_items = spells_compendium.filter(s => {
           const available_level = s.data.data.spellLevel <= caster_level;
-          const not_taken = actorSpells.filter(i => i.name == s.data.name);
+          const not_taken = actorSpells.filter(i => i.name === s.data.name);
           return available_level && not_taken.length < 1;
         });
 
@@ -502,25 +502,25 @@ export class DwActorSheet extends ActorSheet {
         }, {});
 
         // Get the description for how to prepare spells for this class.
-        if (caster_class == 'wizard') {
-          let move = moves.filter(m => m.name == 'Spellbook');
+        if (caster_class === 'wizard') {
+          let move = moves.filter(m => m.name === 'Spellbook');
           if (move && move.length > 0) {
             spell_preparation_type = move[0].data.data.description;
           }
           else {
-            move = actorMoves.filter(m => m.name == 'Spellbook');
+            move = actorMoves.filter(m => m.name === 'Spellbook');
             if (move && move.length > 0) {
               spell_preparation_type = move[0].data.description;
             }
           }
         }
-        else if (caster_class == 'cleric') {
-          let move = moves.filter(m => m.name == 'Commune');
+        else if (caster_class === 'cleric') {
+          let move = moves.filter(m => m.name === 'Commune');
           if (move && move.length > 0) {
             spell_preparation_type = move[0].data.data.description;
           }
           else {
-            move = actorMoves.filter(m => m.name == 'Commune');
+            move = actorMoves.filter(m => m.name === 'Commune');
             if (move && move.length > 0) {
               spell_preparation_type = move[0].data.description;
             }
@@ -543,13 +543,13 @@ export class DwActorSheet extends ActorSheet {
       races: races.length > 0 ? races : null,
       alignments: alignments.length > 0 ? alignments : null,
       equipment: equipment ? equipment : null,
-      ability_scores: actorData.attributes.xp.value == 0 ? ability_scores : null,
+      ability_scores: actorData.attributes.xp.value === 0 ? ability_scores : null,
       ability_labels: ability_labels ? ability_labels : null,
       starting_moves: starting_moves.length > 0 ? starting_moves : null,
       starting_move_groups: starting_move_groups,
       advanced_moves_2: advanced_moves_2.length > 0 ? advanced_moves_2 : null,
       advanced_moves_6: advanced_moves_6.length > 0 ? advanced_moves_6 : null,
-      cast_spells: cast_spells.length > 0 ? true : false,
+      cast_spells: cast_spells.length > 0,
       spells: spells ? spells : null,
     };
     const html = await renderTemplate(template, templateData);
@@ -611,13 +611,13 @@ export class DwActorSheet extends ActorSheet {
     let alignment = null;
     for (let input of $selected) {
       if (input.dataset.itemId) {
-        if (input.dataset.type == 'move') {
+        if (input.dataset.type === 'move') {
           move_ids.push(input.dataset.itemId);
         }
-        else if (input.dataset.type == 'equipment') {
+        else if (input.dataset.type === 'equipment') {
           equipment_ids.push(input.dataset.itemId);
         }
-        else if (input.dataset.type == 'spell') {
+        else if (input.dataset.type === 'spell') {
           spell_ids.push(input.dataset.itemId);
         }
       }
@@ -634,7 +634,7 @@ export class DwActorSheet extends ActorSheet {
           abilities[`abilities.${abl}.value`] = val;
         }
       }
-      else if (input.dataset.type == 'ability-increase') {
+      else if (input.dataset.type === 'ability-increase') {
         let abl = $(input).val();
         abilities[`abilities.${abl}.value`] = Number(actor.data.data.abilities[abl].value) + 1;
       }
@@ -692,7 +692,7 @@ export class DwActorSheet extends ActorSheet {
         description: alignment.description
       }
     }
-    if (abilities != []) {
+    if (abilities !== []) {
       for (let [key, update] of Object.entries(abilities)) {
         data[key] = update;
       }
@@ -769,49 +769,21 @@ export class DwActorSheet extends ActorSheet {
   async _onRollable(event) {
     // Initialize variables.
     event.preventDefault();
-    const a = event.currentTarget;
-    const data = a.dataset;
     const actorData = this.actor.data.data;
     const itemId = $(a).parents('.item').attr('data-item-id');
     const item = this.actor.getOwnedItem(itemId);
-    let formula = null;
-    let titleText = null;
-    let flavorText = null;
-    let templateData = {};
-
-    // Handle rolls coming directly from the ability score.
-    if ($(a).hasClass('ability-rollable') && data.mod) {
-      formula = `2d6+${data.mod}`;
-      flavorText = data.label;
-      if (data.debility) {
-        flavorText += ` (${data.debility})`;
-      }
-
-      templateData = {
-        title: flavorText
-      };
-
-      this.rollMove(formula, actorData, data, templateData);
-    }
-    else if ($(a).hasClass('damage-rollable') && data.roll) {
-      formula = data.roll;
-      titleText = data.label;
-      flavorText = data.flavor;
-      templateData = {
-        title: titleText,
-        flavor: flavorText
-      };
-
-      this.rollMove(formula, actorData, data, templateData);
-    }
-    else if (itemId != undefined) {
-      item.roll();
-    }
+    let itemNoSpace = item.name.replace(/\s+/g, '');
+    let macro = "do" + itemNoSpace;
+    DWMacros[macro](actorData);
   }
 
   /**
    * Roll a move and use the chat card template.
-   * @param {Object} templateData
+   * @param roll
+   * @param actorData
+   * @param dataset
+   * @param templateData
+   * @param form
    */
   rollMove(roll, actorData, dataset, templateData, form = null) {
     // Render the roll.
@@ -830,9 +802,9 @@ export class DwActorSheet extends ActorSheet {
       // Roll can be either a formula like `2d6+3` or a raw stat like `str`.
       let formula = '';
       // Handle bond (user input).
-      if (roll == 'BOND') {
+      if (roll === 'BOND') {
         formula = form.bond.value ? `2d6+${form.bond.value}` : '2d6';
-        if (dataset.mod && dataset.mod != 0) {
+        if (dataset.mod && dataset.mod !== 0) {
           formula += `+${dataset.mod}`;
         }
       }
@@ -843,7 +815,7 @@ export class DwActorSheet extends ActorSheet {
       // Handle moves.
       else {
         formula = `2d6+${actorData.abilities[roll].mod}`;
-        if (dataset.mod && dataset.mod != 0) {
+        if (dataset.mod && dataset.mod !== 0) {
           formula += `+${dataset.mod}`;
         }
       }
@@ -901,7 +873,7 @@ export class DwActorSheet extends ActorSheet {
     const data = duplicate(header.dataset);
     data.moveType = data.movetype;
     data.spellLevel = data.level;
-    const name = type == 'bond' ? game.i18n.localize("DW.BondDefault") : `New ${type.capitalize()}`;
+    const name = type === 'bond' ? game.i18n.localize("DW.BondDefault") : `New ${type.capitalize()}`;
     const itemData = {
       name: name,
       type: type,
@@ -942,9 +914,9 @@ export class DwActorSheet extends ActorSheet {
 
   async _activateTagging(html) {
     // Build the tags list.
-    let tags = game.items.entities.filter(item => item.type == 'tag');
+    let tags = game.items.entities.filter(item => item.type === 'tag');
     for (let c of game.packs) {
-      if (c.metadata.entity && c.metadata.entity == 'Item' && c.metadata.name == 'tags') {
+      if (c.metadata.entity && c.metadata.entity === 'Item' && c.metadata.name === 'tags') {
         let items = c ? await c.getContent() : [];
         tags = tags.concat(items);
       }
@@ -954,7 +926,7 @@ export class DwActorSheet extends ActorSheet {
     for (let tag of tags) {
       let tagName = tag.data.name.toLowerCase();
       if (tagNames.includes(tagName) !== false) {
-        tags = tags.filter(item => item._id != tag._id);
+        tags = tags.filter(item => item._id !== tag._id);
       }
       else {
         tagNames.push(tagName);

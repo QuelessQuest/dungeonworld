@@ -1,6 +1,6 @@
 <form class="{{cssClass}} item-form flexcol" autocomplete="off">
   <header class="sheet-header flexrow">
-      {{!-- <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/> --}}
+      <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
       <div class="header-fields">
         <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize "DW.Common.Name"}}"/></h1>
       </div>
@@ -44,6 +44,11 @@
           <input type="text" name="data.rollMod" value="{{data.rollMod}}" data-dtype="Number"/>
         </div>
 
+
+        <div class="resource">
+          <label>{{localize "DW.Script"}}</label>
+          <input type="text" name="data.script" value="{{data.script}}" placeholder="Script to run on use" data-dtype="String"/>
+        </div>
         <div class="resource">
           <label>{{localize "DW.Class"}}</label>
           <select name="data.class">
@@ -83,7 +88,6 @@
           <input type="text" name="data.moveGroup" value="{{data.moveGroup}}" placeholder="ex: barbarian-armor" data-dtype="String"/>
           <span class="help-text">{{localize "DW.MoveGroupHelp"}}</span>
         </div>
-
       </div>
   </section>
 </form>

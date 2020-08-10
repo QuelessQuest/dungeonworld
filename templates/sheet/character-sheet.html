@@ -198,8 +198,8 @@
                   <ol class="items-list">
                   {{#each actor.startingMoves as |item id|}}
                     <li class="item flexrow" data-item-id="{{item._id}}" draggable="true">
-                      {{!-- <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/> --}}
-                      <h4 class="item-name"><span class="rollable move-rollable" data-roll="{{item.data.rollType}}" data-mod="{{item.data.rollMod}}">{{#if item.data.rollType}}<i class="fas fa-dice-d6"></i> <i class="fas fa-dice-d6"></i>{{else}}<i class="fas fa-book"></i>{{/if}}</span> <span class="item-label">{{item.name}}<span class="item-details-toggle"><i class="fas fa-chevron-down"></i></span></span></h4>
+                      <img class="img-move rollable move-rollable" data-roll="{{item.data.rollType}}" data-mod="{{item.data.rollMod}}" src="{{item.img}}" title="{{item.name}}" width="75" height="75"/>
+                      <h4 class="item-name"><span class="item-label">{{item.name}}<span class="item-details-toggle"><i class="fas fa-chevron-down"></i></span></span></h4>
                       <div class="item-controls">
                         <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                         <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -222,8 +222,8 @@
                   <ol class="items-list">
                   {{#each actor.advancedMoves as |item id|}}
                     <li class="item flexrow" data-item-id="{{item._id}}" draggable="true">
-                      {{!-- <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/> --}}
-                      <h4 class="item-name"><span class="rollable move-rollable" data-roll="{{item.data.rollType}}" data-mod="{{item.data.rollMod}}">{{#if item.data.rollType}}<i class="fas fa-dice-d6"></i> <i class="fas fa-dice-d6"></i>{{else}}<i class="fas fa-book"></i>{{/if}}</span> <span class="item-label">{{item.name}}<span class="item-details-toggle"><i class="fas fa-chevron-down"></i></span></span></h4>
+                      <img class="img-move rollable move-rollable" data-roll="{{item.data.rollType}}" data-mod="{{item.data.rollMod}}" src="{{item.img}}" title="{{item.name}}" width="75" height="75"/>
+                      <h4 class="item-name"><span class="item-label">{{item.name}}<span class="item-details-toggle"><i class="fas fa-chevron-down"></i></span></span></h4>
                       <div class="item-controls">
                         <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                         <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -246,8 +246,8 @@
                   <ol class="items-list">
                   {{#each actor.moves as |item id|}}
                     <li class="item flexrow" data-item-id="{{item._id}}" draggable="true">
-                      {{!-- <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/> --}}
-                      <h4 class="item-name"><span class="rollable move-rollable" data-roll="{{item.data.rollType}}" data-mod="{{item.data.rollMod}}">{{#if item.data.rollType}}<i class="fas fa-dice-d6"></i> <i class="fas fa-dice-d6"></i>{{else}}<i class="fas fa-book"></i>{{/if}}</span> <span class="item-label">{{item.name}}<span class="item-details-toggle"><i class="fas fa-chevron-down"></i></span></span></h4>
+                      <img class="img-move rollable move-rollable" data-roll="{{item.data.rollType}}" data-mod="{{item.data.rollMod}}" src="{{item.img}}" title="{{item.name}}" width="75" height="75"/>
+                      <h4 class="item-name"><span class="item-label">{{item.name}}<span class="item-details-toggle"><i class="fas fa-chevron-down"></i></span></span></h4>
                       <div class="item-controls">
                         <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                         <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -327,8 +327,8 @@
                   <ol class="items-list">
                   {{#each actor.equipment as |item id|}}
                       <li class="item flexrow" data-item-id="{{item._id}}" draggable="true">
-                          {{!-- <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/> --}}
-                          <h4 class="item-name"><span class="rollable item-rollable" data-roll=""><i class="fas fa-comment-alt"></i></span><span class="item-label">{{item.name}}<span class="item-details-toggle"><i class="fas fa-chevron-down"></i></span></span></h4>
+                          <img class="img-item rollable item-rollable" data-roll="" src="{{item.img}}" title="{{item.name}}" width="75" height="75"/>
+                          <h4 class="item-name"><span class="item-label">{{item.name}}<span class="item-details-toggle"><i class="fas fa-chevron-down"></i></span></span></h4>
 
                           <div class="item-meta tags">
                             {{#if item.data.uses }}<span class="tag">{{localize "DW.Uses"}}: {{item.data.uses}}</span>{{/if}}
