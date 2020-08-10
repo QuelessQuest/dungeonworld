@@ -115,28 +115,28 @@ export function Base() {
      * BASIC MOVES ========================================
      */
 
-    async function doHackAndSlash(actorData) {
-        return basic.hackAndSlash(actorData);
+    async function doHackAndSlash(actor) {
+        return basic.hackAndSlash(actor);
     }
 
-    async function doVolley(actorData) {
-        return basic.volley(actorData);
+    async function doVolley(actor) {
+        return basic.volley(actor);
     }
 
     /**
      * CLASS MOVES ========================================
      */
-    async function druidShapeshift(actorData) {
-        return dm.shapeshift(actorData);
+    async function doShapeshifter(actor) {
+        return dm.shapeshift(actor);
     }
 
-    async function thiefBackstab(actorData) {
-        return tm.backstab(actorData);
+    async function thiefBackstab(actor) {
+        return tm.backstab(actor);
     }
 
 
-    async function showActor(actorData) {
-        console.log(actorData);
+    async function showActor(actor) {
+        console.log(actor);
     }
 
     async function showToken() {
@@ -166,7 +166,7 @@ export function Base() {
         castAlarm: castAlarm,
         doHackAndSlash: doHackAndSlash,
         doVolley: doVolley,
-        druidShapeshift: druidShapeshift,
+        doShapeshifter: doShapeshifter,
         thiefBackstab: thiefBackstab,
         castMagicMissile: castMagicMissile,
         prepareSpells: prepareSpells,

@@ -3,7 +3,7 @@ import * as basic from './basicMoves.js'
 
 /**
  * CAST SPELL
- * @param actorData
+ * @param actor
  * @param targetActor
  * @param flavor
  * @param spellName
@@ -11,10 +11,10 @@ import * as basic from './basicMoves.js'
  * @param options
  * @returns {Promise<unknown>}
  */
-export async function castSpell({actorData = {}, targetActor = {}, flavor = null, spellName = "", move = "", options = {}}) {
+export async function castSpell({actor = {}, targetActor = {}, flavor = null, spellName = "", move = "", options = {}}) {
 
     let cast = await basic.basicMove({
-        actorData: actorData,
+        actor: actor,
         targetActor: targetActor,
         flavor: flavor,
         title: spellName,
@@ -25,21 +25,21 @@ export async function castSpell({actorData = {}, targetActor = {}, flavor = null
     let success = false;
     switch (cast) {
         case "FAILED":
-            let targetData = util.getTargets(actorData);
+            let targetData = util.getTargets(actor);
             await TokenMagic.deleteFilters(targetData.targetToken);
             break;
         case "DISTANCED":
-            await setOngoing(actorData, -1);
+            await setOngoing(actor, -1);
             success = true;
             break;
         case "REVOKED":
-            let spell = actorData.data.items.find(i => i.name.toLowerCase() === move.toLowerCase());
+            let spell = actor.data.data.items.find(i => i.name.toLowerCase() === move.toLowerCase());
             let sId = spell._id;
-            const item = actorData.getOwnedItem(sId);
+            const item = actor.getOwnedItem(sId);
             if (item) {
                 let updatedItem = duplicate(item);
                 updatedItem.data.prepared = true;
-                await actorData.updateOwnedItem(updatedItem);
+                await actor.updateOwnedItem(updatedItem);
             }
             success = true;
             break;
@@ -54,15 +54,15 @@ export async function castSpell({actorData = {}, targetActor = {}, flavor = null
 /**
  * DROP SPELL
  * Will cancel the selected active spell according to the spells cancel function
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function dropSpell(actorData) {
-    let activeSpells = actorData.getFlag("world", "activeSpells");
+export async function dropSpell(actor) {
+    let activeSpells = actor.getFlag("world", "activeSpells");
     let templateData = {
         activeSpells: activeSpells
     }
-    const content = await renderTemplate("modules/dwmacros/templates/cancelSpell.html", templateData);
+    const content = await renderTemplate("systems/dungeonworld/templates/dialog/cancel-spell.html", templateData);
     let spell = await new Promise((resolve, reject) => {
         new Dialog({
             title: "Cancel An Active Spell",
@@ -89,30 +89,30 @@ export async function dropSpell(actorData) {
     // spell = spellName,targetName
     // Remove from active list
     let info = spell.split(',');
-    await removeActiveSpell(actorData, {spell: info[0], targetName: info[1]});
+    await removeActiveSpell(actor, {spell: info[0], targetName: info[1]});
 }
 
 /**
  * SET SUSTAINED
  * Sets a penalty that will be applied to all other casting rolls made by this actor
- * @param actorData
+ * @param actor
  * @param data
  * @returns {Promise<void>}
  */
-export async function setSustained(actorData, data) {
-    await setSpellFlag(actorData, "sustained", data)
+export async function setSustained(actor, data) {
+    await setSpellFlag(actor, "sustained", data)
 }
 
 /**
  * REMOVE SPELL FLAG
- * @param actorData
+ * @param actor
  * @param flag
  * @param spell
  * @param targetName
  * @returns {Promise<{data: null, actorData: *}>}
  */
-async function removeSpellFlag(actorData, flag, {spell = "", targetName = ""}) {
-    let flagItem = actorData.getFlag("world", flag);
+async function removeSpellFlag(actor, flag, {spell = "", targetName = ""}) {
+    let flagItem = actor.getFlag("world", flag);
     let filtered = [];
     let theItem = null;
 
@@ -128,8 +128,8 @@ async function removeSpellFlag(actorData, flag, {spell = "", targetName = ""}) {
         }
     });
 
-    await actorData.setFlag("world", flag, filtered);
-    return {actorData: actorData, data: theItem};
+    await actor.setFlag("world", flag, filtered);
+    return {actor: actor, data: theItem};
 }
 
 /**
@@ -174,22 +174,22 @@ export async function removeOngoing(actorData, {spell = "", targetName = ""}) {
 /**
  * SET ACTIVE SPELL
  * Adds the spell to the list of currently active spells. This list is used when a spell is to be canceled.
- * @param actorData
+ * @param actor
  * @param data
  * @returns {Promise<void>}
  */
-export async function setActiveSpell(actorData, data) {
-    await setSpellFlag(actorData, "activeSpells", data);
+export async function setActiveSpell(actor, data) {
+    await setSpellFlag(actor, "activeSpells", data);
 }
 
 /**
  * REMOVE ACTIVE SPELL
- * @param actorData
+ * @param actor
  * @param data
  * @returns {Promise<void>}
  */
-export async function removeActiveSpell(actorData, {spell = "", targetName = ""}) {
-    let stuff = await removeSpellFlag(actorData, "activeSpells", {spell: spell, targetName: targetName});
+export async function removeActiveSpell(actor, {spell = "", targetName = ""}) {
+    let stuff = await removeSpellFlag(actor, "activeSpells", {spell: spell, targetName: targetName});
 
     let targetActor = null;
     let data = stuff.data.data;
@@ -198,7 +198,7 @@ export async function removeActiveSpell(actorData, {spell = "", targetName = ""}
         targetActor = game.actors.find(a => a._id === data.targetId);
     }
     if (data.sustained) {
-        await removeSustained(actorData, {spell: spell, targetName: data.targetName});
+        await removeSustained(actor, {spell: spell, targetName: data.targetName});
     }
     if (data.forward) {
         await removeForward(targetActor, spell);
@@ -211,7 +211,7 @@ export async function removeActiveSpell(actorData, {spell = "", targetName = ""}
     }
 
     if (data.damage) {
-        let dmgMisc = actorData.data.data.attributes.damage.misc;
+        let dmgMisc = actor.data.data.attributes.damage.misc;
         let newMisc;
         if (dmgMisc === "1d4") {
             newMisc = "";
@@ -223,7 +223,7 @@ export async function removeActiveSpell(actorData, {spell = "", targetName = ""}
             }
         }
 
-        await actorData.update({"data": {"attributes": {"damage": {"misc": newMisc}}}});
+        await actor.update({"data": {"attributes": {"damage": {"misc": newMisc}}}});
     }
 
     if (data.updateData) {
@@ -239,7 +239,7 @@ export async function removeActiveSpell(actorData, {spell = "", targetName = ""}
     }
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         target: targetActor,
         startingWords: data.startingWords,
         middleWords: data.middleWords,
@@ -249,19 +249,19 @@ export async function removeActiveSpell(actorData, {spell = "", targetName = ""}
 
 /**
  * SET SPELL FLAG
- * @param actorData
+ * @param actor
  * @param flag
  * @param data
  * @returns {Promise<void>}
  */
-async function setSpellFlag(actorData, flag, data) {
-    let currentFlag = actorData.getFlag("world", flag);
+async function setSpellFlag(actor, flag, data) {
+    let currentFlag = actor.getFlag("world", flag);
     if (currentFlag) {
         currentFlag.push(data);
     } else {
         currentFlag = [data];
     }
-    await actorData.setFlag("world", flag, currentFlag);
+    await actor.setFlag("world", flag, currentFlag);
 }
 
 /**
@@ -290,16 +290,17 @@ export async function removeForward(target, spell) {
 /**
  * VALIDATE SPELL
  * Checks: Is the spell known? Is the spell prepared? Are they barred from any casting?
- * @param actorData
+ * @param actor
  * @param spell
  * @param target
  * @returns {Promise<boolean>}
  */
-export async function validateSpell({actorData: actorData, spell: spell, target: target}) {
-    if (!actorData) {
+export async function validateSpell({actor: actor, spell: spell, target: target}) {
+    if (!actor) {
         ui.notifications.warn("Please select the caster");
         return false;
     }
+    let actorData = actor.data;
     let hasSpell = actorData.items.find(i => i.name.toLowerCase() === spell.toLowerCase());
     if (hasSpell === null) {
         ui.notifications.warn(`${actorData.name} does not know how to cast ${spell}`);
@@ -328,11 +329,11 @@ export async function validateSpell({actorData: actorData, spell: spell, target:
 /**
  * BARRED FROM CASTING
  * Determines if any spells can be cast (e.g. if invisibility is currently active)
- * @param actorData
+ * @param actor
  * @returns {Promise<string>}
  */
-async function barredFromCasting(actorData) {
-    let as = actorData.getFlag("world", "activeSpells");
+async function barredFromCasting(actor) {
+    let as = actor.getFlag("world", "activeSpells");
     if (as) {
         if (as.find(x => x.spell === "invisibility")) {
             return "Cannot cast a spell while Invisibility is being maintained";
@@ -344,13 +345,14 @@ async function barredFromCasting(actorData) {
 /**
  * SET SPELLS
  * Provides a dialog that allows for selecting prepared spells.
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function setSpells(actorData) {
+export async function setSpells(actor) {
 
+    let actorData = actor.data;
     let spellItems = actorData.items.filter(i => i.type === "spell");
-    let lvlTotal = parseInt(actorData.data.data.attributes.level.value) + 1;
+    let lvlTotal = parseInt(actorData.data.attributes.level.value) + 1;
     let idx = 0;
     let templateData = {
         rotes: [],
@@ -365,7 +367,7 @@ export async function setSpells(actorData) {
         }
     }
 
-    const content = await renderTemplate("modules/dwmacros/templates/prepareSpells.html", templateData);
+    const content = await renderTemplate("systems/dungeonworld/templates/dialog/prepare-spells.html", templateData);
     let p = await new Promise(resolve => {
         new Dialog({
             title: "Prepare Spells",
@@ -406,26 +408,26 @@ export async function setSpells(actorData) {
         pSpells.forEach(ps => {
             let spell = actorData.data.items.find(i => i.name === ps);
             let sId = spell._id;
-            const item = actorData.getOwnedItem(sId);
+            const item = actor.getOwnedItem(sId);
             if (item) {
                 let updatedItem = duplicate(item);
                 updatedItem.data.prepared = true;
-                actorData.updateOwnedItem(updatedItem);
+                actor.updateOwnedItem(updatedItem);
             }
         });
         upSpells.forEach(ups => {
             let spell = actorData.data.items.find(i => i.name === ups);
             let sId = spell._id;
-            const item = actorData.getOwnedItem(sId);
+            const item = actor.getOwnedItem(sId);
             if (item) {
                 let updatedItem = duplicate(item);
                 updatedItem.data.prepared = false;
-                actorData.updateOwnedItem(updatedItem);
+                actor.updateOwnedItem(updatedItem);
             }
         });
-        await actorData.setFlag("world", "ongoing", null);
+        await actor.setFlag("world", "ongoing", null);
         await util.coloredChat({
-            actorData: actorData,
+            actor: actor,
             middleWords: "has finished preparing spells",
         });
     }

@@ -1,0 +1,24 @@
+<div class="form-group horiz dialog prepareSpells" id="prepareSpells">
+    <div class="spellLevel">
+        <h2 class="cell__title">Rotes</h2>
+    </div>
+    <div class="prepSpell">
+        {{#each rotes}}
+        <div>
+            <input id="{{this}}" name="{{this}}" type="checkbox" value="0" checked/><label for="{{this}}">{{this}}</label>
+        </div>
+        {{/each}}
+    </div>
+    {{#each spellData}}
+    <div class="spellLevel">
+        <h2 class="cell__title">Level {{lvl}}</h2>
+    </div>
+    <div class="prepSpell">
+        {{#each spells}}
+        <div>
+            <input id="{{this}}" type="checkbox" name="{{this}}" value="{{../lvl}}"/><label for="{{this}}">{{this}}</label>
+        </div>
+        {{/each}}
+    </div>
+    {{/each}}
+</div>

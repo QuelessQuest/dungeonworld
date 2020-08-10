@@ -11,10 +11,7 @@ export async function basicMove({
                                 }) {
     let baseFormula = '2d6';
     let actorData = actor.data;
-    console.log(move);
     let moveData = actorData.items.find(i => i.name.toLowerCase() === move.toLowerCase());
-    console.log("moveData");
-    console.log(moveData);
     let ability = moveData.data.rollType.toLowerCase();
     let mod = moveData.data.rollMod;
     let abilityMod = actorData.data.abilities[ability].mod;
@@ -158,11 +155,9 @@ export async function hackAndSlash(actor) {
             }
         };
 
-        console.log("ACTOR");
-        console.log(actor);
         let attack = await basicMove(({actor: actor, targetActor: targetData.targetActor, flavor: flavor, options: options, title: "Hack And Slash", move: "Hack And Slash"}));
         if (attack) {
-            await util.doDamage({actorData: actor, targetData: targetData, damageMod: attack, title: "Hack And Slash"});
+            await util.doDamage({actor: actor, targetData: targetData, damageMod: attack, title: "Hack And Slash"});
         }
     } else {
         ui.notifications.warn("Please select a token.");

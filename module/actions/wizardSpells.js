@@ -5,14 +5,14 @@ import {getColors} from "./dwUtils.js";
 /**
  * WizardSpell
  * Used to cast all Wizard Spells. Provides the Success with Consequences dialog if necessary
- * @param actorData
+ * @param actor
  * @param spellName
  * @param move
  * @param target
  * @returns {Promise<*>}
  */
-export async function wizardSpell({actorData: actorData, spellName: spellName, move: move, target: target = false}) {
-    if (actorData) {
+export async function wizardSpell({actor: actor, spellName: spellName, move: move, target: target = false}) {
+    if (actor) {
         if (target) {
             if (game.user.targets.size === 0) {
                 ui.notifications.warn("Spell requires a target.");
@@ -20,25 +20,25 @@ export async function wizardSpell({actorData: actorData, spellName: spellName, m
             }
         }
 
-        let targetData = util.getTargets(actorData);
+        let targetData = util.getTargets(actor);
         let flavor = "Your casting succeeds, however you must select one of the following options.";
         let options = {
             success: {
                 details: {
                     middleWords: `Successfully Casts ${spellName} on`
                 },
-                dialogType: CONFIG.DWMacros.dialogTypes.success,
+                dialogType: CONFIG.DW.dialogTypes.success,
                 result: "NORMAL"
             },
             fail: {
                 details: {
                     middleWords: `Failed to Cast ${spellName}`
                 },
-                dialogType: CONFIG.DWMacros.dialogTypes.fail,
+                dialogType: CONFIG.DW.dialogTypes.fail,
                 result: "FAILED"
             },
             pSuccess: {
-                dialogType: CONFIG.DWMacros.dialogTypes.partial,
+                dialogType: CONFIG.DW.dialogTypes.partial,
                 result: [
                     {
                         key: "opt1",
@@ -74,7 +74,7 @@ export async function wizardSpell({actorData: actorData, spellName: spellName, m
         };
 
         return await sh.castSpell({
-            actorData: actorData,
+            actor: actor,
             targetActor: targetData.targetActor,
             flavor: flavor,
             spellName: spellName,
@@ -88,100 +88,100 @@ export async function wizardSpell({actorData: actorData, spellName: spellName, m
 
 // CANTRIPS =======================================================================================
 
-export async function prestidigitation(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Prestidigitation", target: true});
+export async function prestidigitation(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Prestidigitation", target: true});
     if (!valid) return;
 
-    let cast = await clericSpell({actorData: actorData, spellName: "Prestidigitation", move: "Cast A Spell", target: true});
+    let cast = await clericSpell({actor: actor, spellName: "Prestidigitation", move: "Cast A Spell", target: true});
     if (!cast) return;
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         middleWords: "prestidigitates",
     });
 }
 
-export async function unseenServant(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Unseen Servant", target: true});
+export async function unseenServant(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Unseen Servant", target: true});
     if (!valid) return;
 
-    let cast = await clericSpell({actorData: actorData, spellName: "Unseen Servant", move: "Cast A Spell", target: true});
+    let cast = await clericSpell({actor: actor, spellName: "Unseen Servant", move: "Cast A Spell", target: true});
     if (!cast) return;
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         middleWords: "summons an unseen servant",
     });
 }
 
 // FIRST LEVEL =======================================================================================
 
-export async function alarm(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Alarm"});
+export async function alarm(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Alarm"});
     if (!valid) return;
 
-    let cast = await wizardSpell({actorData: actorData, spellName: "Alarm", move: "Cast A Spell"});
+    let cast = await wizardSpell({actor: actor, spellName: "Alarm", move: "Cast A Spell"});
     if (!cast) return;
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         middleWords: "sets and alarm"
     });
 }
 
-export async function charmPerson(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Charm Person", target: true});
+export async function charmPerson(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Charm Person", target: true});
     if (!valid) return;
 
-    let cast = await wizardSpell({actorData: actorData, spellName: "Charm Person", move: "Cast A Spell", target: true});
+    let cast = await wizardSpell({actor: actor, spellName: "Charm Person", move: "Cast A Spell", target: true});
     if (!cast) return;
 
-    let targetData = util.getTargets(actorData);
+    let targetData = util.getTargets(actor);
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         target: targetData.targetActor,
         middleWords: "charms"
     });
 }
 
-export async function contactSpirits(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Contact Spirits"});
+export async function contactSpirits(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Contact Spirits"});
     if (!valid) return;
 
-    let cast = await wizardSpell({actorData: actorData, spellName: "Contact Spirits", move: "Cast A Spell"});
+    let cast = await wizardSpell({actor: actor, spellName: "Contact Spirits", move: "Cast A Spell"});
     if (!cast) return;
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         middleWords: "sets about contacting the spirits"
     });
 }
 
-export async function detectMagic(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Detect Magic"});
+export async function detectMagic(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Detect Magic"});
     if (!valid) return;
 
-    let cast = await wizardSpell({actorData: actorData, spellName: "Detect Magic", move: "Cast A Spell"});
+    let cast = await wizardSpell({actor: actor, spellName: "Detect Magic", move: "Cast A Spell"});
     if (!cast) return;
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         middleWords: "detects magic"
     });
 }
 
-export async function telepathy(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Telepathy", target: true});
+export async function telepathy(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Telepathy", target: true});
     if (!valid) return;
 
-    let cast = await wizardSpell({actorData: actorData, spellName: "Telepathy", move: "Cast A Spell", target: true});
+    let cast = await wizardSpell({actor: actor, spellName: "Telepathy", move: "Cast A Spell", target: true});
     if (!cast) return;
 
-    let targetData = util.getTargets(actorData);
+    let targetData = util.getTargets(actor);
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         target: targetData.targetActor,
         middleWords: "establishes a telepathic link with"
     });
@@ -189,20 +189,20 @@ export async function telepathy(actorData) {
 
 /**
  * INVISIBILITY
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function invisibility(actorData) {
+export async function invisibility(actor) {
 
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Invisibility"});
+    let valid = await sh.validateSpell({actor: actor, spell: "Invisibility"});
     if (!valid) return;
 
-    let cast = await wizardSpell({actorData: actorData, spellName: "Invisibility", move: "Cast A Spell"});
+    let cast = await wizardSpell({actor: actor, spellName: "Invisibility", move: "Cast A Spell"});
     if (!cast) {
         return;
     }
 
-    let targetData = util.getTargets(actorData);
+    let targetData = util.getTargets(actor);
 
     let params =
         [{
@@ -255,11 +255,11 @@ export async function invisibility(actorData) {
     };
 
     await targetData.targetToken.update({"hidden": true});
-    await sh.setActiveSpell(actorData, invFlag);
+    await sh.setActiveSpell(actor, invFlag);
     await TokenMagic.deleteFilters(targetData.targetToken);
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         target: targetData.targetActor,
         middleWords: "casts Invisibility on"
     });
@@ -270,15 +270,15 @@ export async function invisibility(actorData) {
  * @param actorData
  * @returns {Promise<void>}
  */
-export async function magicMissile(actorData) {
+export async function magicMissile(actor) {
 
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Magic Missile", target: true});
+    let valid = await sh.validateSpell({actor: actor, spell: "Magic Missile", target: true});
     if (!valid) return;
 
-    let cast = await wizardSpell({actorData: actorData, spellName: "Magic Missile", move: "Cast A Spell", target: true});
+    let cast = await wizardSpell({actor: actor, spellName: "Magic Missile", move: "Cast A Spell", target: true});
     if (!cast) return;
 
-    let targetData = util.getTargets(actorData);
+    let targetData = util.getTargets(actor);
     let token = canvas.tokens.controlled[0];
 
     let missile =
@@ -309,6 +309,7 @@ export async function magicMissile(actorData) {
     await sh.launchProjectile(token, targetData.targetToken, "modules/dwmacros/assets/mm.png");
     await TokenMagic.addFiltersOnTargeted(missile);
 
+    let actorData = actor.data;
     if (targetData.targetActor.permission !== CONST.ENTITY_PERMISSIONS.OWNER)
         roll.toMessage({
             speaker: ChatMessage.getSpeaker(),

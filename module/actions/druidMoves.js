@@ -4,7 +4,8 @@ import {basicMove} from "./basicMoves.js";
  * Provides a dialog to chose a new shape. Token image will be updated to reflect the selection.
  * @returns {Promise<void>}
  */
-export async function shapeshift(actorData) {
+export async function shapeshift(actor) {
+    let actorData = actor.data;
     let canDo = actorData.items.find(i => i.name === "Shapeshifter");
     if (canDo === null) {
         ui.notifications.warn(`${actorData.name} does not know how to Shapeshift!`);
@@ -55,21 +56,21 @@ export async function shapeshift(actorData) {
 
     let options = {
         fail: {
-            dialogType: CONFIG.DWMacros.dialogTypes.fail,
+            dialogType: CONFIG.DW.dialogTypes.fail,
             details: {
                 middleWords: "has difficulty Shifting. Hold 1"
             },
             result: 1
         },
         pSuccess: {
-            dialogType: CONFIG.DWMacros.dialogTypes.partial,
+            dialogType: CONFIG.DW.dialogTypes.partial,
             details: {
                 middleWords: "Successfully Shifts. Hold 2"
             },
             result: 2
         },
         success: {
-            dialogType: CONFIG.DWMacros.dialogTypes.success,
+            dialogType: CONFIG.DW.dialogTypes.success,
             details: {
                 middleWords: "Successfully Shifts. Hold 3"
             },
@@ -77,11 +78,11 @@ export async function shapeshift(actorData) {
         }
     }
 
-    let hold = await basicMove(({actorData: actorData, flavor: flavor, options: options, title: "Shapeshifter", move: "Shapeshifter"}));
+    let hold = await basicMove(({actor: actor, flavor: flavor, options: options, title: "Shapeshifter", move: "Shapeshifter"}));
 
-    await actorData.update({"data": {"holds": {"Shapeshifter": {"value": hold, "min": 0, "max": hold}}}});
-    await token.update({"bar2": {"attribute": "holds.Shapeshifter"}});
-    await token.update({"displayBars": true});
+    //await actor.update({"data": {"holds": {"Shapeshifter": {"value": hold, "min": 0, "max": hold}}}});
+    //await token.update({"bar2": {"attribute": "holds.Shapeshifter"}});
+    //await token.update({"displayBars": true});
 
     let d = new Dialog({
         title: 'Shapeshift',
@@ -139,7 +140,7 @@ export async function shapeshift(actorData) {
                 icon: '<i class="fas fa-times"></i>',
                 label: "Cancel",
                 callback: () => {
-                    actorData.update({"data": {"holds": {"Shapeshifter": {"value": 0, "min": 0, "max": 0}}}});
+                    //actor.update({"data": {"holds": {"Shapeshifter": {"value": 0, "min": 0, "max": 0}}}});
                     TokenMagic.deleteFiltersOnSelected();
                 }
             }

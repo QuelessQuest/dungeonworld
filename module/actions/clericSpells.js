@@ -5,14 +5,14 @@ import {getColors} from "./dwUtils.js";
 /**
  * ClericSpell
  * Used to cast all Cleric Spells. Provides the Success with Consequences dialog if necessary
- * @param actorData
+ * @param actor
  * @param spellName
  * @param move
  * @param target
  * @returns {Promise<*>}
  */
-export async function clericSpell({actorData: actorData, spellName: spellName, move: move, target: target = false}) {
-    if (actorData) {
+export async function clericSpell({actor: actor, spellName: spellName, move: move, target: target = false}) {
+    if (actor) {
         if (target) {
             if (game.user.targets.size === 0) {
                 ui.notifications.warn("Spell requires a target.");
@@ -20,25 +20,25 @@ export async function clericSpell({actorData: actorData, spellName: spellName, m
             }
         }
 
-        let targetData = util.getTargets(actorData);
+        let targetData = util.getTargets(actor);
         let flavor = "Your casting succeeds, however you must select one of the following options.";
         let options = {
             success: {
                 details: {
                     middleWords: `Successfully Casts ${spellName} on`
                 },
-                dialogType: CONFIG.DWMacros.dialogTypes.success,
+                dialogType: CONFIG.DW.dialogTypes.success,
                 result: "NORMAL"
             },
             fail: {
                 details: {
                     middleWords: `Failed to Cast ${spellName}`
                 },
-                dialogType: CONFIG.DWMacros.dialogTypes.fail,
+                dialogType: CONFIG.DW.dialogTypes.fail,
                 result: "FAILED"
             },
             pSuccess: {
-                dialogType: CONFIG.DWMacros.dialogTypes.partial,
+                dialogType: CONFIG.DW.dialogTypes.partial,
                 result: [
                     {
                         key: "opt1",
@@ -75,7 +75,7 @@ export async function clericSpell({actorData: actorData, spellName: spellName, m
         };
 
         return await sh.castSpell({
-            actorData: actorData,
+            actor: actor,
             targetActor: targetData.targetActor,
             flavor: flavor,
             spellName: spellName,
@@ -91,36 +91,36 @@ export async function clericSpell({actorData: actorData, spellName: spellName, m
 
 /**
  * GUIDANCE
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function guidance(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Guidance"});
+export async function guidance(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Guidance"});
     if (!valid) return;
 
-    let cast = await clericSpell({actorData: actorData, spellName: "Guidance", move: "Cast A Spell"});
+    let cast = await clericSpell({actor: actor, spellName: "Guidance", move: "Cast A Spell"});
     if (!cast) return;
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         middleWords: "asks for guidance"
     });
 }
 
 /**
  * SANCTIFY
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function sanctify(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Sanctify"});
+export async function sanctify(actor) {
+    let valid = await sh.validateSpell({actorData: actor, spell: "Sanctify"});
     if (!valid) return;
 
-    let cast = await clericSpell({actorData: actorData, spellName: "Sanctify", move: "Cast A Spell"});
+    let cast = await clericSpell({actor: actor, spellName: "Sanctify", move: "Cast A Spell"});
     if (!cast) return;
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         middleWords: "sanctifies some food and water"
     });
 }
@@ -129,17 +129,17 @@ export async function sanctify(actorData) {
 
 /**
  * BLESS
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function bless(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Bless"});
+export async function bless(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Bless"});
     if (!valid) return;
 
-    let cast = await clericSpell({actorData: actorData, spellName: "Bless", move: "Cast A Spell"});
+    let cast = await clericSpell({actor: actor, spellName: "Bless", move: "Cast A Spell"});
     if (!cast) return;
 
-    let targetData = util.getTargets(actorData);
+    let targetData = util.getTargets(actor);
 
     let bGlow =
         [{
@@ -185,12 +185,12 @@ export async function bless(actorData) {
         }
     };
 
-    await sh.setActiveSpell(actorData, blessFlag);
-    await sh.setSustained(actorData, {spell: "Bless", data: {targetName: targetData.targetActor.name, value: 1}});
+    await sh.setActiveSpell(actor, blessFlag);
+    await sh.setSustained(actor, {spell: "Bless", data: {targetName: targetData.targetActor.name, value: 1}});
     await sh.setForward(targetData.targetActor, {type: "Bless", value: 1});
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         target: targetData.targetActor,
         middleWords: "has Blessed"
     });
@@ -198,18 +198,19 @@ export async function bless(actorData) {
 
 /**
  * CURE LIGHT WOUNDS
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function cureLightWounds(actorData) {
+export async function cureLightWounds(actor) {
 
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Cure Light Wounds", target: true});
+    let valid = await sh.validateSpell({actor: actor, spell: "Cure Light Wounds", target: true});
     if (!valid) return;
 
-    let cast = await clericSpell({actorData: actorData, spellName: "Cure Light Wounds", move: "Cast A Spell", target: true})
+    let cast = await clericSpell({actor: actor, spellName: "Cure Light Wounds", move: "Cast A Spell", target: true})
     if (!cast) return;
 
-    let targetData = util.getTargets(actorData);
+    let targetData = util.getTargets(actor);
+    let actorData = actor.data;
     let glow = [
         {
             filterType: "zapshadow",
@@ -281,18 +282,18 @@ export async function cureLightWounds(actorData) {
 
 /**
  * CAUSE FEAR
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function causeFear(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Cause Fear", target: true});
+export async function causeFear(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Cause Fear", target: true});
     if (!valid) return;
 
-    let cast = await clericSpell({actorData: actorData, spellName: "Cause Fear", move: "Cast A Spell", target: true});
+    let cast = await clericSpell({actor: actor, spellName: "Cause Fear", move: "Cast A Spell", target: true});
     if (!cast) return;
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         middleWords: "causes",
         endWords: "to recoil in fear"
     });
@@ -300,20 +301,20 @@ export async function causeFear(actorData) {
 
 /**
  * DETECT ALIGNMENT
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function detectAlignment(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Detect Alignment", target: true});
+export async function detectAlignment(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Detect Alignment", target: true});
     if (!valid) return;
 
-    let cast = await clericSpell({actorData: actorData, spellName: "Detect Alignment", move: "Cast A Spell", target: true});
+    let cast = await clericSpell({actor: actor, spellName: "Detect Alignment", move: "Cast A Spell", target: true});
     if (!cast) return;
 
     let targetData = util.getTargets(actorData);
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         target: targetData.targetActor,
         middleWords: "detects the alignment of"
     });
@@ -321,17 +322,18 @@ export async function detectAlignment(actorData) {
 
 /**
  * MAGIC WEAPON
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function magicWeapon(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Magic Weapon"});
+export async function magicWeapon(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Magic Weapon"});
     if (!valid) return;
 
-    let cast = await clericSpell({actorData: actorData, spellName: "Magic Weapon", move: "Cast A Spell"});
+    let cast = await clericSpell({actor: actor, spellName: "Magic Weapon", move: "Cast A Spell"});
     if (!cast) return;
 
-    let currentMisc = actorData.data.data.attributes.damage.misc;
+    let actorData = actor.data;
+    let currentMisc = actorData.data.attributes.damage.misc;
 
     let params =
         [
@@ -373,47 +375,47 @@ export async function magicWeapon(actorData) {
     } else {
         currentMisc = "1d4";
     }
-    await sh.setActiveSpell(actorData, flag);
-    await sh.setSustained(actorData, {spell: "Magic Weapon", data: {targetName: actorData.name, value: 1}});
-    await actorData.update({"data": {"attributes": {"damage": {"misc": currentMisc}}}});
+    await sh.setActiveSpell(actor, flag);
+    await sh.setSustained(actor, {spell: "Magic Weapon", data: {targetName: actorData.name, value: 1}});
+    await actor.update({"data": {"attributes": {"damage": {"misc": currentMisc}}}});
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         middleWords: "casts Magic Weapon"
     });
 }
 
 /**
  * SANCTUARY
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function sanctuary(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Sanctuary"});
+export async function sanctuary(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Sanctuary"});
     if (!valid) return;
 
-    let cast = await clericSpell({actorData: actorData, spellName: "Sanctuary", move: "Cast A Spell"});
+    let cast = await clericSpell({actor: actor, spellName: "Sanctuary", move: "Cast A Spell"});
     if (!cast) return;
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         middleWords: "creates a Sanctuary"
     });
 }
 
 /**
  * SPEAK WITH DEAD
- * @param actorData
+ * @param actor
  * @returns {Promise<void>}
  */
-export async function speakWithDead(actorData) {
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Speak With Dead"});
+export async function speakWithDead(actor) {
+    let valid = await sh.validateSpell({actor: actor, spell: "Speak With Dead"});
     if (!valid) return;
 
-    let cast = await clericSpell({actorData: actorData, spellName: "Speak With Dead", move: "Cast A Spell"});
+    let cast = await clericSpell({actor: actor, spellName: "Speak With Dead", move: "Cast A Spell"});
     if (!cast) return;
 
     await util.coloredChat({
-        actorData: actorData,
+        actor: actor,
         middleWords: "speaks with the dead"
     });
 }

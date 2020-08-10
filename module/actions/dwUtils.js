@@ -1,18 +1,18 @@
 /**
  * GET COLORS
  * If the actor and or target are characters, return the player color
- * @param actorData
+ * @param actor
  * @param target
  * @returns {{source: string, target: string}}
  */
-export function getColors(actorData, target) {
+export function getColors(actor, target) {
 
     let gColors = {
         source: "#000000",
         target: "#000000"
     }
 
-    if (actorData) {
+    if (actor) {
         let sourceUser = game.users.find(u => u.data.character === actorData._id);
         if (sourceUser) {
             gColors.source = sourceUser.data.color;
@@ -31,7 +31,7 @@ export function getColors(actorData, target) {
 
 /**
  * COLORED CHAT
- * @param actorData
+ * @param actor
  * @param target
  * @param startingWords
  * @param middleWords
@@ -40,7 +40,7 @@ export function getColors(actorData, target) {
  * @returns {Promise<void>}
  */
 export async function coloredChat({
-                                      actorData = null,
+                                      actor = null,
                                       target = null,
                                       startingWords = "",
                                       middleWords = "",
@@ -48,9 +48,9 @@ export async function coloredChat({
                                   }) {
     let template = "modules/dwmacros/templates/chat/defaultWithColor.html";
 
-    let gColors = getColors(actorData, target);
+    let gColors = getColors(actor, target);
 
-    let sName = actorData ? actorData.name : "";
+    let sName = actor ? actorData.name : "";
     let tName = target ? target.name : "";
 
     let templateData = {
@@ -117,7 +117,7 @@ export async function processChoice({
             title: title,
             content: flavor,
             buttons: getButtons(options, template, templateData, chatData, resolve),
-        }, {width: 450, classes: ["dwmacros", "dialog"]});
+        }, {width: 450, classes: ["dungeonworld", "dialog"]});
         dialog.render(true);
     });
 }
@@ -199,16 +199,17 @@ export async function renderDiceResults({
 /**
  * VALIDATE MOVE
  * Determine if the user has the move in question
- * @param actorData
+ * @param actor
  * @param move
  * @param target
  * @returns {Promise<boolean>}
  */
-export async function validateMove({actorData: actorData, move: move, target: target}) {
-    if (!actorData) {
+export async function validateMove({actor: actor, move: move, target: target}) {
+    if (!actor) {
         ui.notifications.warn("Please select a character");
         return false;
     }
+    let actorData = actor.data;
     let hasMove = actorData.items.find(i => i.name.toLowerCase() === move.toLowerCase());
     if (hasMove === null) {
         ui.notifications.warn(`${actorData.name} does not know ${move}`);
@@ -226,13 +227,14 @@ export async function validateMove({actorData: actorData, move: move, target: ta
  * @param title
  * @returns {Promise<void>}
  */
-export async function doDamage({actorData = null, targetData = null, damageMod = null, title = "", verb = null}) {
+export async function doDamage({actor = null, targetData = null, damageMod = null, title = "", verb = null}) {
 
-    let base = actorData.data.data.attributes.damage.value;
+    let actorData = actor.data;
+    let base = actorData.data.attributes.damage.value;
     let formula = base;
     let misc = "";
-    if (actorData.data.data.attributes.damage.misc) {
-        misc = actorData.data.data.attributes.damage.misc;
+    if (actorData.data.attributes.damage.misc) {
+        misc = actorData.data.attributes.damage.misc;
         formula += `+${misc}`;
     }
     if (damageMod) {

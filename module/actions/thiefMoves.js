@@ -5,8 +5,8 @@ import {basicMove} from "./basicMoves.js";
  * Provides a dialog to chose a new shape. Token image will be updated to reflect the selection.
  * @returns {Promise<void>}
  */
-export async function backstab(actorData) {
-    let canDo = await util.validateMove({actorData: actorData, move: "Backstab", target: true});
+export async function backstab(actor) {
+    let canDo = await util.validateMove({actor: actor, move: "Backstab", target: true});
     if (!canDo) {
         return;
     }
@@ -25,21 +25,21 @@ export async function backstab(actorData) {
                 icon: '<i class="fas fa-bullseye"></i>',
                 label: "Deal Your Damage",
                 callback: () => {
-                    util.doDamage({actorData: actorData, targetData: targetData, title: "Backstab", verb: "backstabs"});
+                    util.doDamage({actor: actor, targetData: targetData, title: "Backstab", verb: "backstabs"});
                 }
             },
             rr: {
                 icon: '<i class="fas fa-dice-d6"></i>',
                 label: "Roll",
                 callback: () => {
-                    backstabRoll({actorData: actorData, targetData: targetData});
+                    backstabRoll({actor: actor, targetData: targetData});
                 }
             }
         }
     }).render(true);
 }
 
-async function backstabRoll({actorData = {}, targetData = {}}) {
+async function backstabRoll({actor = {}, targetData = {}}) {
     let result = [
         {
             key: "opt1",
@@ -85,26 +85,26 @@ async function backstabRoll({actorData = {}, targetData = {}}) {
     let flavor = "Your attack is successful, chose an option.";
     let options = {
         fail: {
-            dialogType: CONFIG.DWMacros.dialogTypes.fail,
+            dialogType: CONFIG.DW.dialogTypes.fail,
             details: {
                 middleWords: "Failed to Backstab"
             },
             result: null
         },
         pSuccess: {
-            dialogType: CONFIG.DWMacros.dialogTypes.partial,
+            dialogType: CONFIG.DW.dialogTypes.partial,
             details: {
                 middleWords: "Successfully Backstabs"
             },
             result: result
         },
         success: {
-            dialogType: CONFIG.DWMacros.dialogTypes.success,
+            dialogType: CONFIG.DW.dialogTypes.success,
             result: "0"
         }
     };
-    let attack = await basicMove(({actorData: actorData, targetActor: targetData.targetActor, flavor: flavor, options: options, title: "Backstab", move: "Backstab"}));
+    let attack = await basicMove(({actor: actor, targetActor: targetData.targetActor, flavor: flavor, options: options, title: "Backstab", move: "Backstab"}));
     if (attack) {
-        await util.doDamage({actorData: actorData, targetData: targetData, damageMod: attack, title: "Backstab", verb: "backstabs"});
+        await util.doDamage({actor: actor, targetData: targetData, damageMod: attack, title: "Backstab", verb: "backstabs"});
     }
 }

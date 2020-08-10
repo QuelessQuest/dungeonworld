@@ -67,6 +67,7 @@ Hooks.once("init", async function() {
 Hooks.once("ready", async function() {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => createDwMacro(data, slot));
+  console.log("drop hook");
 
   window.DWBase = DWBase;
   DW.classlist = await DwClassList.getClasses();
@@ -222,6 +223,7 @@ Hooks.on('renderDialog', (dialog, html, options) => {
  * @returns {Promise}
  */
 async function createDwMacro(data, slot) {
+  console.log("createDwMacros");
   if (data.type !== "Item") return;
   if (!("data" in data)) return ui.notifications.warn("You can only create macro buttons for owned Items");
   const item = data.data;
@@ -258,5 +260,8 @@ function rollItemMacro(itemName) {
 
   // Trigger the item roll
   // if ( item.data.type === "spell" ) return actor.useSpell(item);
-  return item.roll();
+  let itemNoSpace = item.name.replace(/\s+/g, '');
+  let macro = "do" + itemNoSpace;
+  DWBase[macro](actor);
+  //return item.roll();
 }

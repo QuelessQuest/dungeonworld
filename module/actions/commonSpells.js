@@ -4,19 +4,19 @@ import {getTargets} from "./dwUtils.js";
 
 /**
  * LIGHT
- * @param actorData
+ * @param actor
  * @param spellType
  * @returns {Promise<void>}
  */
-export async function light(actorData, spellType) {
+export async function light(actor, spellType) {
 
-    let valid = await sh.validateSpell({actorData: actorData, spell: "Light"});
+    let valid = await sh.validateSpell({actor: actor, spell: "Light"});
     if (!valid) return;
 
-    let cast = await spellType({actorData: actorData, spellName: "Light", move: "Cast A Spell"});
+    let cast = await spellType({actor: actor, spellName: "Light", move: "Cast A Spell"});
     if (!cast) return;
 
-    let targetData = getTargets(actorData);
+    let targetData = getTargets(actor);
 
     let lightFlag = {
         spell: "Light",
@@ -40,7 +40,7 @@ export async function light(actorData, spellType) {
                 callback: () => {
                     let targetData = util.getTargets(actorData);
                     targetData.targetToken.update({"dimLight": 40, "brightLight": 20, "lightAngle": 360, "lightColor": document.getElementById("permanent").value.substring(0, 7)});
-                    sh.setActiveSpell(actorData, lightFlag);
+                    sh.setActiveSpell(actor, lightFlag);
                 }
             },
             cancel: {

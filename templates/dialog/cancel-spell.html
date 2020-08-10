@@ -1,0 +1,12 @@
+<div class="form-group dialog dw-cancel-spell" id="dw-cancel-spell">
+    <div class="bottom-margin">
+        <label for="activeSpells">Select an active spell to cancel</label>
+    </div>
+    <div class="bottom-margin">
+        <select name="activeSpells" id="activeSpells">
+            {{#each activeSpells}}
+            <option value="{{this.spell}},{{this.data.targetName}}">{{this.spell}} [{{this.data.targetName}}]</option>
+            {{/each}}
+        </select>
+    </div>
+</div>
