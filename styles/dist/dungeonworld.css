@@ -194,6 +194,26 @@
   color: #999;
   font-size: 12px; }
 
+.dw-spell-dialog .prepSpell {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin-bottom: 10px; }
+
 .vtt .window-app {
   background: #2d3748; }
   .vtt .window-app a:hover, .vtt .window-app a:focus,
@@ -1307,8 +1327,8 @@
   .dungeonworld.sheet .cell--spells .item-controls {
     text-align: right;
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 40px;
-    flex: 0 0 40px; }
+    -ms-flex: 0 0 60px;
+    flex: 0 0 60px; }
   .dungeonworld.sheet .cell--basic-moves .item-description,
   .dungeonworld.sheet .cell--starting-moves .item-description,
   .dungeonworld.sheet .cell--advanced-moves .item-description,

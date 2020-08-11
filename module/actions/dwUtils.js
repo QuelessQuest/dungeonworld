@@ -50,7 +50,7 @@ export async function coloredChat({
 
     let gColors = getColors(actor, target);
 
-    let sName = actor ? actorData.name : "";
+    let sName = actor ? actor.name : "";
     let tName = target ? target.name : "";
 
     let templateData = {

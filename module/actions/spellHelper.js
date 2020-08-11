@@ -348,7 +348,7 @@ async function barredFromCasting(actor) {
  * @param actor
  * @returns {Promise<void>}
  */
-export async function setSpells(actor) {
+export async function setSpells(actor, title) {
 
     let actorData = actor.data;
     let spellItems = actorData.items.filter(i => i.type === "spell");
@@ -358,8 +358,9 @@ export async function setSpells(actor) {
         rotes: [],
         spellData: []
     };
+
     for (idx = 0; idx < 10; idx++) {
-        let spells = spellItems.filter(l => l.data.data.spellLevel === idx).map(n => n.name)
+        let spells = spellItems.filter(l => l.data.spellLevel === idx).map(n => n.name)
         if (idx === 0) {
             templateData.rotes = spells;
         } else if (spells.length > 0) {
@@ -370,7 +371,7 @@ export async function setSpells(actor) {
     const content = await renderTemplate("systems/dungeonworld/templates/dialog/prepare-spells.html", templateData);
     let p = await new Promise(resolve => {
         new Dialog({
-            title: "Prepare Spells",
+            title: title,
             content: content,
             buttons: {
                 prepare: {
@@ -402,11 +403,17 @@ export async function setSpells(actor) {
         }
 
     }
+    console.log("A");
+    console.log(upSpells);
+    console.log(pSpells);
     if (pLevels > lvlTotal) {
         ui.notifications.warn(`${actorData.name} can only prepare ${lvlTotal} levels of spells`);
     } else {
         pSpells.forEach(ps => {
-            let spell = actorData.data.items.find(i => i.name === ps);
+            console.log("SPE");
+            console.log(actorData);
+            console.log(ps);
+            let spell = actorData.items.find(i => i.name === ps);
             let sId = spell._id;
             const item = actor.getOwnedItem(sId);
             if (item) {
@@ -416,7 +423,11 @@ export async function setSpells(actor) {
             }
         });
         upSpells.forEach(ups => {
-            let spell = actorData.data.items.find(i => i.name === ups);
+            console.log("SPE");
+            console.log(actorData);
+            console.log(ups);
+            console.log(actorData.items)
+            let spell = actorData.items.find(i => i.name === ups);
             let sId = spell._id;
             const item = actor.getOwnedItem(sId);
             if (item) {

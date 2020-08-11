@@ -8,103 +8,123 @@ import * as tm from './actions/thiefMoves.js'
 
 export function Base() {
 
-    async function castClericLight(actorData) {
-        return cmn.light(actorData, cs.clericSpell);
+    async function doClericLight(actor) {
+        return cmn.light(actor, cs.clericSpell);
     }
 
-    async function castWizardLight(actorData) {
-        return cmn.light(actorData, ws.wizardSpell);
+    async function doWizardLight(actor) {
+        return cmn.light(actor, ws.wizardSpell);
+    }
+
+    /**
+     * CLERIC MOVES ========================================
+     */
+
+    async function doCommune(actor) {
+        return sh.setSpells(actor, "Commune");
     }
 
     /**
      * CLERIC SPELLS ========================================
      */
-    async function castGuidance(actorData) {
-        return cs.guidance(actorData);
+    async function doGuidance(actor) {
+        return cs.guidance(actor);
     }
 
-    async function castSanctify(actorData) {
-        return cs.sanctify(actorData);
+    async function doSanctify(actor) {
+        return cs.sanctify(actor);
     }
 
-    async function castBless(actorData) {
-        return cs.bless(actorData);
+    async function doBless(actor) {
+        return cs.bless(actor);
     }
 
-    async function castCauseFear(actorData) {
-        return cs.causeFear(actorData);
+    async function doCauseFear(actor) {
+        return cs.causeFear(actor);
     }
 
-    async function castCureLightWounds(actorData) {
-        return cs.cureLightWounds(actorData);
+    async function doCureLightWounds(actor) {
+        return cs.cureLightWounds(actor);
     }
 
-    async function castDetectAlignment(actorData) {
-        return cs.detectAlignment(actorData);
+    async function doDetectAlignment(actor) {
+        return cs.detectAlignment(actor);
     }
 
-    async function castMagicWeapon(actorData) {
-        return cs.magicWeapon(actorData);
+    async function doMagicWeapon(actor) {
+        return cs.magicWeapon(actor);
     }
 
-    async function castSanctuary(actorData) {
-        return cs.sanctuary(actorData);
+    async function doSanctuary(actor) {
+        return cs.sanctuary(actor);
     }
 
-    async function castSpeakWithDead(actorData) {
-        return cs.speakWithDead(actorData);
+    async function doSpeakWithDead(actor) {
+        return cs.speakWithDead(actor);
     }
 
+    /**
+     * WIZARD MOVES ========================================
+     */
+
+    async function doPrepareSpells(actor) {
+        return sh.setSpells(actor, "Prepare Spells");
+    }
 
     /**
      * WIZARD SPELLS ========================================
      */
 
-    async function castAlarm(actorData) {
-        return ws.alarm(actorData);
+    async function doAlarm(actor) {
+        return ws.alarm(actor);
     }
 
-    async function castCharmPerson(actorData) {
-        return ws.charmPerson(actorData);
+    async function doCharmPerson(actor) {
+        return ws.charmPerson(actor);
     }
 
-    async function castContactSpirits(actorDaa) {
-        return ws.contactSpirits(actorDaa);
+    async function doContactSpirits(actor) {
+        return ws.contactSpirits(actor);
     }
 
-    async function castDetectMagic(actorDaa) {
-        return ws.detectMagic(actorDaa);
+    async function doDetectMagic(actor) {
+        return ws.detectMagic(actor);
     }
 
-    async function castMagicMissile(actorDaa) {
-        return ws.magicMissile(actorDaa);
+    async function doMagicMissile(actor) {
+        return ws.magicMissile(actor);
     }
 
-    async function castInvisibility(actorData) {
-        return ws.invisibility(actorData);
+    async function doInvisibility(actor) {
+        return ws.invisibility(actor);
     }
 
-    async function castPrestidigitation(actorData) {
-        return ws.prestidigitation(actorData);
+    async function doPrestidigitation(actor) {
+        return ws.prestidigitation(actor);
     }
 
-    async function castTelepathy(actorData) {
-        return ws.telepathy(actorData);
+    async function doTelepathy(actor) {
+        return ws.telepathy(actor);
     }
 
-    async function castUnseenServant(actorData) {
-        return ws.unseenServant(actorData);
+    async function doUnseenServant(actor) {
+        return ws.unseenServant(actor);
     }
 
     /**
      * HELPERS ========================================
      */
-    async function cancelSpell(actorData) {
-        return sh.dropSpell(actorData);
+
+    async function showActor(actor) {
+        console.log(actor);
     }
 
-    async function prepareSpells(actorData) {
-        return sh.setSpells(actorData);
+    async function showToken() {
+        console.log(canvas.tokens.controlled[0]);
+    }
+
+    async function cancelSpell(actor) {
+        return sh.dropSpell(actor);
     }
 
     async function notDead() {
@@ -152,46 +172,41 @@ export function Base() {
     }
 
     /**
-     * CLASS MOVES ========================================
+     * DRUID MOVES ========================================
      */
     async function doShapeshifter(actor) {
         return dm.shapeshift(actor);
     }
 
-    async function thiefBackstab(actor) {
+    /**
+     * THIEF MOVES ========================================
+     */
+
+    async function doBackstab(actor) {
         return tm.backstab(actor);
-    }
-
-
-    async function showActor(actor) {
-        console.log(actor);
-    }
-
-    async function showToken() {
-        console.log(canvas.tokens.controlled[0]);
     }
 
     return {
         cancelSpell: cancelSpell,
-        castClericLight: castClericLight,
-        castWizardLight: castWizardLight,
-        castGuidance: castGuidance,
-        castSanctify: castSanctify,
-        castBless: castBless,
-        castCauseFear: castCauseFear,
-        castCureLightWounds: castCureLightWounds,
-        castDetectAlignment: castDetectAlignment,
-        castMagicWeapon: castMagicWeapon,
-        castSanctuary: castSanctuary,
-        castSpeakWithDead: castSpeakWithDead,
-        castPrestidigitation: castPrestidigitation,
-        castUnseenServant: castUnseenServant,
-        castContactSpirits: castContactSpirits,
-        castDetectMagic: castDetectMagic,
-        castCharmPerson: castCharmPerson,
-        castTelepathy: castTelepathy,
-        castInvisibility: castInvisibility,
-        castAlarm: castAlarm,
+        doClericLight: doClericLight,
+        doWizardLight: doWizardLight,
+        doGuidance: doGuidance,
+        doSanctify: doSanctify,
+        doBless: doBless,
+        doCauseFear: doCauseFear,
+        doCureLightWounds: doCureLightWounds,
+        doDetectAlignment: doDetectAlignment,
+        doMagicWeapon: doMagicWeapon,
+        doSanctuary: doSanctuary,
+        doSpeakWithDead: doSpeakWithDead,
+        doPrestidigitation: doPrestidigitation,
+        doUnseenServant: doUnseenServant,
+        doContactSpirits: doContactSpirits,
+        doDetectMagic: doDetectMagic,
+        doCharmPerson: doCharmPerson,
+        doTelepathy: doTelepathy,
+        doInvisibility: doInvisibility,
+        doAlarm: doAlarm,
         doHackAndSlash: doHackAndSlash,
         doVolley: doVolley,
         doCarouse: doCarouse,
@@ -202,9 +217,10 @@ export function Base() {
         doParley: doParley,
         doAidOrInterfere: doAidOrInterfere,
         doShapeshifter: doShapeshifter,
-        thiefBackstab: thiefBackstab,
-        castMagicMissile: castMagicMissile,
-        prepareSpells: prepareSpells,
+        doCommune: doCommune,
+        doBackstab: doBackstab,
+        doMagicMissile: doMagicMissile,
+        doPrepareSpells: doPrepareSpells,
         showToken: showToken,
         showActor: showActor,
         notDead: notDead

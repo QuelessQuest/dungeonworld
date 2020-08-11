@@ -40,6 +40,15 @@ export class DwUtility {
     return items;
   }
 
+  static hasMacro(ability) {
+    switch (ability) {
+      case "PrepareSpell":
+        return true;
+      default:
+        return false;
+    }
+  }
+
   static getAbilityMod(abilityScore) {
     let abilityMod = 0;
 
