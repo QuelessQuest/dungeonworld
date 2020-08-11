@@ -123,6 +123,34 @@ export function Base() {
         return basic.volley(actor);
     }
 
+    async function doCarouse(actor) {
+        return basic.carouse(actor);
+    }
+
+    async function doDefyDanger(actor) {
+        return basic.defyDanger(actor);
+    }
+
+    async function doDefend(actor) {
+        return basic.defend(actor);
+    }
+
+    async function doSpoutLore(actor) {
+        return basic.spoutLore(actor);
+    }
+
+    async function doDiscernRealities(actor) {
+        return basic.discernRealities(actor);
+    }
+
+    async function doParley(actor) {
+        return basic.parley(actor);
+    }
+
+    async function doAidOrInterfere(actor) {
+        return basic.aidOrInterfere(actor);
+    }
+
     /**
      * CLASS MOVES ========================================
      */
@@ -166,6 +194,13 @@ export function Base() {
         castAlarm: castAlarm,
         doHackAndSlash: doHackAndSlash,
         doVolley: doVolley,
+        doCarouse: doCarouse,
+        doDefyDanger: doDefyDanger,
+        doDefend: doDefend,
+        doSpoutLore: doSpoutLore,
+        doDiscernRealities: doDiscernRealities,
+        doParley: doParley,
+        doAidOrInterfere: doAidOrInterfere,
         doShapeshifter: doShapeshifter,
         thiefBackstab: thiefBackstab,
         castMagicMissile: castMagicMissile,

@@ -14,7 +14,16 @@ export async function basicMove({
     let moveData = actorData.items.find(i => i.name.toLowerCase() === move.toLowerCase());
     let ability = moveData.data.rollType.toLowerCase();
     let mod = moveData.data.rollMod;
-    let abilityMod = actorData.data.abilities[ability].mod;
+    let abilityMod = 0;
+    switch (ability) {
+        case "bond":
+            break;
+        case "ask":
+            break;
+        default:
+            abilityMod = actorData.data.abilities[ability].mod;
+            break;
+    }
     let formula = `${baseFormula}+${abilityMod}`;
     let forward = actor.getFlag("world", "forward");
     let frw = 0;
@@ -225,11 +234,207 @@ export async function volley(actorData) {
             }
         };
 
-        let attack = await basicMove(({actorData: actorData, targetActor: targetData.targetActor, flavor: flavor, options: options, title: "Volley", move: "Volley"}));
+        let attack = await basicMove(({actor: actor, targetActor: targetData.targetActor, flavor: flavor, options: options, title: "Volley", move: "Volley"}));
         if (attack) {
-            await util.doDamage({actorData: actorData, targetData: targetData, damageMod: attack, title: "Volley"});
+            await util.doDamage({actor: actor, targetData: targetData, damageMod: attack, title: "Volley"});
         }
     } else {
         ui.notifications.warn("Please select a token.");
     }
+}
+
+export async function carouse(actor) {
+    let options = {
+        fail: {
+            dialogType: CONFIG.DW.dialogTypes.fail,
+            details: {
+                middleWords: "Chooses 1 and things get out of hand"
+            },
+            result: "1"
+        },
+        pSuccess: {
+            dialogType: CONFIG.DW.dialogTypes.partial,
+            details: {
+                middleWords: "Chooses 1"
+            },
+            result: "1"
+        },
+        success: {
+            dialogType: CONFIG.DW.dialogTypes.success,
+            details: {
+                middleWords: "Chooses 3"
+            },
+            result: "3"
+        }
+    };
+
+    await basicMove(({actor: actor, options: options, title: "Carouse", move: "Carouse"}));
+}
+
+export async function defyDanger(actor) {
+    let options = {
+        fail: {
+            dialogType: CONFIG.DW.dialogTypes.fail,
+            details: {
+                middleWords: "Chooses 1 and things get out of hand"
+            },
+            result: "1"
+        },
+        pSuccess: {
+            dialogType: CONFIG.DW.dialogTypes.partial,
+            details: {
+                middleWords: "Chooses 1"
+            },
+            result: "1"
+        },
+        success: {
+            dialogType: CONFIG.DW.dialogTypes.success,
+            details: {
+                middleWords: "Chooses 3"
+            },
+            result: "3"
+        }
+    };
+
+    await basicMove(({actor: actor, options: options, title: "Carouse", move: "Carouse"}));
+}
+
+export async function defend(actor) {
+    let options = {
+        fail: {
+            dialogType: CONFIG.DW.dialogTypes.fail,
+            details: {
+                middleWords: "Not today"
+            },
+            result: "0"
+        },
+        pSuccess: {
+            dialogType: CONFIG.DW.dialogTypes.partial,
+            details: {
+                middleWords: "Hold 1"
+            },
+            result: "1"
+        },
+        success: {
+            dialogType: CONFIG.DW.dialogTypes.success,
+            details: {
+                middleWords: "Hold 3"
+            },
+            result: "3"
+        }
+    };
+
+    await basicMove(({actor: actor, options: options, title: "Carouse", move: "Carouse"}));
+}
+
+export async function spoutLore(actor) {
+    let options = {
+        fail: {
+            dialogType: CONFIG.DW.dialogTypes.fail,
+            details: {
+                middleWords: "Doesn't know as much as they think they do"
+            },
+            result: "0"
+        },
+        pSuccess: {
+            dialogType: CONFIG.DW.dialogTypes.partial,
+            details: {
+                middleWords: "Discovers something interesting"
+            },
+            result: "1"
+        },
+        success: {
+            dialogType: CONFIG.DW.dialogTypes.success,
+            details: {
+                middleWords: "Discovers something interesting and useful"
+            },
+            result: "3"
+        }
+    };
+
+    await basicMove(({actor: actor, options: options, title: "Carouse", move: "Carouse"}));
+}
+
+export async function discernRealities(actor) {
+    let options = {
+        fail: {
+            dialogType: CONFIG.DW.dialogTypes.fail,
+            details: {
+                middleWords: "Looks around"
+            },
+            result: "0"
+        },
+        pSuccess: {
+            dialogType: CONFIG.DW.dialogTypes.partial,
+            details: {
+                middleWords: "Asks a question"
+            },
+            result: "1"
+        },
+        success: {
+            dialogType: CONFIG.DW.dialogTypes.success,
+            details: {
+                middleWords: "Asks questions 3"
+            },
+            result: "3"
+        }
+    };
+
+    await basicMove(({actor: actor, options: options, title: "Carouse", move: "Carouse"}));
+}
+
+export async function parley(actor) {
+    let options = {
+        fail: {
+            dialogType: CONFIG.DW.dialogTypes.fail,
+            details: {
+                middleWords: "Looks around"
+            },
+            result: "0"
+        },
+        pSuccess: {
+            dialogType: CONFIG.DW.dialogTypes.partial,
+            details: {
+                middleWords: "Is mostly convincing, but proof should be offered"
+            },
+            result: "1"
+        },
+        success: {
+            dialogType: CONFIG.DW.dialogTypes.success,
+            details: {
+                middleWords: "Is convincing"
+            },
+            result: "3"
+        }
+    };
+
+    await basicMove(({actor: actor, options: options, title: "Carouse", move: "Carouse"}));
+}
+
+export async function aidOrInterfere(actor) {
+    let options = {
+        fail: {
+            dialogType: CONFIG.DW.dialogTypes.fail,
+            details: {
+                middleWords: "Ugly"
+            },
+            result: "0"
+        },
+        pSuccess: {
+            dialogType: CONFIG.DW.dialogTypes.partial,
+            details: {
+                middleWords: "OK"
+            },
+            result: "1"
+        },
+        success: {
+            dialogType: CONFIG.DW.dialogTypes.success,
+            details: {
+                middleWords: "Good"
+            },
+            result: "3"
+        }
+    };
+
+    await basicMove(({actor: actor, options: options, title: "Carouse", move: "Carouse"}));
 }

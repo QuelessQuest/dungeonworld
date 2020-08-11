@@ -13,7 +13,7 @@ export function getColors(actor, target) {
     }
 
     if (actor) {
-        let sourceUser = game.users.find(u => u.data.character === actorData._id);
+        let sourceUser = game.users.find(u => u.data.character === actor._id);
         if (sourceUser) {
             gColors.source = sourceUser.data.color;
         }
