@@ -134,8 +134,8 @@
 .tag {
   position: relative;
   padding: 3px 6px 3px 6px;
-  background: #edf2f7;
-  color: #2d3748;
+  background: #acc4c0;
+  color: #728f8b;
   margin: 5px 5px 0 0;
   border-radius: 4px;
   text-transform: capitalize;
@@ -144,17 +144,17 @@
 .tagging {
   padding: 5px 10px 8px; }
   .tagging .tag {
-    background-color: #5b7094;
+    background-color: #acc4c0;
     padding: 4px 22px 4px 6px; }
     .tagging .tag .tag-i {
       color: #fff; }
       .tagging .tag .tag-i:hover, .tagging .tag .tag-i:focus {
-        color: #2d3748; }
+        color: #728f8b; }
     .tagging .tag > span {
       display: none; }
   .tagging .tag-input:hover, .tagging .tag-input:focus {
-    -webkit-box-shadow: 0 1px 0 #5b7094;
-    box-shadow: 0 1px 0 #5b7094; }
+    -webkit-box-shadow: 0 1px 0 #acc4c0;
+    box-shadow: 0 1px 0 #acc4c0; }
 
 .remove-tag {
   position: absolute;
@@ -186,9 +186,9 @@
     content: "\00D7"; }
 
 .awesomplete > ul {
-  background-color: #5b7094; }
+  background-color: #acc4c0; }
   .awesomplete > ul::before {
-    background-color: #5b7094; }
+    background-color: #acc4c0; }
 
 .help-text {
   color: #999;
@@ -214,23 +214,30 @@
   justify-content: space-between;
   margin-bottom: 10px; }
 
+::-webkit-scrollbar-thumb {
+  outline: none;
+  border-radius: 3px;
+  background: #365e56;
+  border: 1px solid #728f8b; }
+
 .vtt .window-app {
-  background: #2d3748; }
+  background: #728f8b; }
   .vtt .window-app a:hover, .vtt .window-app a:focus,
   .vtt .window-app.filepicker .file-directory > li:hover,
   .vtt .window-app.filepicker .file-directory > li:focus {
-    color: #5b7094;
-    text-shadow: 0 0 5px rgba(91, 112, 148, 0.25); }
+    color: #acc4c0;
+    text-shadow: 0 0 5px rgba(172, 196, 192, 0.25); }
   .vtt .window-app .tabs .item.active {
-    color: #5b7094;
-    text-shadow: 0 0 5px rgba(91, 112, 148, 0.25); }
+    color: #acc4c0;
+    text-shadow: 0 0 5px rgba(172, 196, 192, 0.25); }
   .vtt .window-app input,
   .vtt .window-app button,
   .vtt .window-app select,
   .vtt .window-app textarea {
     font-family: "Alegreya", serif;
     font-size: 14px;
-    border: 0; }
+    border: 1px solid;
+    border-color: #728f8b; }
     .vtt .window-app input:hover, .vtt .window-app input:focus,
     .vtt .window-app button:hover,
     .vtt .window-app button:focus,
@@ -241,7 +248,8 @@
       -webkit-box-shadow: 0 0 5px #38366378;
       box-shadow: 0 0 5px #38366378;
       border: 0;
-      outline: 0; }
+      outline: 0;
+      background: #c7dad7; }
   .vtt .window-app input[type="radio"],
   .vtt .window-app input[type="checkbox"] {
     zoom: 0.9;
@@ -275,11 +283,11 @@
   .vtt .window-app button {
     font-family: "Alegreya", serif;
     border: 0;
-    background: #edf2f7; }
+    background: #acc4c0; }
     .vtt .window-app button:hover, .vtt .window-app button:focus {
-      -webkit-box-shadow: 0 0 5px rgba(91, 112, 148, 0.25);
-      box-shadow: 0 0 5px rgba(91, 112, 148, 0.25);
-      background-color: #bcc8de; }
+      -webkit-box-shadow: 0 0 5px rgba(172, 196, 192, 0.25);
+      box-shadow: 0 0 5px rgba(172, 196, 192, 0.25);
+      background-color: #365e56; }
   .vtt .window-app .window-header .window-title {
     max-width: 100%;
     white-space: nowrap;
@@ -306,16 +314,16 @@
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    background: #2d3748;
+    background: #728f8b;
     color: #fff; }
     .vtt .window-app .dialog-button:hover {
-      background: #5b7094; }
+      background: #acc4c0; }
 
 .vtt .window-header {
   color: #fff;
   font-family: "Metamorphous", serif; }
   .vtt .window-header a:hover, .vtt .window-header a:focus {
-    color: #bcc8de; }
+    color: #365e56; }
 
 .vtt .window-content {
   background: #fff; }
@@ -341,18 +349,18 @@
   border-color: gold; }
 
 .vtt .sidebar-tab .directory-header .header-search input {
-  background-color: #edf2f7;
-  color: #2d3748; }
+  background-color: #acc4c0;
+  color: #728f8b; }
   .vtt .sidebar-tab .directory-header .header-search input::-webkit-input-placeholder {
-    color: #5b7094; }
+    color: #acc4c0; }
   .vtt .sidebar-tab .directory-header .header-search input::-moz-placeholder {
-    color: #5b7094; }
+    color: #acc4c0; }
   .vtt .sidebar-tab .directory-header .header-search input:-ms-input-placeholder {
-    color: #5b7094; }
+    color: #acc4c0; }
   .vtt .sidebar-tab .directory-header .header-search input::-ms-input-placeholder {
-    color: #5b7094; }
+    color: #acc4c0; }
   .vtt .sidebar-tab .directory-header .header-search input::placeholder {
-    color: #5b7094; }
+    color: #acc4c0; }
 
 .vtt #chat-log .message {
   background: #fff;
@@ -397,9 +405,9 @@
 .vtt #chat-log .dice-roll .dice-formula {
   cursor: pointer; }
   .vtt #chat-log .dice-roll .dice-formula:hover, .vtt #chat-log .dice-roll .dice-formula:focus {
-    -webkit-box-shadow: 0 0 5px rgba(91, 112, 148, 0.25);
-    box-shadow: 0 0 5px rgba(91, 112, 148, 0.25);
-    background-color: #bcc8de; }
+    -webkit-box-shadow: 0 0 5px rgba(172, 196, 192, 0.25);
+    box-shadow: 0 0 5px rgba(172, 196, 192, 0.25);
+    background-color: #365e56; }
 
 .vtt #chat-form textarea {
   background: #fff; }
@@ -419,7 +427,7 @@
   .vtt .sidebar-tab .combat-control[data-control="startCombat"] {
     font-family: "Metamorphous", serif; }
   .vtt .sidebar-tab .directory-item--group {
-    background: #5b7094;
+    background: #acc4c0;
     padding: 4px 10px;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
@@ -489,7 +497,7 @@
       -o-text-overflow: ellipsis;
       text-overflow: ellipsis; }
     .vtt .sidebar-tab .ct-item button {
-      background: #5b7094;
+      background: #acc4c0;
       color: #fff;
       font-family: "Alegreya", serif;
       border: 0; }
@@ -497,7 +505,7 @@
         text-shadow: none;
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #7e94bd; }
+        background: #acc4c0; }
     .vtt .sidebar-tab .ct-item input[type="text"] {
       width: auto;
       height: auto;
@@ -564,7 +572,7 @@
     font-size: 14px; }
   .vtt .sidebar-tab .directory-item--labels {
     font-size: 12px;
-    background: rgba(91, 112, 148, 0.25);
+    background: rgba(172, 196, 192, 0.25);
     text-transform: uppercase;
     font-weight: bold;
     margin: 0;
@@ -602,9 +610,9 @@
   .dungeonworld.actor .window-content {
     position: relative;
     background: #fff;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#dedede)), url("../../assets/heath-alseike-vector-edge.svg");
-    background-image: -o-linear-gradient(#dedede, #dedede), url("../../assets/heath-alseike-vector-edge.svg");
-    background-image: linear-gradient(#dedede, #dedede), url("../../assets/heath-alseike-vector-edge.svg");
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#c7dad7), to(#c7dad7)), url("../../assets/heath-alseike-vector-edge.svg");
+    background-image: -o-linear-gradient(#c7dad7, #c7dad7), url("../../assets/heath-alseike-vector-edge.svg");
+    background-image: linear-gradient(#c7dad7, #c7dad7), url("../../assets/heath-alseike-vector-edge.svg");
     background-repeat: no-repeat;
     background-size: 100% 264px, 100%;
     background-position: 0 0, 0 262px;
@@ -657,15 +665,15 @@
       max-height: 80px;
       min-height: 50px; }
       .dungeonworld.sheet .sheet-wrapper .sheet-header input::-webkit-input-placeholder {
-        color: #bcc8de; }
+        color: #365e56; }
       .dungeonworld.sheet .sheet-wrapper .sheet-header input::-moz-placeholder {
-        color: #bcc8de; }
+        color: #365e56; }
       .dungeonworld.sheet .sheet-wrapper .sheet-header input:-ms-input-placeholder {
-        color: #bcc8de; }
+        color: #365e56; }
       .dungeonworld.sheet .sheet-wrapper .sheet-header input::-ms-input-placeholder {
-        color: #bcc8de; }
+        color: #365e56; }
       .dungeonworld.sheet .sheet-wrapper .sheet-header input::placeholder {
-        color: #bcc8de; }
+        color: #365e56; }
     .dungeonworld.sheet .sheet-wrapper .sheet-notifications {
       width: 101%; }
       .dungeonworld.sheet .sheet-wrapper .sheet-notifications .error,
@@ -727,7 +735,7 @@
         transition: all ease-in-out 0.25s;
         height: 225px; }
         .dungeonworld.sheet .sheet-wrapper .sheet-look .toggle--look:hover {
-          background: #bbb; }
+          background: #acc4c0; }
         .dungeonworld.sheet .sheet-wrapper .sheet-look .toggle--look:focus {
           -webkit-box-shadow: none;
           box-shadow: none; }
@@ -772,7 +780,7 @@
     -webkit-box-flex: 100%;
     -ms-flex: 100%;
     flex: 100%;
-    color: #2d3748;
+    color: #728f8b;
     padding: 5px;
     margin-bottom: 5px;
     font-weight: bold;
@@ -785,7 +793,7 @@
     .dungeonworld.sheet .cell__title button:hover, .dungeonworld.sheet .cell__title button:focus,
     .dungeonworld.sheet .cell__subtitle button:hover,
     .dungeonworld.sheet .cell__subtitle button:focus {
-      background-color: #5b7094;
+      background-color: #acc4c0;
       color: #fff; }
     .dungeonworld.sheet .cell__title.error, .dungeonworld.sheet .cell__title.warning,
     .dungeonworld.sheet .cell__subtitle.error,
@@ -818,12 +826,12 @@
       .dungeonworld.sheet .cell__subtitle.warning::before {
         content: "\f071"; }
   .dungeonworld.sheet .resource .cell__title {
-    background: #2d3748;
+    background: #728f8b;
     color: #fff; }
     .dungeonworld.sheet .resource .cell__title a {
       color: #fff; }
   .dungeonworld.sheet .cell__subtitle {
-    background: #5b7094;
+    background: #acc4c0;
     color: #fff; }
   .dungeonworld.sheet .cell--image img {
     display: block;
@@ -834,12 +842,13 @@
     border-bottom: 1px solid; }
     .dungeonworld.sheet .tabs .item {
       border: 1px solid;
-      background: #bcc8de;
+      color: #fff;
+      background: #365e56;
       border-radius: 4px 4px 0 0;
       margin: 0 5px -1px;
       padding: 4px; }
       .dungeonworld.sheet .tabs .item:hover, .dungeonworld.sheet .tabs .item:focus {
-        background: #edf2f7;
+        background: #acc4c0;
         text-shadow: none; }
       .dungeonworld.sheet .tabs .item.active {
         background: #fff;
@@ -858,7 +867,7 @@
   .dungeonworld.sheet .item-form .editor {
     height: 100%; }
   .dungeonworld.sheet .sheet-header {
-    background: #2d3748;
+    background: #728f8b;
     color: #fff; }
     .dungeonworld.sheet .sheet-header h1,
     .dungeonworld.sheet .sheet-header input {
@@ -873,7 +882,7 @@
       flex: 2; }
     .dungeonworld.sheet .sheet-header input {
       color: #fff;
-      border-bottom: 2px solid #5b7094;
+      border-bottom: 2px solid #acc4c0;
       margin: 0 10px;
       font-size: 18px;
       height: 32px;
@@ -882,9 +891,9 @@
       -ms-flex: 100px 2;
       flex: 100px 2; }
       .dungeonworld.sheet .sheet-header input:hover, .dungeonworld.sheet .sheet-header input:focus {
-        background: #5b7094;
-        -webkit-box-shadow: 0 0 8px #5b7094;
-        box-shadow: 0 0 8px #5b7094; }
+        background: #acc4c0;
+        -webkit-box-shadow: 0 0 8px #acc4c0;
+        box-shadow: 0 0 8px #acc4c0; }
     .dungeonworld.sheet .sheet-header .charclass {
       -webkit-box-flex: 2;
       -ms-flex: 2;
@@ -913,7 +922,7 @@
         flex: 1;
         font-size: 18px; }
       .dungeonworld.sheet .sheet-header .flex-item input {
-        color: #2d3748;
+        color: #728f8b;
         background: #fff;
         border: 0;
         position: absolute;
@@ -928,13 +937,13 @@
         font-size: 18px;
         line-height: 18px; }
         .dungeonworld.sheet .sheet-header .flex-item input:hover, .dungeonworld.sheet .sheet-header .flex-item input:focus {
-          -webkit-box-shadow: 0 0 12px #5b7094;
-          box-shadow: 0 0 12px #5b7094;
-          border: 2px solid #5b7094; }
+          -webkit-box-shadow: 0 0 12px #acc4c0;
+          box-shadow: 0 0 12px #acc4c0;
+          border: 2px solid #acc4c0; }
       .dungeonworld.sheet .sheet-header .flex-item.flex-item--xp {
         position: relative; }
         .dungeonworld.sheet .sheet-header .flex-item.flex-item--xp input {
-          border: 2px solid #5b7094; }
+          border: 2px solid #acc4c0; }
         .dungeonworld.sheet .sheet-header .flex-item.flex-item--xp .progress-ring {
           position: absolute;
           right: 0;
@@ -964,7 +973,7 @@
             opacity: 0.25;
             text-shadow: none !important; }
           .dungeonworld.sheet .sheet-header .flex-item.flex-item--level-up a:hover {
-            text-shadow: 0 0 12px #5b7094; }
+            text-shadow: 0 0 12px #acc4c0; }
         .dungeonworld.sheet .sheet-header .flex-item.flex-item--level-up .fas {
           font-size: 32px;
           text-align: center; }
@@ -1044,12 +1053,12 @@
         -webkit-box-flex: 100%;
         -ms-flex: 100%;
         flex: 100%;
-        background: #2d3748;
+        background: #728f8b;
         color: #fff;
         padding: 5px;
         height: 34px; }
         .dungeonworld.sheet .sheet-attributes .cell .cell__title.rollable:hover {
-          background: #5b7094;
+          background: #acc4c0;
           cursor: pointer; }
     .dungeonworld.sheet .sheet-attributes .cell__counter {
       display: -webkit-box;
@@ -1134,12 +1143,12 @@
         -webkit-box-flex: 100%;
         -ms-flex: 100%;
         flex: 100%;
-        background: #2d3748;
+        background: #728f8b;
         color: #fff;
         padding: 5px;
         border-radius: 0 50px 0 0; }
       .dungeonworld.sheet .cell--abilities .ability .rollable:hover {
-        background: #5b7094;
+        background: #acc4c0;
         cursor: pointer; }
       .dungeonworld.sheet .cell--abilities .ability .ability-value {
         -webkit-box-flex: 32px;
@@ -1157,12 +1166,12 @@
         width: 50px;
         height: 50px;
         text-align: center;
-        border: 2px solid #2d3748;
+        border: 2px solid #728f8b;
         border-radius: 50px;
         line-height: 38px;
         font-size: 24px;
         background: #fff;
-        color: #2d3748;
+        color: #728f8b;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -1266,7 +1275,7 @@
     -webkit-box-flex: 0;
     -ms-flex: 0 0;
     flex: 0 0;
-    border: 2px solid #2d3748; }
+    border: 2px solid #728f8b; }
     .dungeonworld.sheet .cell--basic-moves .img-move .rollable,
     .dungeonworld.sheet .cell--starting-moves .img-move .rollable,
     .dungeonworld.sheet .cell--advanced-moves .img-move .rollable,
@@ -1461,8 +1470,8 @@
   .dungeonworld.sheet .cell--equipment .rollable:focus,
   .dungeonworld.sheet .cell--spells .rollable:hover,
   .dungeonworld.sheet .cell--spells .rollable:focus {
-    color: #5b7094;
-    text-shadow: 0 0 5px rgba(91, 112, 148, 0.25);
+    color: #acc4c0;
+    text-shadow: 0 0 5px rgba(172, 196, 192, 0.25);
     cursor: pointer; }
   .dungeonworld.sheet .cell--spells .unprepared {
     background-color: #ffe9e9; }
@@ -1488,8 +1497,8 @@
     padding: 2px 4px;
     background: rgba(0, 0, 0, 0.05); }
     .dungeonworld.sheet .cell--bonds .item-description:hover, .dungeonworld.sheet .cell--bonds .item-description:focus {
-      -webkit-box-shadow: 0 0 5px rgba(91, 112, 148, 0.25);
-      box-shadow: 0 0 5px rgba(91, 112, 148, 0.25); }
+      -webkit-box-shadow: 0 0 5px rgba(172, 196, 192, 0.25);
+      box-shadow: 0 0 5px rgba(172, 196, 192, 0.25); }
   .dungeonworld.sheet .cell--bonds .item-delete {
     padding-left: 8px; }
   .dungeonworld.sheet.npc .cell--image {
@@ -1574,7 +1583,7 @@
     font-size: 18px;
     padding: 10px;
     margin: 10px;
-    background: #edf2f7; }
+    background: #acc4c0; }
     .dungeonworld.sheet.dw-level-up .cell__description ul,
     .dungeonworld.sheet.dw-level-up .cell__description ol {
       margin-left: 30px; }
@@ -1639,7 +1648,7 @@
       flex: 1; }
     .dungeonworld.sheet .class .cell__title select {
       color: #fff;
-      background: #5b7094;
+      background: #acc4c0;
       margin-right: 30px; }
   .dungeonworld.sheet .class .item-container {
     -webkit-box-flex: 2;
@@ -1653,7 +1662,7 @@
     flex: 0 0 200px;
     margin-left: 10px; }
   .dungeonworld.sheet .class .resource-wrapper {
-    border: 2px solid #edf2f7;
+    border: 2px solid #acc4c0;
     padding: 10px; }
   .dungeonworld.sheet .flexrow {
     -webkit-box-align: center;

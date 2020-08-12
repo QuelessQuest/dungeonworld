@@ -23,13 +23,15 @@
   textarea {
     font-family: $font-stack-base;
     font-size: 14px;
-    border: 0;
+    border: 1px solid;
+    border-color: $c-navy;
 
     &:hover,
     &:focus {
       box-shadow: 0 0 5px #38366378;
       border: 0;
       outline: 0;
+      background: #c7dad7;
     }
   }
 

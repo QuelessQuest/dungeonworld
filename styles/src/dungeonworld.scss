@@ -8,6 +8,13 @@
 @import 'global/base/tags';
 @import 'global/base/dialog';
 
+::-webkit-scrollbar-thumb {
+  outline: none;
+  border-radius: 3px;
+  background: $c-navy-top;
+  border: 1px solid $c-navy;
+}
+
 // Theme overrides.
 .vtt {
   @import 'global/application/window';
@@ -32,7 +39,7 @@
       position: relative;
       background: $c-white;
       background-image:
-        linear-gradient(#dedede, #dedede),
+        linear-gradient(#c7dad7, #c7dad7),
         url('../../assets/heath-alseike-vector-edge.svg');
       background-repeat: no-repeat;
       background-size:

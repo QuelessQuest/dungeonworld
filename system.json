@@ -2,7 +2,7 @@
   "name": "dungeonworld",
   "title": "Dungeon World",
   "description": "A Dungeon World system for FoundryVTT!",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "minimumCoreVersion": "0.6.5",
   "compatibleCoreVersion": "0.7.0",
   "templateVersion": 2,
@@ -232,5 +232,5 @@
   "socket": true,
   "url": "https://github.com/QuelessQuest/dungeonworld",
   "manifest": "https://raw.githubusercontent.com/QuelessQuest/dungeonworld/master/system.json",
-  "download": "https://github.com/QuelessQuest/dungeonworld/releases/download/v002/dungeonworld.0.0.2.zip"
+  "download": "https://github.com/QuelessQuest/dungeonworld/releases/download/v003/dungeonworld.0.0.3.zip"
 }
