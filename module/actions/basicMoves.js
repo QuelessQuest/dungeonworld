@@ -108,6 +108,99 @@ export async function basicMove({
     }
 }
 
+export async function move(actor, item) {
+    let itemData = item.data;
+    let targetData;
+    if (itemData.data.target) {
+        if (game.user.targets.size === 0) {
+            ui.notifications.warn("Action requires a target.");
+            return;
+        }
+        targetData = util.getTargets(actor);
+    }
+
+    let baseFormula = '2d6';
+    let actorData = actor.data;
+    let ability = itemData.data.rollType.toLowerCase();
+    let mod = itemData.data.rollMod;
+    let abilityMod = 0;
+    switch (ability) {
+        case "bond":
+            break;
+        case "ask":
+            break;
+        default:
+            abilityMod = actorData.data.abilities[ability].mod;
+            break;
+    }
+    let formula = `${baseFormula}+${abilityMod}`;
+    let forward = actor.getFlag("world", "forward");
+    let frw = 0;
+    if (forward) {
+        frw = forward.reduce(function (a, b) {
+            return a + b;
+        }, 0);
+    }
+    if (frw) {
+        formula += `+${frw}`;
+    }
+    let sus = 0;
+    let ongoing = 0;
+    if (item.name.toLowerCase() === "cast a spell") {
+        let sustained = actor.getFlag("world", "sustained");
+        if (sustained) {
+            for (let sSpell of sustained) {
+                sus += sSpell.data.value;
+            }
+        }
+        if (sus) {
+            formula += `-${sus}`;
+        }
+        ongoing = actor.getFlag("world", "ongoing");
+        if (ongoing) {
+            formula += `+${ongoing}`;
+        }
+    }
+    if (mod && mod !== 0) {
+        formula += `+${mod}`;
+    }
+    let cRoll = new Roll(`${formula}`);
+    cRoll.roll();
+    let rolled = await cRoll.render();
+    let gColors = util.getColors(actor, targetData.targetActor);
+
+    let templateData = {
+        title: item.name,
+        ability: ability.charAt(0).toUpperCase() + ability.slice(1),
+        mod: abilityMod,
+        ongoing: ongoing,
+        sustained: sus ? `-${sus}` : 0,
+        forward: frw ? `+${frw}` : 0,
+        rollDw: rolled,
+        sourceColor: gColors.source,
+        targetColor: gColors.target,
+        sourceName: actor ? actor.name : "",
+        targetName: targetData.targetActor ? targetData.targetActor.name : "",
+        startingWords: "",
+        middleWords: "",
+        endWords: ""
+    }
+
+    await game.dice3d.showForRoll(cRoll);
+    let amount =  await util.renderDiceResults2({
+        title: item.name,
+        total: cRoll.total,
+        itemData: itemData,
+        templateData: templateData
+    });
+    console.log("DAMAGE");
+    console.log(damage);
+    console.log(itemData.data);
+    if (itemData.data.details.attack && amount) {
+        await util.doDamage({actor: actor, targetData: targetData, damageMod: amount, title: item.name});
+    }
+}
+
 /**
  * HACK AND SLASH
  * @param actor

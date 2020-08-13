@@ -866,6 +866,22 @@
   .dungeonworld.sheet .item-form .tab,
   .dungeonworld.sheet .item-form .editor {
     height: 100%; }
+  .dungeonworld.sheet .item-form .flexlabel {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 75px;
+    flex: 0 0 75px; }
+  .dungeonworld.sheet .item-form .flexinput {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1; }
+  .dungeonworld.sheet .item-form .flexshrink {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto; }
+  .dungeonworld.sheet .item-form .choice {
+    padding-top: 10px;
+    border-top: 1px solid;
+    margin-top: 10px; }
   .dungeonworld.sheet .sheet-header {
     background: #728f8b;
     color: #fff; }
@@ -1148,8 +1164,7 @@
         padding: 5px;
         border-radius: 0 50px 0 0; }
       .dungeonworld.sheet .cell--abilities .ability .rollable:hover {
-        background: #acc4c0;
-        cursor: pointer; }
+        background: #acc4c0; }
       .dungeonworld.sheet .cell--abilities .ability .ability-value {
         -webkit-box-flex: 32px;
         -ms-flex: 32px;

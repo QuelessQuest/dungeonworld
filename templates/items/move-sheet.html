@@ -1,93 +1,482 @@
 <form class="{{cssClass}} item-form flexcol" autocomplete="off">
-  <header class="sheet-header flexrow">
-      <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
-      <div class="header-fields">
-        <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize "DW.Common.Name"}}"/></h1>
-      </div>
-  </header>
+    <header class="sheet-header flexrow">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize " DW.Common.Name"}}"/></h1>
+        </div>
+    </header>
 
-  {{!-- Sheet Tab Navigation --}}
-  <nav class="sheet-navigation sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="description">{{localize "DW.Common.Description" }}</a>
-    <a class="item" data-tab="details">{{localize "DW.Common.Details" }}</a>
-  </nav>
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-navigation sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="description">{{localize "DW.Common.Description" }}</a>
+        <a class="item" data-tab="details">{{localize "DW.Common.Details" }}</a>
+        <a class="item" data-tab="fresults">{{localize "DW.Common.Failure"}} {{localize "DW.Common.Results" }}</a>
+        <a class="item" data-tab="presults">{{localize "DW.Common.Partial"}} {{localize "DW.Common.Results" }}</a>
+        <a class="item" data-tab="sresults">{{localize "DW.Common.Success"}} {{localize "DW.Common.Results" }}</a>
+    </nav>
 
-  {{!-- Sheet Body --}}
-  <section class="sheet-body">
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
 
-      {{!-- Description Tab --}}
-      <div class="tab" data-group="primary" data-tab="description">
-          {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
-      </div>
-
-      {{!-- Details Tab --}}
-      <div class="tab" data-group="primary" data-tab="details">
-        <div class="resource">
-          <label>{{localize "DW.Roll"}}</label>
-          <select name="data.rollType" data-dtype="String">
-            {{#select data.rollType}}
-            <option value="">—</option>
-            <option value="STR">{{localize "DW.STR"}}</option>
-            <option value="DEX">{{localize "DW.DEX"}}</option>
-            <option value="CON">{{localize "DW.CON"}}</option>
-            <option value="INT">{{localize "DW.INT"}}</option>
-            <option value="WIS">{{localize "DW.WIS"}}</option>
-            <option value="CHA">{{localize "DW.CHA"}}</option>
-            <option value="ASK">{{localize "DW.ASK"}}</option>
-            <option value="BOND">{{localize "DW.BOND"}}</option>
-            {{/select}}
-          </select>
+        {{!-- Description Tab --}}
+        <div class="tab" data-group="primary" data-tab="description">
+            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
         </div>
 
-        <div class="resource">
-          <label>{{localize "DW.Modifier"}}</label>
-          <input type="text" name="data.rollMod" value="{{data.rollMod}}" data-dtype="Number"/>
+        {{!-- Details Tab --}}
+        <div class="tab" data-group="primary" data-tab="details">
+            <div class="resource choice flexrow">
+                <div class="flexlabel">Requires Target?</div>
+                <div class="flexinput"><input type="checkbox" name="data.target" value="1" {{#if data.target}}checked{{/if}}/>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">Does Damage?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.attack" value="1" {{#if data.details.attack}}checked{{/if}}/>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">Does Healing?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.heal" value="1" {{#if data.details.heal}}checked{{/if}}/>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.Roll"}}</div>
+                <div class="flexinput">
+                    <select name="data.rollType" data-dtype="String">
+                        {{#select data.rollType}}
+                        <option value="">—</option>
+                        <option value="STR">{{localize "DW.STR"}}</option>
+                        <option value="DEX">{{localize "DW.DEX"}}</option>
+                        <option value="CON">{{localize "DW.CON"}}</option>
+                        <option value="INT">{{localize "DW.INT"}}</option>
+                        <option value="WIS">{{localize "DW.WIS"}}</option>
+                        <option value="CHA">{{localize "DW.CHA"}}</option>
+                        <option value="ASK">{{localize "DW.ASK"}}</option>
+                        <option value="BOND">{{localize "DW.BOND"}}</option>
+                        {{/select}}
+                    </select>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.Modifier"}}</div>
+                <div class="flexinput"><input type="text" name="data.rollMod" value="{{data.rollMod}}" data-dtype="Number"/></div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.Script"}}</div>
+                <div class="flexinput"><input type="text" name="data.script" value="{{data.script}}" placeholder="Script to run on use" data-dtype="String"/></div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.Class"}}</div>
+                <div class="flexinput">
+                    <select name="data.class">
+                        {{#select data.class}}
+                        <option value="">—</option>
+                        {{#each data.classlist as |class id|}}
+                        <option value="{{class}}">{{class}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.MoveType"}}</div>
+                <div class="flexinput">
+                    <select name="data.moveType" data-dtype="String">
+                        {{#select data.moveType}}
+                        <option value="">—</option>
+                        <option value="basic">{{localize "DW.MoveBasic"}}</option>
+                        <option value="starting">{{localize "DW.MoveStarting"}}</option>
+                        <option value="advanced">{{localize "DW.MoveAdvanced"}}</option>
+                        {{/select}}
+                    </select>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.RequiresLevel"}}</div>
+                <div class="flexinput"><input type="text" name="data.requiresLevel" value="{{data.requiresLevel}}" data-dtype="Number"/></div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.RequiresMove"}}</div>
+                <div class="flexinput"><input type="text" name="data.requiresMove" value="{{data.requiresMove}}" data-dtype="String"/></div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.MoveGroup"}}</div>
+                <div class="flexinput"><input type="text" name="data.moveGroup" value="{{data.moveGroup}}" placeholder="ex: barbarian-armor" data-dtype="String"/></div>
+                <span class="help-text">{{localize "DW.MoveGroupHelp"}}</span>
+            </div>
         </div>
 
+        {{!-- Failure Results Tab --}}
+        <div class="tab" data-group="primary" data-tab="fresults">
+            <div class="resource">
+                <div class="choice">
+                    <div class="flexrow">
+                        <div class="flexinput"><input type="text" name="data.details.failure.startW" value="{{data.details.failure.startW}}" data-dtype="String" placeholder="words before"/></div>
+                        <div class="flexshrink">Actor Name</div>
+                        <div class="flexinput"><input type="text" name="data.details.failure.midW" value="{{data.details.failure.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                        <div class="flexshrink">Target Name</div>
+                        <div class="flexinput"><input type="text" name="data.details.failure.endW" value="{{data.details.failure.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                    </div>
+                    <div class="flexrow">
+                        <div class="flexlabel">Return:</div>
+                        <div class="flexinput"><input type="text" name="data.details.failure.ret" value="{{data.details.failure.ret}}" data-dtype="String" placeholder="button text"/></div>
+                    </div>
+                </div>
+                <label>Provides a Choice?</label> <input type="checkbox" name="data.details.failure.choice" value="1" {{#if data.details.failure.choice}}checked{{/if}}/>
+                <div class="choice">
+                    <label>Choice One</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option0.icon" value="{{data.details.failure.option0.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option0.label" value="{{data.details.failure.option0.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option0.ret" value="{{data.details.failure.option0.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.failure.option0.startW" value="{{data.details.failure.option0.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option0.midW" value="{{data.details.failure.option0.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option0.endW" value="{{data.details.failure.option0.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="choice">
+                    <label>Choice Two</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option1.icon" value="{{data.details.failure.option1.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option1.label" value="{{data.details.failure.option1.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option1.ret" value="{{data.details.failure.option1.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.failure.option1.startW" value="{{data.details.failure.option1.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option1.midW" value="{{data.details.failure.option1.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option1.endW" value="{{data.details.failure.option1.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="choice">
+                    <label>Choice Three</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option2.icon" value="{{data.details.failure.option2.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option2.label" value="{{data.details.failure.option2.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option2.ret" value="{{data.details.failure.option2.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.failure.option2.startW" value="{{data.details.failure.option2.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option2.midW" value="{{data.details.failure.option2.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option2.endW" value="{{data.details.failure.option2.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="choice">
+                    <label>Choice One</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option3.icon" value="{{data.details.failure.option3.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option3.label" value="{{data.details.failure.option3.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option3.ret" value="{{data.details.failure.option3.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.failure.option3.startW" value="{{data.details.failure.option3.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option3.midW" value="{{data.details.failure.option3.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.failure.option3.endW" value="{{data.details.failure.option3.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div class="resource">
-          <label>{{localize "DW.Script"}}</label>
-          <input type="text" name="data.script" value="{{data.script}}" placeholder="Script to run on use" data-dtype="String"/>
-        </div>
-        <div class="resource">
-          <label>{{localize "DW.Class"}}</label>
-          <select name="data.class">
-            {{#select data.class}}
-              <option value="">—</option>
-              {{#each data.classlist as |class id|}}
-              <option value="{{class}}">{{class}}</option>
-              {{/each}}
-            {{/select}}
-          </select>
+        {{!-- Partial Success Results Tab --}}
+        <div class="tab" data-group="primary" data-tab="presults">
+            <div class="resource">
+                <div class="choice">
+                    <div class="flexrow">
+                        <div class="flexinput"><input type="text" name="data.details.partial.startW" value="{{data.details.partial.startW}}" data-dtype="String" placeholder="words before"/></div>
+                        <div class="flexshrink">Actor Name</div>
+                        <div class="flexinput"><input type="text" name="data.details.partial.midW" value="{{data.details.partial.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                        <div class="flexshrink">Target Name</div>
+                        <div class="flexinput"><input type="text" name="data.details.partial.endW" value="{{data.details.partial.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                    </div>
+                    <div class="flexrow">
+                        <div class="flexlabel">Return:</div>
+                        <div class="flexinput"><input type="text" name="data.details.partial.ret" value="{{data.details.partial.ret}}" data-dtype="String" placeholder="button text"/></div>
+                    </div>
+                </div>
+                <label>Provides a Choice?</label> <input type="checkbox" name="data.details.partial.choice" value="1" {{#if data.details.partial.choice}}checked{{/if}}/>
+                <div class="choice">
+                    <label>Choice One</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option0.icon" value="{{data.details.partial.option0.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option0.label" value="{{data.details.partial.option0.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option0.ret" value="{{data.details.partial.option0.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.partial.option0.startW" value="{{data.details.partial.option0.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option0.midW" value="{{data.details.partial.option0.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option0.endW" value="{{data.details.partial.option0.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="choice">
+                    <label>Choice Two</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option1.icon" value="{{data.details.partial.option1.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option1.label" value="{{data.details.partial.option1.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option1.ret" value="{{data.details.partial.option1.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.partial.option1.startW" value="{{data.details.partial.option1.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option1.midW" value="{{data.details.partial.option1.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option1.endW" value="{{data.details.partial.option1.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="choice">
+                    <label>Choice Three</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option2.icon" value="{{data.details.partial.option2.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option2.label" value="{{data.details.partial.option2.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option2.ret" value="{{data.details.partial.option2.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.partial.option2.startW" value="{{data.details.partial.option2.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option2.midW" value="{{data.details.partial.option2.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option2.endW" value="{{data.details.partial.option2.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="choice">
+                    <label>Choice One</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option3.icon" value="{{data.details.partial.option3.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option3.label" value="{{data.details.partial.option3.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option3.ret" value="{{data.details.partial.option3.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.partial.option3.startW" value="{{data.details.partial.option3.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option3.midW" value="{{data.details.partial.option3.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.partial.option3.endW" value="{{data.details.partial.option3.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="resource">
-          <label>{{localize "DW.MoveType"}}</label>
-          <select name="data.moveType" data-dtype="String">
-            {{#select data.moveType}}
-            <option value="">—</option>
-            <option value="basic">{{localize "DW.MoveBasic"}}</option>
-            <option value="starting">{{localize "DW.MoveStarting"}}</option>
-            <option value="advanced">{{localize "DW.MoveAdvanced"}}</option>
-            {{/select}}
-          </select>
+        {{!-- Success Results Tab --}}
+        <div class="tab" data-group="primary" data-tab="sresults">
+            <div class="resource">
+                <div class="choice">
+                    <div class="flexrow">
+                        <div class="flexinput"><input type="text" name="data.details.success.startW" value="{{data.details.success.startW}}" data-dtype="String" placeholder="words before"/></div>
+                        <div class="flexshrink">Actor Name</div>
+                        <div class="flexinput"><input type="text" name="data.details.success.midW" value="{{data.details.success.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                        <div class="flexshrink">Target Name</div>
+                        <div class="flexinput"><input type="text" name="data.details.success.endW" value="{{data.details.success.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                    </div>
+                    <div class="flexrow">
+                        <div class="flexlabel">Return:</div>
+                        <div class="flexinput"><input type="text" name="data.details.success.ret" value="{{data.details.success.ret}}" data-dtype="String" placeholder="button text"/></div>
+                    </div>
+                </div>
+                <label>Provides a Choice?</label> <input type="checkbox" name="data.details.success.choice" value="1" {{#if data.details.success.choice}}checked{{/if}}/>
+                <div class="choice">
+                    <label>Choice One</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option0.icon" value="{{data.details.success.option0.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option0.label" value="{{data.details.success.option0.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option0.ret" value="{{data.details.success.option0.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.success.option0.startW" value="{{data.details.success.option0.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option0.midW" value="{{data.details.success.option0.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option0.endW" value="{{data.details.success.option0.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="choice">
+                    <label>Choice Two</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option1.icon" value="{{data.details.success.option1.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option1.label" value="{{data.details.success.option1.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option1.ret" value="{{data.details.success.option1.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.success.option1.startW" value="{{data.details.success.option1.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option1.midW" value="{{data.details.success.option1.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option1.endW" value="{{data.details.success.option1.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="choice">
+                    <label>Choice Three</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option2.icon" value="{{data.details.success.option2.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option2.label" value="{{data.details.success.option2.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option2.ret" value="{{data.details.success.option2.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.success.option2.startW" value="{{data.details.success.option2.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option2.midW" value="{{data.details.success.option2.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option2.endW" value="{{data.details.success.option2.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="choice">
+                    <label>Choice One</label><br>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexlabel">Icon:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option3.icon" value="{{data.details.success.option3.icon}}" data-dtype="String" placeholder="fontawesome icon span"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Label:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option3.label" value="{{data.details.success.option3.label}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexlabel">Return:</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option3.ret" value="{{data.details.success.option3.ret}}" data-dtype="String" placeholder="button text"/></div>
+                        </div>
+                    </div>
+                    <div class="c-options">
+                        <div class="flexrow">
+                            <div class="flexinput"><input type="text" name="data.details.success.option3.startW" value="{{data.details.success.option3.startW}}" data-dtype="String" placeholder="words before"/></div>
+                            <div class="flexshrink">Actor Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option3.midW" value="{{data.details.success.option3.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                            <div class="flexshrink">Target Name</div>
+                            <div class="flexinput"><input type="text" name="data.details.success.option3.endW" value="{{data.details.success.option3.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="resource">
-          <label>{{localize "DW.RequiresLevel"}}</label>
-          <input type="text" name="data.requiresLevel" value="{{data.requiresLevel}}" data-dtype="Number"/>
-        </div>
-
-        <div class="resource">
-          <label>{{localize "DW.RequiresMove"}}</label>
-          <input type="text" name="data.requiresMove" value="{{data.requiresMove}}" data-dtype="String"/>
-        </div>
-
-        <div class="resource">
-          <label>{{localize "DW.MoveGroup"}}</label>
-          <input type="text" name="data.moveGroup" value="{{data.moveGroup}}" placeholder="ex: barbarian-armor" data-dtype="String"/>
-          <span class="help-text">{{localize "DW.MoveGroupHelp"}}</span>
-        </div>
-      </div>
-  </section>
+    </section>
 </form>

@@ -772,13 +772,18 @@ export class DwActorSheet extends ActorSheet {
     const a = event.currentTarget;
     const itemId = $(a).parents('.item').attr('data-item-id');
     const item = this.actor.getOwnedItem(itemId);
-    let itemNoSpace = item.name.replace(/\s+/g, '');
-    let macro = "do" + itemNoSpace;
-    //if (item.data.data.rollType || DwUtility.hasMacro(itemNoSpace)) {
-    try {
-      DWBase[macro](this.actor);
-    } catch (err) {
-    //else {
+
+    console.log("HERE");
+    console.log(item.data.data.rollType);
+    console.log(item);
+    if (item.data.data.rollType) {
+      DWBase.doMove(this.actor, item);
+      //let itemNoSpace = item.name.replace(/\s+/g, '');
+      //let macro = "do" + itemNoSpace;
+      //try {
+      // DWBase[macro](this.actor);
+      //} catch (err) {
+    } else {
       let template = 'systems/dungeonworld/templates/chat/chat-move.html';
       let templateData = {
         title: item.name,

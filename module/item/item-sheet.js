@@ -10,8 +10,8 @@ export class DwItemSheet extends ItemSheet {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["dungeonworld", "sheet", "item"],
-      width: 520,
-      height: 480,
+      width: 772,
+      height: 724,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "details" }],
       submitOnChange: false,
     });
@@ -35,10 +35,10 @@ export class DwItemSheet extends ItemSheet {
     data.data.classlist = await DwClassList.getClasses();
 
     // Handle preprocessing for tagify data.
-    if (data.entity.type == 'equipment') {
+    if (data.entity.type === 'equipment') {
       // If there are tags, convert it into a string.
-      if (data.data.tags != undefined && data.data.tags != '') {
-        let tagArray = [];
+      if (data.data.tags !== undefined && data.data.tags !== '') {
+        let tagArray;
         try {
           tagArray = JSON.parse(data.data.tags);
         } catch (e) {
@@ -53,7 +53,6 @@ export class DwItemSheet extends ItemSheet {
         data.data.tags = data.data.tagsString;
       }
     }
-
 
     return data;
   }
@@ -92,9 +91,9 @@ export class DwItemSheet extends ItemSheet {
    */
   async _tagify(html, editable) {
     // Build the tags list.
-    let tags = game.items.entities.filter(item => item.type == 'tag');
+    let tags = game.items.entities.filter(item => item.type === 'tag');
     for (let c of game.packs) {
-      if (c.metadata.entity && c.metadata.entity == 'Item' && c.metadata.name == 'tags') {
+      if (c.metadata.entity && c.metadata.entity === 'Item' && c.metadata.name === 'tags') {
         let items = c ? await c.getContent() : [];
         tags = tags.concat(items);
       }
@@ -104,7 +103,7 @@ export class DwItemSheet extends ItemSheet {
     for (let tag of tags) {
       let tagName = tag.data.name.toLowerCase();
       if (tagNames.includes(tagName) !== false) {
-        tags = tags.filter(item => item._id != tag._id);
+        tags = tags.filter(item => item._id !== tag._id);
       }
       else {
         tagNames.push(tagName);
@@ -181,7 +180,7 @@ export class DwItemSheet extends ItemSheet {
         form.appendChild(newKey);
         await this._onSubmit(event);
       }
-      else if (field_type == 'equipment-groups') {
+      else if (field_type === 'equipment-groups') {
         const field_values = this.object.data.data.equipment;
         const nk = Object.keys(field_values).length + 1;
         let template = '/systems/dungeonworld/templates/items/_class-sheet--equipment-group.html';
@@ -210,7 +209,7 @@ export class DwItemSheet extends ItemSheet {
     // Remove existing attribute
     else if (action === "delete") {
       const field_type = a.dataset.type;
-      if (field_type == 'equipment-groups') {
+      if (field_type === 'equipment-groups') {
         let elem = a.closest('.equipment-group');
         const nk = elem.dataset.index;
         elem.parentElement.removeChild(elem);
@@ -237,7 +236,7 @@ export class DwItemSheet extends ItemSheet {
   _updateObject(event, formData) {
 
     // Exit early for other item types.
-    if (this.object.type != 'class') {
+    if (this.object.type !== 'class') {
       return this.object.update(formData);
     }
 
@@ -249,7 +248,7 @@ export class DwItemSheet extends ItemSheet {
     let deletedKeys = [];
     if (typeof formObj.data.equipment == 'object') {
       for (let [k, v] of Object.entries(formObj.data.equipment)) {
-        if (i != k) {
+        if (i !== k) {
           v.items = duplicate(this.object.data.data.equipment[k].items);
           formObj.data.equipment[i] = v;
           delete formObj.data.equipment[k];
@@ -263,7 +262,7 @@ export class DwItemSheet extends ItemSheet {
     i = 0;
     if (typeof formObj.data.races == 'object') {
       for (let [k, v] of Object.entries(formObj.data.races)) {
-        if (i != k) {
+        if (i !== k) {
           formObj.data.races[i] = v;
           delete formObj.data.races[k];
           deletedKeys.push(`races.${k}`);
@@ -276,7 +275,7 @@ export class DwItemSheet extends ItemSheet {
     i = 0;
     if (typeof formObj.data.alignments == 'object') {
       for (let [k, v] of Object.entries(formObj.data.alignments)) {
-        if (i != k) {
+        if (i !== k) {
           formObj.data.alignments[i] = v;
           delete formObj.data.alignments[k];
           deletedKeys.push(`alignments.${k}`);
@@ -288,7 +287,7 @@ export class DwItemSheet extends ItemSheet {
     // Remove deleted keys.
     for (let k of deletedKeys) {
       const keys = k.split('.');
-      if (formObj.data[keys[0]][keys[1]] == undefined) {
+      if (formObj.data[keys[0]][keys[1]] === undefined) {
         formObj.data[keys[0]][`-=${keys[1]}`] = null;
       }
     }

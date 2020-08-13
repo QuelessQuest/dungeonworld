@@ -1,3 +1,5 @@
+import { DW } from '../config.js';
+
 /**
  * GET COLORS
  * If the actor and or target are characters, return the player color
@@ -104,19 +106,17 @@ export function getTargets(actor) {
  * @returns {Promise<unknown>}
  */
 export async function processChoice({
-                                        options = {},
-                                        flavor = null,
+                                        title = "",
+                                        rollData = {},
                                         templateData = {},
-                                        title = null,
-                                        template = null,
                                         chatData = {}
                                     }) {
 
     return new Promise(resolve => {
         const dialog = new Dialog({
             title: title,
-            content: flavor,
-            buttons: getButtons(options, template, templateData, chatData, resolve),
+            content: "flavor",
+            buttons: getButtons(rollData, templateData, chatData, resolve),
         }, {width: 450, classes: ["dungeonworld", "dialog"]});
         dialog.render(true);
     });
@@ -124,28 +124,69 @@ export async function processChoice({
 
 /**
  * GET BUTTONS
- * @param options
- * @param template
+ * @param rollData
  * @param templateData
  * @param chatData
  * @param resolve
  * @returns {{}}
  */
-function getButtons(options, template, templateData, chatData, resolve) {
+function getButtons(rollData, templateData, chatData, resolve) {
     let buttonData = {};
-    for (let opt of options) {
-        buttonData[opt.key] = {
-            icon: opt.icon,
-            label: opt.label,
+    if (rollData.option0.label) {
+        buttonData.opt1 = {
+            icon: rollData.option0.icon,
+            label: rollData.option0.label,
             callback: async () => {
-                templateData.startingWords = opt.details.startingWords ? opt.details.startingWords : "";
-                templateData.middleWords = opt.details.middleWords ? opt.details.middleWords : "";
-                templateData.endWords = opt.details.endWords ? opt.details.endWords : "";
-                chatData.content = await renderTemplate(template, templateData);
-                await ChatMessage.create(chatData);
-                resolve(opt.result);
+                templateData.startingWords = rollData.option0.startW ? rollData.option0.startW : "";
+                templateData.middleWords = rollData.option0.midW ? rollData.option0.midW : "";
+                templateData.endWords = rollData.option0.endW ? rollData.option0.endW : "";
+                chatData.content = await renderTemplate(CONFIG.DW.template, templateData);
+                resolve(rollData.option0.ret);
             }
-        };
+
+        }
+    }
+    if (rollData.option1.label) {
+        buttonData.opt2 = {
+            icon: rollData.option1.icon,
+            label: rollData.option1.label,
+            callback: async () => {
+                templateData.startingWords = rollData.option1.startW ? rollData.option1.startW : "";
+                templateData.middleWords = rollData.option1.midW ? rollData.option1.midW : "";
+                templateData.endWords = rollData.option1.endW ? rollData.option1.endW : "";
+                chatData.content = await renderTemplate(CONFIG.DW.template, templateData);
+                resolve(rollData.option1.ret);
+            }
+
+        }
+    }
+    if (rollData.option2.label) {
+        buttonData.opt3 = {
+            icon: rollData.option2.icon,
+            label: rollData.option2.label,
+            callback: async () => {
+                templateData.startingWords = rollData.option2.startW ? rollData.option2.startW : "";
+                templateData.middleWords = rollData.option2.midW ? rollData.option2.midW : "";
+                templateData.endWords = rollData.option2.endW ? rollData.option2.endW : "";
+                chatData.content = await renderTemplate(CONFIG.DW.template, templateData);
+                resolve(rollData.option2.ret);
+            }
+
+        }
+    }
+    if (rollData.option3.label) {
+        buttonData.opt4 = {
+            icon: rollData.option3.icon,
+            label: rollData.option3.label,
+            callback: async () => {
+                templateData.startingWords = rollData.option3.startW ? rollData.option3.startW : "";
+                templateData.middleWords = rollData.option3.midW ? rollData.option3.midW : "";
+                templateData.endWords = rollData.option3.endW ? rollData.option3.endW : "";
+                chatData.content = await renderTemplate(CONFIG.DW.template, templateData);
+                resolve(rollData.option3.ret);
+            }
+
+        }
     }
     return buttonData;
 }
@@ -193,6 +234,47 @@ export async function renderDiceResults({
         chatData.content = await renderTemplate(template, templateData);
         await ChatMessage.create(chatData);
         return options.result;
+    }
+}
+
+export async function renderDiceResults2({
+                                             title = "",
+                                             total = 0,
+                                             itemData = {},
+                                             templateData = {},
+                                         }) {
+
+    let chatData = {
+        speaker: ChatMessage.getSpeaker(),
+    }
+
+    let rollData;
+    if (total >= 10) {
+        rollData = itemData.data.details.success;
+        templateData.dialogType = DW.dialogTypes.success;
+    } else if (total <= 6) {
+        rollData = itemData.data.details.failure;
+        templateData.dialogType = DW.dialogTypes.fail;
+    } else {
+        rollData = itemData.data.details.partial;
+        templateData.dialogType = DW.dialogTypes.partial;
+    }
+
+
+    if (rollData.choice) {
+        return await processChoice({
+            title: title,
+            rollData: rollData,
+            templateData: templateData,
+            chatData: chatData
+        });
+    } else {
+        templateData.startingWords = rollData.startW ? rollData.startW : "";
+        templateData.middleWords = rollData.midW ? rollData.midW : "";
+        templateData.endWords = rollData.endW ? rollData.endW : "";
+        chatData.content = await renderTemplate(CONFIG.DW.template, templateData);
+        await ChatMessage.create(chatData);
+        return rollData.ret;
     }
 }
 
@@ -295,7 +377,8 @@ export async function doDamage({actor = null, targetData = null, damageMod = nul
                                 loops: 1,
                                 animType: "syncCosOscillation",
                                 val1: 1,
-                                val2: 1 }
+                                val2: 1
+                            }
                     }
             }];
 

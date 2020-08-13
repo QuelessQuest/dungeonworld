@@ -135,6 +135,10 @@ export function Base() {
      * BASIC MOVES ========================================
      */
 
+    async function doMove(actor, item) {
+        return basic.move(actor, item);
+    }
+
     async function doHackAndSlash(actor) {
         return basic.hackAndSlash(actor);
     }
@@ -223,7 +227,8 @@ export function Base() {
         doPrepareSpells: doPrepareSpells,
         showToken: showToken,
         showActor: showActor,
-        notDead: notDead
+        notDead: notDead,
+        doMove: doMove
     }
 }
 

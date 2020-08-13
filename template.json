@@ -129,6 +129,7 @@
         "base"
       ],
       "class": "",
+      "target": 0,
       "rollType": "",
       "rollMod": 0,
       "requiresLevel": 0,
