@@ -1,11 +1,11 @@
 name: dungeonworld
 title: Dungeon World
-description: The Dungeon World system for FoundryVTT!
-version: 0.4.3
-minimumCoreVersion: 0.5.2
+description: A Dungeon World system for FoundryVTT!
+version: 0.0.3
+minimumCoreVersion: 0.6.5
 compatibleCoreVersion: 0.7.0
 templateVersion: 2
-author: Asacolips, Vasid
+author: Asacolips, Vasid (original) Fork by Quest
 esmodules:
   - module/dungeonworld.js
 styles:
@@ -170,6 +170,6 @@ primaryTokenAttribute: attributes.hp
 secondaryTokenAttribute:
 initiative: 1d20
 socket: true
-url: https://gitlab.com/asacolips-projects/foundry-mods/dungeonworld
-manifest: https://gitlab.com/asacolips-projects/foundry-mods/dungeonworld/raw/master/system.json
-download: https://gitlab.com/asacolips-projects/foundry-mods/dungeonworld/-/archive/0.4.3/dungeonworld-master.zip
+url: https://github.com/QuelessQuest/dungeonworld
+manifest: https://raw.githubusercontent.com/QuelessQuest/dungeonworld/master/system.json
+download: https://github.com/QuelessQuest/dungeonworld/releases/download/v003/dungeonworld.0.0.3.zip
