@@ -2,7 +2,7 @@
     <header class="sheet-header flexrow">
         <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize "DW.Common.Name"}}"/></h1>
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize " DW.Common.Name"}}"/></h1>
         </div>
     </header>
 
@@ -22,32 +22,111 @@
 
         {{!-- Details Tab --}}
         <div class="tab" data-group="primary" data-tab="details">
-          <div class="resource">
-            <label>{{localize "DW.Class"}}</label>
-            <select name="data.class">
-              {{#select data.class}}
-                <option value="">—</option>
-                {{#each data.classlist as |class id|}}
-                <option value="{{class}}">{{class}}</option>
-                {{/each}}
-              {{/select}}
-            </select>
-          </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.Class"}}</div>
+                <div class="flexinput">
+                    <select name="data.details.class">
+                        {{#select data.details.class}}
+                        <option value="">—</option>
+                        {{#each data.classlist as |class id|}}
+                        <option value="{{class}}">{{class}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </div>
+                <div class="flexlabel">{{localize "DW.SpellLevel"}}</div>
+                <div class="flexinput"><input type="text" name="data.spellLevel" value="{{data.spellLevel}}" data-dtype="Number"/>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">Target?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.target" value="1" {{#if data.details.target}}checked{{/if}}/>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">Damage:</div>
+                <div class="flexinput"><input type="text" name="data.details.damage.amt" value="{{data.details.damage.amt}}" data-dtype="String"/>
+                </div>
+                <div class="flexlabel">Effect:</div>
+                <div class="flexinput">
+                    <select name="data.details.damage.effect" data-dtype="String">
+                        {{#select data.details.damage.effect}}
+                        <option value="Default">Default</option>
+                        <option value="None">None</option>
+                        {{#each data.filterList as |f|}}
+                        <option value="{{f}}">{{f}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">Heals:</div>
+                <div class="flexinput"><input type="text" name="data.details.heal.amt" value="{{data.details.heal.amt}}" data-dtype="String"/>
+                </div>
+                <div class="flexlabel">Effect:</div>
+                <div class="flexinput">
+                    <select name="data.details.heal.effect" data-dtype="String">
+                        {{#select data.details.heal.effect}}
+                        <option value="Default">Default</option>
+                        <option value="None">None</option>
+                        {{#each data.filterList as |f|}}
+                        <option value="{{f}}">{{f}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexinput"><input type="text" name="data.details.startW" value="{{data.details.startW}}" data-dtype="String" placeholder="words before"/></div>
+                <div class="flexshrink">Actor Name</div>
+                <div class="flexinput"><input type="text" name="data.details.midW" value="{{data.details.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                <div class="flexshrink">Target Name</div>
+                <div class="flexinput"><input type="text" name="data.details.endW" value="{{data.details.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">Active?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.active" value="1" {{#if data.details.active}}checked{{/if}}/>
+                </div>
+                <div class="flexlabel">Sustained?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.sustained" value="1" {{#if data.details.sustained}}checked{{/if}}/>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">Effect?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.effect.enabled" value="1" {{#if data.details.effect.enabled}}checked{{/if}}/>
+                </div>
+                <div class="flexlabel">On Self?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.effect.self" value="1" {{#if data.details.effect.self}}checked{{/if}}/>
+                </div>
+                <div class="flexlabel">On Target?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.effect.target" value="1" {{#if data.details.effect.target}}checked{{/if}}/>
+                </div>
+            </div>
+            <div class="resource flexrow">
+                <div class="flexlabel">Effect</div>
+                <div class="flexinput">
+                    <select name="data.details.effect.name" data-dtype="String">
+                        {{#select data.details.effect.name}}
+                        <option value="">—</option>
+                        {{#each data.filterList as |f|}}
+                        <option value="{{f}}">{{f}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.SpellPrepared"}}</div>
+                <div class="flexinput"><input type="checkbox" name="data.prepared" {{checked data.prepared}}/>
+                </div>
+            </div>
 
-          <div class="resource">
-            <label>{{localize "DW.SpellLevel"}}</label>
-              <input type="text" name="data.spellLevel" value="{{data.spellLevel}}" data-dtype="Number"/>
-          </div>
-
-          <div class="resource">
-            <label>{{localize "DW.SpellPrepared"}}</label>
-            <input type="checkbox" name="data.prepared" {{checked data.prepared}}/>
-          </div>
-
-          <div class="resource">
-            <label>{{localize "DW.SpellRollFormula"}}</label>
-              <input type="text" name="data.rollFormula" value="{{data.rollFormula}}" placeholder="e.g. 1d4+3" data-dtype="String"/>
-          </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.SpellRollFormula"}}</div>
+                <div class="flexinput"><input type="text" name="data.rollFormula" value="{{data.rollFormula}}" placeholder="e.g. 1d4+3" data-dtype="String"/>
+                </div>
+            </div>
         </div>
     </section>
 </form>

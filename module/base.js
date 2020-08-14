@@ -5,6 +5,7 @@ import * as cmn from './actions/commonSpells.js'
 import * as dm from './actions/druidMoves.js'
 import * as basic from './actions/basicMoves.js'
 import * as tm from './actions/thiefMoves.js'
+import {DwFilters} from "./filters.js";
 
 export function Base() {
 
@@ -131,6 +132,22 @@ export function Base() {
         await canvas.tokens.controlled[0].toggleOverlay(null);
     }
 
+    async function createFilters() {
+        await DwFilters.createFilters();
+    }
+
+    async function exportFilters() {
+        await DwFilters.exportFilters();
+    }
+
+    async function importFilters() {
+        await DwFilters.importFilters();
+    }
+
+    async function getFilters() {
+        await DwFilters.getFilters();
+    }
+
     /**
      * BASIC MOVES ========================================
      */
@@ -228,7 +245,11 @@ export function Base() {
         showToken: showToken,
         showActor: showActor,
         notDead: notDead,
-        doMove: doMove
+        doMove: doMove,
+        createFilters: createFilters,
+        exportFilters: exportFilters,
+        importFilters: importFilters,
+        getFilters: getFilters
     }
 }
 

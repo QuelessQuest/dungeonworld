@@ -146,7 +146,8 @@ export async function move(actor, item) {
     }
     let sus = 0;
     let ongoing = 0;
-    if (item.name.toLowerCase() === "cast a spell") {
+    if (item.type === "spell") {
+        console.log("SPELL-M");
         let sustained = actor.getFlag("world", "sustained");
         if (sustained) {
             for (let sSpell of sustained) {
@@ -187,18 +188,12 @@ export async function move(actor, item) {
     }
 
     await game.dice3d.showForRoll(cRoll);
-    let amount =  await util.renderDiceResults2({
+    return await util.renderDiceResults2({
         title: item.name,
         total: cRoll.total,
         itemData: itemData,
         templateData: templateData
     });
-    console.log("DAMAGE");
-    console.log(damage);
-    console.log(itemData.data);
-    if (itemData.data.details.attack && amount) {
-        await util.doDamage({actor: actor, targetData: targetData, damageMod: amount, title: item.name});
-    }
 }
 
 /**

@@ -8,6 +8,7 @@
 import { DW } from "./config.js";
 import { Base } from "./base.js";
 import { DwClassList } from "./config.js";
+import { DwFilters } from "./filters.js";
 import { ActorDw } from "./actor/actor.js";
 import { ItemDw } from "./item/item.js";
 import { DwItemSheet } from "./item/item-sheet.js";
@@ -67,12 +68,14 @@ Hooks.once("init", async function() {
 Hooks.once("ready", async function() {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => createDwMacro(data, slot));
-  console.log("drop hook");
 
   window.DWBase = DWBase;
   DW.classlist = await DwClassList.getClasses();
   CONFIG.DW = DW;
   CONFIG.DWBase = DWBase;
+
+  // Import Filters
+  await DwFilters.importFilters();
 
   // Add a lang class to the body.
   const lang = game.settings.get('core', 'language');
@@ -177,6 +180,7 @@ Hooks.on('preUpdateActor', (actor, data, options, id) => {
 /*  Level Up Listeners                          */
 /* -------------------------------------------- */
 Hooks.on('renderDialog', (dialog, html, options) => {
+
   // If this is the levelup dialog, we need to add listeners to it.
   if (dialog.data.id && dialog.data.id === 'level-up') {
     // If an ability score is chosen, we need to update the available options.
@@ -208,7 +212,10 @@ Hooks.on('renderDialog', (dialog, html, options) => {
       });
     })
   }
-  // console.log(html.find('.cell--ability-scores'));
+
+  if (dialog.data.id && dialog.data.id === 'item-form') {
+
+  }
 });
 
 /* -------------------------------------------- */

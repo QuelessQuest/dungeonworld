@@ -1,5 +1,6 @@
 import { DwClassList } from "../config.js";
 import { DwUtility } from "../utility.js";
+import * as sh from "../actions/spellHelper.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -773,9 +774,16 @@ export class DwActorSheet extends ActorSheet {
     const itemId = $(a).parents('.item').attr('data-item-id');
     const item = this.actor.getOwnedItem(itemId);
 
-    console.log("HERE");
-    console.log(item.data.data.rollType);
-    console.log(item);
+    if (item.data.type === "spell") {
+      console.log("SPELL");
+      let castASpell = this.actor.data.items.find(i => i.name.toLowerCase() === "cast a spell");
+      let rst = await DWBase.doMove(this.actor, castASpell);
+      if (await sh.resolveCasting(this.actor, item, rst)) {
+
+      }
+      return;
+    }
+
     if (item.data.data.rollType) {
       DWBase.doMove(this.actor, item);
       //let itemNoSpace = item.name.replace(/\s+/g, '');

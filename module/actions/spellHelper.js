@@ -2,6 +2,57 @@ import * as util from './dwUtils.js'
 import * as basic from './basicMoves.js'
 
 /**
+ * Process results of casting the spell, e.g. un-prepare spell if necessary, do damage, heal
+ * @param actor
+ * @param spell
+ * @param cast
+ * @returns {Promise<unknown>}
+ */
+export async function resolveCasting(actor, spell, cast) {
+    let success = false;
+    switch (cast) {
+        case "FAILED":
+            if (spell.details.target) {
+                let targetData = util.getTargets(actor);
+                if (TokenMagic.hasFilterId(targetData.targetToken, spell.data.details.effect.name))
+                    await TokenMagic.deleteFilters(targetData.targetToken, spell.data.details.effect.name);
+            }
+            break;
+        case "DISTANCED":
+            await setOngoing(actor, -1);
+            success = true;
+            break;
+        case "REVOKED":
+            let updatedSpell = duplicate(spell);
+            updatedSpell.data.prepared = false;
+            await actor.updateOwnedItem(updatedSpell);
+            success = true;
+            break;
+        default:
+            success = true;
+    }
+
+    if (success) {
+        if (spell.details.damage) {
+            await util.doDamage({
+                actor: actor,
+                targetData: util.getTargets(actor),
+                baseDamage: spell.details.damage.amt,
+                effect: spell.details.damage.effect,
+                title: spell.name
+            });
+        }
+        if (spell.details.heal) {
+
+        }
+    }
+
+    return new Promise(resolve => {
+        resolve(success);
+    });
+}
+
+/**
  * CAST SPELL
  * @param actor
  * @param targetActor

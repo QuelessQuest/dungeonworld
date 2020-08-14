@@ -1,4 +1,4 @@
-import { DW } from '../config.js';
+import {DW} from '../config.js';
 
 /**
  * GET COLORS
@@ -241,7 +241,7 @@ export async function renderDiceResults2({
                                              title = "",
                                              total = 0,
                                              itemData = {},
-                                             templateData = {},
+                                             templateData = {}
                                          }) {
 
     let chatData = {
@@ -259,7 +259,6 @@ export async function renderDiceResults2({
         rollData = itemData.data.details.partial;
         templateData.dialogType = DW.dialogTypes.partial;
     }
-
 
     if (rollData.choice) {
         return await processChoice({
@@ -309,15 +308,29 @@ export async function validateMove({actor: actor, move: move, target: target}) {
  * @param title
  * @returns {Promise<void>}
  */
-export async function doDamage({actor = null, targetData = null, damageMod = null, title = "", verb = null}) {
+export async function doDamage({
+                                   actor = null,
+                                   targetData = null,
+                                   damageMod = null,
+                                   baseDamage = null,
+                                   effect = null,
+                                   title = "",
+                                   verb = null
+                               }) {
 
     let actorData = actor.data;
-    let base = actorData.data.attributes.damage.value;
-    let formula = base;
+    let base, formula;
     let misc = "";
-    if (actorData.data.attributes.damage.misc) {
-        misc = actorData.data.attributes.damage.misc;
-        formula += `+${misc}`;
+    if (baseDamage) {
+        base = baseDamage;
+        formula = baseDamage;
+    } else {
+        base = actorData.data.attributes.damage.value;
+        formula = base;
+        if (actorData.data.attributes.damage.misc) {
+            misc = actorData.data.attributes.damage.misc;
+            formula += `+${misc}`;
+        }
     }
     if (damageMod) {
         formula += `+${damageMod}`;
@@ -356,33 +369,10 @@ export async function doDamage({actor = null, targetData = null, damageMod = nul
             rollDw: rolled
         }
 
-        let params =
-            [{
-                filterType: "adjustment",
-                autoDestroy: true,
-                saturation: 1,
-                brightness: .5,
-                contrast: 1,
-                gamma: 1,
-                red: 4,
-                green: 0.5,
-                blue: 0.5,
-                alpha: 0.5,
-                animated:
-                    {
-                        alpha:
-                            {
-                                active: true,
-                                loopDuration: 250,
-                                loops: 1,
-                                animType: "syncCosOscillation",
-                                val1: 1,
-                                val2: 1
-                            }
-                    }
-            }];
+        if (effect && effect !== "None") {
+            await TokenMagic.addFiltersOnTargeted(effect === "Default" ? "Default Damage" : effect);
+        }
 
-        await TokenMagic.addFiltersOnTargeted(params);
         renderTemplate(CONFIG.DW.template, templateData).then(content => {
             let chatData = {
                 speaker: ChatMessage.getSpeaker(),

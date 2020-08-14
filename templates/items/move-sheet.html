@@ -26,18 +26,37 @@
         {{!-- Details Tab --}}
         <div class="tab" data-group="primary" data-tab="details">
             <div class="resource choice flexrow">
-                <div class="flexlabel">Requires Target?</div>
+                <div class="flexlabel">Target?</div>
                 <div class="flexinput"><input type="checkbox" name="data.target" value="1" {{#if data.target}}checked{{/if}}/>
                 </div>
-            </div>
-            <div class="resource choice flexrow">
-                <div class="flexlabel">Does Damage?</div>
+                <div class="flexlabel">Damage?</div>
                 <div class="flexinput"><input type="checkbox" name="data.details.attack" value="1" {{#if data.details.attack}}checked{{/if}}/>
+                </div>
+                <div class="flexlabel">Heals?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.heal" value="1" {{#if data.details.heal}}checked{{/if}}/>
                 </div>
             </div>
             <div class="resource choice flexrow">
-                <div class="flexlabel">Does Healing?</div>
-                <div class="flexinput"><input type="checkbox" name="data.details.heal" value="1" {{#if data.details.heal}}checked{{/if}}/>
+                <div class="flexlabel">Effect?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.effect.enabled" value="1" {{#if data.details.effect.enabled}}checked{{/if}}/>
+                </div>
+                <div class="flexlabel">Effect</div>
+                <select name="data.details.effect.name" data-dtype="String">
+                    {{#select data.details.effect.name}}
+                    <option value="">—</option>
+                    {{#each data.filterList as |f|}}
+                    <option value="{{f}}">{{f}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+            <div class="resource flexrow">
+                <div class="flexlabel"></div>
+                <div class="flexlabel">On Self?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.effect.self" value="1" {{#if data.details.effect.self}}checked{{/if}}/>
+                </div>
+                <div class="flexlabel">On Target?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.effect.target" value="1" {{#if data.details.effect.target}}checked{{/if}}/>
                 </div>
             </div>
             <div class="resource choice flexrow">
@@ -57,8 +76,6 @@
                         {{/select}}
                     </select>
                 </div>
-            </div>
-            <div class="resource choice flexrow">
                 <div class="flexlabel">{{localize "DW.Modifier"}}</div>
                 <div class="flexinput"><input type="text" name="data.rollMod" value="{{data.rollMod}}" data-dtype="Number"/></div>
             </div>

@@ -1,4 +1,5 @@
 import { DwClassList } from "../config.js";
+import { DwFilters } from "../filters.js";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -33,6 +34,9 @@ export class DwItemSheet extends ItemSheet {
     data.dtypes = ["String", "Number", "Boolean"];
     // Add classlist.
     data.data.classlist = await DwClassList.getClasses();
+    data.data.filterList = await DwFilters.getFilters();
+    console.log("HERE");
+    console.log(data.data.filterList);
 
     // Handle preprocessing for tagify data.
     if (data.entity.type === 'equipment') {
