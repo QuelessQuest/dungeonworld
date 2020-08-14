@@ -1,6 +1,7 @@
 import { DwClassList } from "../config.js";
 import { DwUtility } from "../utility.js";
 import * as sh from "../actions/spellHelper.js";
+import * as util from "../actions/dwUtils.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -775,22 +776,17 @@ export class DwActorSheet extends ActorSheet {
     const item = this.actor.getOwnedItem(itemId);
 
     if (item.data.type === "spell") {
-      console.log("SPELL");
       let castASpell = this.actor.data.items.find(i => i.name.toLowerCase() === "cast a spell");
-      let rst = await DWBase.doMove(this.actor, castASpell);
-      if (await sh.resolveCasting(this.actor, item, rst)) {
-
-      }
+      let z = this.actor.getOwnedItem(castASpell._id);
+      let rst = await DWBase.doMove(this.actor, z, item.name);
+      await sh.resolveCasting(this.actor, item, rst);
       return;
     }
 
     if (item.data.data.rollType) {
-      DWBase.doMove(this.actor, item);
-      //let itemNoSpace = item.name.replace(/\s+/g, '');
-      //let macro = "do" + itemNoSpace;
-      //try {
-      // DWBase[macro](this.actor);
-      //} catch (err) {
+      let rst = await DWBase.doMove(this.actor, item);
+      await util.resolveMove(this.actor, item, rst);
+
     } else {
       let template = 'systems/dungeonworld/templates/chat/chat-move.html';
       let templateData = {

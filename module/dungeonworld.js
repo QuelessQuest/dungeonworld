@@ -18,6 +18,8 @@ import { DwClassItemSheet } from "./item/class-item-sheet.js";
 import { DwRegisterHelpers } from "./handlebars.js";
 import { DwUtility } from "./utility.js";
 import { CombatSidebarDw } from "./combat/combat.js";
+import * as sh from "./actions/spellHelper.js";
+import * as util from "./actions/dwUtils.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -267,6 +269,15 @@ function rollItemMacro(itemName) {
 
   // Trigger the item roll
   // if ( item.data.type === "spell" ) return actor.useSpell(item);
+
+  if (item.data.type === "spell") {
+    let castASpell = actor.data.items.find(i => i.name.toLowerCase() === "cast a spell");
+    let z = this.actor.getOwnedItem(castASpell._id);
+    DWBase.doMove(this.actor, z, itemName).then(rst => {
+      sh.resolveCasting(this.actor, item, rst).then( );
+    });
+  }
+
   let itemNoSpace = item.name.replace(/\s+/g, '');
   let macro = "do" + itemNoSpace;
   DWBase[macro](actor);

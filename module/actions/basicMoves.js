@@ -108,21 +108,23 @@ export async function basicMove({
     }
 }
 
-export async function move(actor, item) {
-    let itemData = item.data;
-    let targetData;
-    if (itemData.data.target) {
+export async function move(actor, item, spell = "") {
+    let itemData = item.data.data;
+    console.log("ITEM>DATA");
+    console.log(itemData);
+    if (itemData.details.target) {
         if (game.user.targets.size === 0) {
             ui.notifications.warn("Action requires a target.");
             return;
         }
-        targetData = util.getTargets(actor);
     }
+
+    let targetData = util.getTargets(actor);
 
     let baseFormula = '2d6';
     let actorData = actor.data;
-    let ability = itemData.data.rollType.toLowerCase();
-    let mod = itemData.data.rollMod;
+    let ability = itemData.rollType.toLowerCase();
+    let mod = itemData.rollMod;
     let abilityMod = 0;
     switch (ability) {
         case "bond":
@@ -192,7 +194,8 @@ export async function move(actor, item) {
         title: item.name,
         total: cRoll.total,
         itemData: itemData,
-        templateData: templateData
+        templateData: templateData,
+        spell: spell
     });
 }
 

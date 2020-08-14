@@ -9,13 +9,16 @@ import * as basic from './basicMoves.js'
  * @returns {Promise<unknown>}
  */
 export async function resolveCasting(actor, spell, cast) {
+    console.log("RESOLVE");
+    console.log(spell);
+    let spellData = spell.data.data;
     let success = false;
     switch (cast) {
         case "FAILED":
-            if (spell.details.target) {
+            if (spellData.details.target) {
                 let targetData = util.getTargets(actor);
-                if (TokenMagic.hasFilterId(targetData.targetToken, spell.data.details.effect.name))
-                    await TokenMagic.deleteFilters(targetData.targetToken, spell.data.details.effect.name);
+                if (TokenMagic.hasFilterId(targetData.targetToken, spellData.details.effect.name))
+                    await TokenMagic.deleteFilters(targetData.targetToken, spellData.details.effect.name);
             }
             break;
         case "DISTANCED":
@@ -33,23 +36,41 @@ export async function resolveCasting(actor, spell, cast) {
     }
 
     if (success) {
-        if (spell.details.damage) {
+
+        if (spellData.details.damage.amt) {
+            if (spellData.details.damage.script) {
+                await DWBase[spellData.details.damage.script](actor);
+            }
             await util.doDamage({
+                item: spell,
                 actor: actor,
                 targetData: util.getTargets(actor),
-                baseDamage: spell.details.damage.amt,
-                effect: spell.details.damage.effect,
+                baseDamage: spellData.details.damage.amt,
+                effect: spellData.details.damage.effect,
                 title: spell.name
             });
         }
-        if (spell.details.heal) {
-
+        if (spellData.details.heal.amt) {
+            await util.doHeal({
+                item: spell,
+                actor: actor,
+                targetData: util.getTargets(actor),
+                baseHeal: spellData.details.heal.amt,
+                effect: spellData.details.heal.effect,
+                title: spell.name
+            });
         }
     }
 
     return new Promise(resolve => {
         resolve(success);
     });
+}
+
+export async function magicMissile(actor) {
+    let targetData = util.getTargets(actor);
+    await launchProjectile(canvas.tokens.controlled[0], targetData.targetToken, "systems/dungeonworld/assets/mm.png");
+    await TokenMagic.addFiltersOnTargeted("Electric Damage");
 }
 
 /**

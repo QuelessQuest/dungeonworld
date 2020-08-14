@@ -7,14 +7,16 @@ DW.dialogTypes = {
     damage: "damage",
     success: "success",
     fail: "fail",
-    partial: "partial"
+    partial: "partial",
+    heal: "heal"
 }
 
 DW.dialogClasses = {
     damage: "dieDamage",
     success: "dieSuccess",
     fail: "dieFail",
-    partial: "diePartial"
+    partial: "diePartial",
+    heal: "dieHeal"
 }
 
 DW.abilities = {

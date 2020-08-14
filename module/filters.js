@@ -26,6 +26,27 @@ export const NamedFilters = [
                             }
                     }
             }]
+    },
+    {
+        name: "Electric Damage",
+        data: [
+            {
+            filterType: "electric",
+            color: 0xFFFFFF,
+            time: 0,
+            blend: 1,
+            intensity: 5,
+            autoDestroy: true,
+            animated: {
+                time: {
+                    active: true,
+                    speed: 0.0020,
+                    loopDuration: 1500,
+                    loops: 1,
+                    animType: "move"
+                }
+            }
+        }]
     }
 ];
 

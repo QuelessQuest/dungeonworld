@@ -27,14 +27,32 @@
         <div class="tab" data-group="primary" data-tab="details">
             <div class="resource choice flexrow">
                 <div class="flexlabel">Target?</div>
-                <div class="flexinput"><input type="checkbox" name="data.target" value="1" {{#if data.target}}checked{{/if}}/>
+                <div class="flexinput"><input type="checkbox" name="data.details.target" value="1" {{#if data.details.target}}checked{{/if}}/>
                 </div>
+            </div>
+            <div class="resource choice flexrow">
                 <div class="flexlabel">Damage?</div>
-                <div class="flexinput"><input type="checkbox" name="data.details.attack" value="1" {{#if data.details.attack}}checked{{/if}}/>
+                <div class="flexinput"><input type="checkbox" name="data.details.damage.enabled" value="1" {{#if data.details.damage.enabled}}checked{{/if}}/>
                 </div>
+            </div>
+            <div class="resource flexrow">
+                <div class="flexinput"><input type="text" name="data.details.damage.startW" value="{{data.details.damage.startW}}" data-dtype="String" placeholder="words before"/></div>
+                <div class="flexshrink">Actor Name</div>
+                <div class="flexinput"><input type="text" name="data.details.damage.midW" value="{{data.details.damage.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                <div class="flexshrink">Target Name</div>
+                <div class="flexinput"><input type="text" name="data.details.damage.endW" value="{{data.details.damage.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+            </div>
+            <div class="resource choice flexrow">
                 <div class="flexlabel">Heals?</div>
-                <div class="flexinput"><input type="checkbox" name="data.details.heal" value="1" {{#if data.details.heal}}checked{{/if}}/>
+                <div class="flexinput"><input type="checkbox" name="data.details.heal.enabled" value="1" {{#if data.details.heal.enabled}}checked{{/if}}/>
                 </div>
+            </div>
+            <div class="resource flexrow">
+                <div class="flexinput"><input type="text" name="data.details.heal.startW" value="{{data.details.heal.startW}}" data-dtype="String" placeholder="words before"/></div>
+                <div class="flexshrink">Actor Name</div>
+                <div class="flexinput"><input type="text" name="data.details.heal.midW" value="{{data.details.heal.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                <div class="flexshrink">Target Name</div>
+                <div class="flexinput"><input type="text" name="data.details.heal.endW" value="{{data.details.heal.endW}}" data-dtype="String" placeholder="words at the end"/></div>
             </div>
             <div class="resource choice flexrow">
                 <div class="flexlabel">Effect?</div>
