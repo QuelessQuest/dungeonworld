@@ -55,7 +55,7 @@ export async function move(actor, item, spell = "") {
     }
     let sus = 0;
     let ongoing = 0;
-    if (item.type === "spell") {
+    if (item.name.toLowerCase() === "cast a spell") {
         let sustained = actor.getFlag("world", "sustained");
         if (sustained) {
             for (let sSpell of sustained) {
@@ -79,7 +79,7 @@ export async function move(actor, item, spell = "") {
     let gColors = getColors(actor, targetData.targetActor);
 
     let templateData = {
-        title: item.name,
+        title: spell ? item.name + " - " + spell : item.name,
         ability: ability.charAt(0).toUpperCase() + ability.slice(1),
         mod: abilityMod,
         ongoing: ongoing,

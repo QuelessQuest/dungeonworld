@@ -786,7 +786,6 @@ export class DwActorSheet extends ActorSheet {
     if (item.data.data.rollType) {
       let rst = await move(this.actor, item);
       await resolveMove(this.actor, item, rst);
-
     } else {
       if (item.data.data.details.script) {
         DWBase[item.data.data.details.script](this.actor);

@@ -17,8 +17,14 @@ export function Base() {
      * SPELL SCRIPTS ========================================
      */
 
+    async function light(actor) {
+        return sh.light(actor);
+    }
     async function magicMissile(actor) {
         return sh.magicMissile(actor);
+    }
+    async function magicWeapon(actor) {
+        return sh.magicWeapon(actor);
     }
 
     /**
@@ -96,7 +102,9 @@ export function Base() {
         exportFilters: exportFilters,
         importFilters: importFilters,
         getFilters: getFilters,
+        light: light,
         magicMissile: magicMissile,
+        magicWeapon: magicWeapon,
         shapeshifter: shapeshifter,
         deleteFilter: deleteFilter
     }

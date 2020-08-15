@@ -35,6 +35,13 @@ export async function resolveCasting(actor, spell, cast) {
 
     if (success) {
 
+        // Get any additional options (mostly for canceling)
+        let additionalOptions = null;
+        if (spellData.details.script) {
+            additionalOptions = await DWBase[spellData.details.script](actor);
+        }
+
+        // Add effects to caster and/or target
         if (spellData.details.effect.enabled) {
             if (spellData.details.effect.self) {
                 await TokenMagic.addFiltersOnSelected(spellData.details.effect.name);
@@ -43,18 +50,32 @@ export async function resolveCasting(actor, spell, cast) {
                 await TokenMagic.addFiltersOnTargeted(spellData.details.effect.name);
             }
         }
+
+        // If this is an active spell, set the cancel data
         if (spellData.details.active) {
+            let data = {
+                targetName: targetData.targetActor.name,
+                targetId: targetData.targetActor._id,
+                targetToken: targetData.targetToken.id,
+                effect: spellData.details.effect.enabled ? spellData.details.effect.name : "",
+                sustained: spellData.details.sustained
+            };
+            let mergedData;
+            if (additionalOptions) {
+                mergedData= {
+                    ...data,
+                    ...additionalOptions
+                };
+            } else {
+                mergedData = data;
+            }
             await setActiveSpell(actor, {
                 spell: spell.name,
-                data: {
-                    targetName: targetData.targetActor.name,
-                    targetId: targetData.targetActor._id,
-                    targetToken: targetData.targetToken.id,
-                    effect: spellData.details.effect.enabled ? spellData.details.effect.name : "",
-                    sustained: spellData.details.sustained
-                }
+                data: mergedData
             });
         }
+
+        // Set the sustained spell flag
         if (spellData.details.sustained) {
             await setSustained(actor, {
                 spell: spell.name,
@@ -64,6 +85,8 @@ export async function resolveCasting(actor, spell, cast) {
                 }
             });
         }
+
+        // Do damage, if necessary
         if (spellData.details.damage.amt) {
             if (spellData.details.damage.script) {
                 await DWBase[spellData.details.damage.script](actor);
@@ -77,6 +100,8 @@ export async function resolveCasting(actor, spell, cast) {
                 title: spell.name
             });
         }
+
+        // Do healing, if necessarty
         if (spellData.details.heal.amt) {
             await util.doHeal({
                 item: spell,
@@ -94,10 +119,80 @@ export async function resolveCasting(actor, spell, cast) {
     });
 }
 
+/**
+ * LIGHT
+ * @param actor
+ * @returns {Promise<void>}
+ */
+export async function light(actor) {
+
+    let lightFlag = await new Promise((resolve, reject) => {
+        new Dialog({
+            title: 'Light',
+            content:
+                "<input type='text' name='alwaysOn' is='colorpicker-input' id='permanent'>",
+            buttons: {
+                ok: {
+                    icon: '<i class="fas fa-sun"></i>',
+                    label: "Cast",
+                    callback: () => {
+                        let lightData = {
+                            updateData: {"dimLight": null, "brightLight": null},
+                            updateType: "Token",
+                            middleWords: "has canceled Light"
+                        }
+                        let targetData = util.getTargets(actor);
+                        targetData.targetToken.update(
+                            {
+                                "dimLight": 40,
+                                "brightLight": 20,
+                                "lightAngle": 360,
+                                "lightColor": document.getElementById("permanent").value.substring(0, 7)
+                            });
+                        resolve(lightData);
+                    }
+                },
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Cancel",
+                    callback: () => {
+                        resolve("");
+                    }
+                }
+            }
+        }).render(true);
+    });
+    return lightFlag;
+}
+
+/**
+ * MAGIC MISSILE
+ * @param actor
+ * @returns {Promise<void>}
+ */
 export async function magicMissile(actor) {
     let targetData = util.getTargets(actor);
     await launchProjectile(canvas.tokens.controlled[0], targetData.targetToken, "systems/dungeonworld/assets/mm.png");
     await TokenMagic.addFiltersOnTargeted("Electric Damage");
+}
+
+/**
+ * MAGIC WEAPON
+ * @param actor
+ * @returns {Promise<void>}
+ */
+export async function magicWeapon(actor) {
+    let currentMisc = actor.data.data.attributes.damage.misc;
+    if (currentMisc) {
+        currentMisc += "+1d4";
+    } else {
+        currentMisc = "1d4";
+    }
+    await actor.update({"data": {"attributes": {"damage": {"misc": currentMisc}}}});
+    return {
+        damage: "1d4",
+        middleWords: "cancels Magic Weapon"
+    }
 }
 
 /**
@@ -238,7 +333,6 @@ export async function setActiveSpell(actor, data) {
  * @returns {Promise<void>}
  */
 export async function removeActiveSpell(actor, {spell = "", targetName = ""}) {
-    console.log("RA");
     let flag = await removeSpellFlag(actor, "activeSpells", {spell: spell, targetName: targetName});
 
     let targetActor = null;
@@ -247,7 +341,6 @@ export async function removeActiveSpell(actor, {spell = "", targetName = ""}) {
         targetActor = game.actors.find(a => a._id === data.targetId);
     }
     if (data.sustained) {
-        console.log("SUS");
         await removeSustained(actor, {spell: spell, targetName: data.targetName});
     }
     if (data.forward) {
@@ -281,8 +374,8 @@ export async function removeActiveSpell(actor, {spell = "", targetName = ""}) {
     if (data.updateData) {
         switch (data.updateType) {
             case "Token":
-                let xx = canvas.tokens.placeables.filter(placeable => placeable.id === data.targetToken);
-                let targetToken = xx[0];
+                let place = canvas.tokens.placeables.filter(placeable => placeable.id === data.targetToken);
+                let targetToken = place[0];
                 await targetToken.update(data.updateData);
                 break;
             case "Actor":
@@ -416,16 +509,10 @@ export async function setSpells(actor, title) {
         }
 
     }
-    console.log("A");
-    console.log(upSpells);
-    console.log(pSpells);
     if (pLevels > lvlTotal) {
         ui.notifications.warn(`${actorData.name} can only prepare ${lvlTotal} levels of spells`);
     } else {
         pSpells.forEach(ps => {
-            console.log("SPE");
-            console.log(actorData);
-            console.log(ps);
             let spell = actorData.items.find(i => i.name === ps);
             let sId = spell._id;
             const item = actor.getOwnedItem(sId);
@@ -436,10 +523,6 @@ export async function setSpells(actor, title) {
             }
         });
         upSpells.forEach(ups => {
-            console.log("SPE");
-            console.log(actorData);
-            console.log(ups);
-            console.log(actorData.items)
             let spell = actorData.items.find(i => i.name === ups);
             let sId = spell._id;
             const item = actor.getOwnedItem(sId);

@@ -19,6 +19,7 @@ import { DwRegisterHelpers } from "./handlebars.js";
 import { DwUtility } from "./utility.js";
 import { CombatSidebarDw } from "./combat/combat.js";
 import * as sh from "./actions/spellHelper.js";
+import {move, resolveMove} from "./actions/moves.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -266,19 +267,35 @@ function rollItemMacro(itemName) {
   const item = actor ? actor.items.find(i => i.name === itemName) : null;
   if (!item) return ui.notifications.warn(`Your controlled Actor does not have an item named ${itemName}`);
 
-  // Trigger the item roll
-  // if ( item.data.type === "spell" ) return actor.useSpell(item);
-
   if (item.data.type === "spell") {
     let castASpell = actor.data.items.find(i => i.name.toLowerCase() === "cast a spell");
-    let z = this.actor.getOwnedItem(castASpell._id);
-    DWBase.doMove(this.actor, z, itemName).then(rst => {
-      sh.resolveCasting(this.actor, item, rst).then( );
+    let z = actor.getOwnedItem(castASpell._id);
+    move(actor, z, itemName).then(rst => {
+      sh.resolveCasting(actor, item, rst).then( );
     });
   }
 
-  let itemNoSpace = item.name.replace(/\s+/g, '');
-  let macro = "do" + itemNoSpace;
-  DWBase[macro](actor);
-  //return item.roll();
+  if (item.data.data.rollType) {
+    move(actor, item).then(rst => {
+      resolveMove(actor, item, rst).then( );
+    });
+  } else {
+    if (item.data.data.details.script) {
+      DWBase[item.data.data.details.script](actor);
+    } else {
+      let template = 'systems/dungeonworld/templates/chat/chat-move.html';
+      let templateData = {
+        title: item.name,
+        details: item.data.data.description
+      }
+      let chatData = {
+        user: game.user._id,
+        speaker: ChatMessage.getSpeaker({actor: this.actor})
+      };
+      renderTemplate(template, templateData).then(content => {
+        chatData.content = content;
+        ChatMessage.create(chatData);
+      });
+    }
+  }
 }
