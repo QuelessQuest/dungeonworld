@@ -282,10 +282,13 @@
                             </h2>
                             {{#each spells as |item id|}}
                             <li class="item flexrow" data-item-id="{{item._id}}" draggable="true">
+                                {{#if item.data.prepared}}
                                 <img class="img-move rollable move-rollable" data-roll="{{item.data.rollType}}" data-mod="{{item.data.rollMod}}" src="{{item.img}}" title="{{item.name}}" width="75" height="75"/>
+                                {{else}}
+                                <img class="img-move-unprep rollable move-rollable" data-roll="{{item.data.rollType}}" data-mod="{{item.data.rollMod}}" src="{{item.img}}" title="{{item.name}}" width="75" height="75"/>
+                                {{/if}}
                                 <h4 class="item-name"><span class="item-label">{{item.name}}<span class="item-details-toggle"><i class="fas fa-chevron-down"></i></span></span></h4>
                                 <div class="item-controls">
-                                    {{!-- <a class="item-control item-details-toggle" title="Show Details"><i class="fas fa-caret-right"></i></a> --}}
                                   {{#if item.data.prepared}}
                                   <a class="item-control prepared"><i class="far fa-check-square"></i></a>
                                   {{else}}

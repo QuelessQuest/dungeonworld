@@ -1293,6 +1293,39 @@
         -webkit-transform: scale(1.2);
         -ms-transform: scale(1.2);
         transform: scale(1.2); }
+  .dungeonworld.sheet .cell--basic-moves .img-move-unprep,
+  .dungeonworld.sheet .cell--starting-moves .img-move-unprep,
+  .dungeonworld.sheet .cell--advanced-moves .img-move-unprep,
+  .dungeonworld.sheet .cell--other-moves .img-move-unprep,
+  .dungeonworld.sheet .cell--equipment .img-move-unprep,
+  .dungeonworld.sheet .cell--spells .img-move-unprep {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0;
+    flex: 0 0;
+    border: 2px solid #728f8b;
+    -webkit-filter: opacity(0.4);
+    filter: opacity(0.4); }
+    .dungeonworld.sheet .cell--basic-moves .img-move-unprep .rollable,
+    .dungeonworld.sheet .cell--starting-moves .img-move-unprep .rollable,
+    .dungeonworld.sheet .cell--advanced-moves .img-move-unprep .rollable,
+    .dungeonworld.sheet .cell--other-moves .img-move-unprep .rollable,
+    .dungeonworld.sheet .cell--equipment .img-move-unprep .rollable,
+    .dungeonworld.sheet .cell--spells .img-move-unprep .rollable {
+      display: inline-block;
+      -webkit-transition: all ease-in-out 0.25s;
+      -o-transition: all ease-in-out 0.25s;
+      transition: all ease-in-out 0.25s;
+      min-width: 40px;
+      text-align: center; }
+      .dungeonworld.sheet .cell--basic-moves .img-move-unprep .rollable:hover,
+      .dungeonworld.sheet .cell--starting-moves .img-move-unprep .rollable:hover,
+      .dungeonworld.sheet .cell--advanced-moves .img-move-unprep .rollable:hover,
+      .dungeonworld.sheet .cell--other-moves .img-move-unprep .rollable:hover,
+      .dungeonworld.sheet .cell--equipment .img-move-unprep .rollable:hover,
+      .dungeonworld.sheet .cell--spells .img-move-unprep .rollable:hover {
+        -webkit-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+        transform: scale(1.2); }
   .dungeonworld.sheet .cell--basic-moves .img-move,
   .dungeonworld.sheet .cell--starting-moves .img-move,
   .dungeonworld.sheet .cell--advanced-moves .img-move,

@@ -21,7 +21,6 @@ export async function move(actor, item, spell = "") {
 
     if (itemData.details.effect.enabled) {
         if (itemData.details.effect.self) {
-            console.log("added effect");
             await TokenMagic.addFiltersOnSelected(itemData.details.effect.name);
         }
         if (itemData.details.effect.target) {
@@ -139,7 +138,6 @@ export async function resolveMove(actor, move, result) {
     }
     if (moveData.details.effect.enabled) {
         if (moveData.details.effect.self) {
-            console.log("Removed effect");
             await TokenMagic.deleteFiltersOnSelected();
         }
         if (moveData.details.effect.target) {

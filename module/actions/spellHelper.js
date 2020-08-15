@@ -10,11 +10,11 @@ import * as util from './dwUtils.js'
 export async function resolveCasting(actor, spell, cast) {
 
     let spellData = spell.data.data;
+    let targetData = util.getTargets(actor);
     let success = false;
     switch (cast) {
         case "FAILED":
             if (spellData.details.target) {
-                let targetData = util.getTargets(actor);
                 if (TokenMagic.hasFilterId(targetData.targetToken, spellData.details.effect.name))
                     await TokenMagic.deleteFilters(targetData.targetToken, spellData.details.effect.name);
             }
@@ -35,6 +35,34 @@ export async function resolveCasting(actor, spell, cast) {
 
     if (success) {
 
+        if (spellData.details.effect.enabled) {
+            if (spellData.details.effect.self) {
+                await TokenMagic.addFiltersOnSelected(spellData.details.effect.name);
+            }
+            if (spellData.details.effect.target) {
+                await TokenMagic.addFiltersOnTargeted(spellData.details.effect.name);
+            }
+        }
+        if (spellData.details.active) {
+            await setActiveSpell(actor, {
+                spell: spell.name,
+                data: {
+                    targetName: targetData.targetActor.name,
+                    targetId: targetData.targetActor._id,
+                    targetToken: targetData.targetToken.id,
+                    effect: spellData.details.effect.enabled ? spellData.details.effect.name : ""
+                }
+            });
+        }
+        if (spellData.details.sustained) {
+            await setSustained(actor, {
+                spell: spell.name,
+                data: {
+                    targetName: targetData.targetActor.name,
+                    value: 1
+                }
+            });
+        }
         if (spellData.details.damage.amt) {
             if (spellData.details.damage.script) {
                 await DWBase[spellData.details.damage.script](actor);
