@@ -50,7 +50,8 @@ export async function resolveCasting(actor, spell, cast) {
                     targetName: targetData.targetActor.name,
                     targetId: targetData.targetActor._id,
                     targetToken: targetData.targetToken.id,
-                    effect: spellData.details.effect.enabled ? spellData.details.effect.name : ""
+                    effect: spellData.details.effect.enabled ? spellData.details.effect.name : "",
+                    sustained: spellData.details.sustained
                 }
             });
         }
@@ -122,7 +123,7 @@ export async function dropSpell(actor) {
                     label: "Cancel Spell",
                     callback: html => {
                         resolve(
-                            html.find('.dw-cancel-spell.dialog [name="activeSpells"]')[0].value);
+                            html.find('#activeSpells')[0].value);
                     }
                 },
                 cancel: {
@@ -237,25 +238,29 @@ export async function setActiveSpell(actor, data) {
  * @returns {Promise<void>}
  */
 export async function removeActiveSpell(actor, {spell = "", targetName = ""}) {
-    let stuff = await removeSpellFlag(actor, "activeSpells", {spell: spell, targetName: targetName});
+    console.log("RA");
+    let flag = await removeSpellFlag(actor, "activeSpells", {spell: spell, targetName: targetName});
 
     let targetActor = null;
-    let data = stuff.data.data;
+    let data = flag.data.data;
 
     if (data.targetId) {
         targetActor = game.actors.find(a => a._id === data.targetId);
     }
     if (data.sustained) {
+        console.log("SUS");
         await removeSustained(actor, {spell: spell, targetName: data.targetName});
     }
     if (data.forward) {
         await removeForward(targetActor, spell);
     }
 
-    if (data.filter) {
-        let xx = canvas.tokens.placeables.filter(placeable => placeable.id === data.targetToken);
-        let targetToken = xx[0];
-        await TokenMagic.deleteFilters(targetToken);
+    if (targetActor) {
+        let place = canvas.tokens.placeables.filter(placeable => placeable.id === data.targetToken)
+        let targetToken = place[0];
+        if (TokenMagic.hasFilterId(targetToken, data.effect)) {
+            await TokenMagic.deleteFilters(targetToken);
+        }
     }
 
     if (data.damage) {

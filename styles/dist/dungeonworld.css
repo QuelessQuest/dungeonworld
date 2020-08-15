@@ -194,6 +194,9 @@
   color: #999;
   font-size: 12px; }
 
+.dw-spell-dialog .bottom-margin {
+  margin-bottom: 10px; }
+
 .dw-spell-dialog .prepSpell {
   -webkit-box-align: center;
   -ms-flex-align: center;

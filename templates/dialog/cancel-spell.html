@@ -4,6 +4,7 @@
     </div>
     <div class="bottom-margin">
         <select name="activeSpells" id="activeSpells">
+            <option value="-">-</option>
             {{#each activeSpells}}
             <option value="{{this.spell}},{{this.data.targetName}}">{{this.spell}} [{{this.data.targetName}}]</option>
             {{/each}}
