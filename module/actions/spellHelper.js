@@ -35,20 +35,20 @@ export async function resolveCasting(actor, spell, cast) {
 
     if (success) {
 
-        // Get any additional options (mostly for canceling)
-        let additionalOptions = null;
-        if (spellData.details.script) {
-            additionalOptions = await DWBase[spellData.details.script](actor);
-        }
-
         // Add effects to caster and/or target
         if (spellData.details.effect.enabled) {
             if (spellData.details.effect.self) {
                 await TokenMagic.addFiltersOnSelected(spellData.details.effect.name);
             }
             if (spellData.details.effect.target) {
-                await TokenMagic.addFiltersOnTargeted(spellData.details.effect.name);
+                await TokenMagic.addFilters(targetData.targetToken, spellData.details.effect.name);
             }
+        }
+
+        // Get any additional options (mostly for canceling)
+        let additionalOptions = null;
+        if (spellData.details.script) {
+            additionalOptions = await DWBase[spellData.details.script](actor);
         }
 
         // If this is an active spell, set the cancel data
@@ -62,7 +62,7 @@ export async function resolveCasting(actor, spell, cast) {
             };
             let mergedData;
             if (additionalOptions) {
-                mergedData= {
+                mergedData = {
                     ...data,
                     ...additionalOptions
                 };
@@ -117,6 +117,21 @@ export async function resolveCasting(actor, spell, cast) {
     return new Promise(resolve => {
         resolve(success);
     });
+}
+
+/**
+ * INVISIBILITY
+ * @param actor
+ * @returns {Promise<void>}
+ */
+export async function invisibility(actor) {
+    let targetData = util.getTargets(actor);
+    await targetData.targetToken.update({"hidden": true});
+    return {
+        updateData: {"hidden": false},
+        updateType: "Token",
+        middleWords: "has canceled the Invisibility on"
+    };
 }
 
 /**
@@ -438,10 +453,10 @@ export async function removeForward(target, spell) {
  * @param actor
  * @returns {Promise<string>}
  */
-async function barredFromCasting(actor) {
+export async function barredFromCasting(actor) {
     let as = actor.getFlag("world", "activeSpells");
     if (as) {
-        if (as.find(x => x.spell === "invisibility")) {
+        if (as.find(x => x.spell === "Invisibility")) {
             return "Cannot cast a spell while Invisibility is being maintained";
         }
     }

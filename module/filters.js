@@ -1,52 +1,22 @@
 export const NamedFilters = [
     {
-        name: "Default Damage",
-        data: [
-            {
-                filterType: "adjustment",
+        name: "Invisibility",
+        data:
+            [{
+                filterType: "zapshadow",
+                filterId: "myZap",
+                alphaTolerance: 0,
                 autoDestroy: true,
-                saturation: 1,
-                brightness: .5,
-                contrast: 1,
-                gamma: 1,
-                red: 4,
-                green: 0.5,
-                blue: 0.5,
-                alpha: 0.5,
                 animated:
                     {
-                        alpha:
-                            {
-                                active: true,
-                                loopDuration: 250,
-                                loops: 1,
-                                animType: "syncCosOscillation",
-                                val1: 1,
-                                val2: 1
-                            }
+                        alphaTolerance: {
+                            loops: 1,
+                            active: true,
+                            speed: 0.001,
+                            animType: "move"
+                        }
                     }
             }]
-    },
-    {
-        name: "Electric Damage",
-        data: [
-            {
-            filterType: "electric",
-            color: 0xFFFFFF,
-            time: 0,
-            blend: 1,
-            intensity: 5,
-            autoDestroy: true,
-            animated: {
-                time: {
-                    active: true,
-                    speed: 0.0020,
-                    loopDuration: 1500,
-                    loops: 1,
-                    animType: "move"
-                }
-            }
-        }]
     }
 ];
 

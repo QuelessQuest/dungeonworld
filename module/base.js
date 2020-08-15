@@ -17,6 +17,9 @@ export function Base() {
      * SPELL SCRIPTS ========================================
      */
 
+    async function invisibility(actor) {
+        return sh.invisibility(actor);
+    }
     async function light(actor) {
         return sh.light(actor);
     }
@@ -102,6 +105,7 @@ export function Base() {
         exportFilters: exportFilters,
         importFilters: importFilters,
         getFilters: getFilters,
+        invisibility: invisibility,
         light: light,
         magicMissile: magicMissile,
         magicWeapon: magicWeapon,
