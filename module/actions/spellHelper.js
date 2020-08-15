@@ -243,7 +243,6 @@ export async function removeActiveSpell(actor, {spell = "", targetName = ""}) {
 
     let targetActor = null;
     let data = flag.data.data;
-
     if (data.targetId) {
         targetActor = game.actors.find(a => a._id === data.targetId);
     }
