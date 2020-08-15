@@ -1,7 +1,7 @@
 import * as sh from './actions/spellHelper.js'
 import * as dm from './actions/druidMoves.js'
-import * as basic from './actions/basicMoves.js'
 import {DwFilters} from "./filters.js";
+import * as move from "./actions/moves.js";
 
 export function Base() {
 
@@ -9,7 +9,7 @@ export function Base() {
      * CLERIC MOVES ========================================
      */
 
-    async function doCommune(actor) {
+    async function commune(actor) {
         return sh.setSpells(actor, "Commune");
     }
 
@@ -22,10 +22,17 @@ export function Base() {
     }
 
     /**
+     * DRUID MOVES ========================================
+     */
+    async function shapeshifter(actor) {
+        return dm.shapeshifter(actor);
+    }
+
+    /**
      * WIZARD MOVES ========================================
      */
 
-    async function doPrepareSpells(actor) {
+    async function prepareSpells(actor) {
         return sh.setSpells(actor, "Prepare Spells");
     }
 
@@ -61,6 +68,10 @@ export function Base() {
         await DwFilters.importFilters();
     }
 
+    async function deleteFilter(filter) {
+        await DwFilters.deleteFilter(filter);
+    }
+
     async function getFilters() {
         await DwFilters.getFilters();
     }
@@ -70,19 +81,13 @@ export function Base() {
      */
 
     async function doMove(actor, item, spell) {
-        return basic.move(actor, item, spell);
-    }
-
-    /**
-     * DRUID MOVES ========================================
-     */
-    async function doShapeshifter(actor) {
-        return dm.shapeshift(actor);
+        return move.move(actor, item, spell);
     }
 
     return {
         cancelSpell: cancelSpell,
-        doPrepareSpells: doPrepareSpells,
+        prepareSpells: prepareSpells,
+        commune: commune,
         showToken: showToken,
         showActor: showActor,
         notDead: notDead,
@@ -91,7 +96,9 @@ export function Base() {
         exportFilters: exportFilters,
         importFilters: importFilters,
         getFilters: getFilters,
-        magicMissile: magicMissile
+        magicMissile: magicMissile,
+        shapeshifter: shapeshifter,
+        deleteFilter: deleteFilter
     }
 }
 

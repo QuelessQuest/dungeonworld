@@ -1,5 +1,4 @@
 import * as util from './dwUtils.js'
-import * as basic from './basicMoves.js'
 
 /**
  * Process results of casting the spell, e.g. un-prepare spell if necessary, do damage, heal
@@ -9,8 +8,7 @@ import * as basic from './basicMoves.js'
  * @returns {Promise<unknown>}
  */
 export async function resolveCasting(actor, spell, cast) {
-    console.log("RESOLVE");
-    console.log(spell);
+
     let spellData = spell.data.data;
     let success = false;
     switch (cast) {
@@ -71,56 +69,6 @@ export async function magicMissile(actor) {
     let targetData = util.getTargets(actor);
     await launchProjectile(canvas.tokens.controlled[0], targetData.targetToken, "systems/dungeonworld/assets/mm.png");
     await TokenMagic.addFiltersOnTargeted("Electric Damage");
-}
-
-/**
- * CAST SPELL
- * @param actor
- * @param targetActor
- * @param flavor
- * @param spellName
- * @param move
- * @param options
- * @returns {Promise<unknown>}
- */
-export async function castSpell({actor = {}, targetActor = {}, flavor = null, spellName = "", move = "", options = {}}) {
-
-    let cast = await basic.basicMove({
-        actor: actor,
-        targetActor: targetActor,
-        flavor: flavor,
-        title: spellName,
-        move: move,
-        options: options
-    });
-
-    let success = false;
-    switch (cast) {
-        case "FAILED":
-            let targetData = util.getTargets(actor);
-            await TokenMagic.deleteFilters(targetData.targetToken);
-            break;
-        case "DISTANCED":
-            await setOngoing(actor, -1);
-            success = true;
-            break;
-        case "REVOKED":
-            let spell = actor.data.data.items.find(i => i.name.toLowerCase() === move.toLowerCase());
-            let sId = spell._id;
-            const item = actor.getOwnedItem(sId);
-            if (item) {
-                let updatedItem = duplicate(item);
-                updatedItem.data.prepared = true;
-                await actor.updateOwnedItem(updatedItem);
-            }
-            success = true;
-            break;
-        default:
-            success = true;
-    }
-    return new Promise(resolve => {
-        resolve(success);
-    });
 }
 
 /**
@@ -357,45 +305,6 @@ export async function removeForward(target, spell) {
     let ff = target.getFlag("world", "forward");
     let fFiltered = ff.filter(f => f.type !== spell);
     await target.setFlag("world", "forward", fFiltered);
-}
-
-/**
- * VALIDATE SPELL
- * Checks: Is the spell known? Is the spell prepared? Are they barred from any casting?
- * @param actor
- * @param spell
- * @param target
- * @returns {Promise<boolean>}
- */
-export async function validateSpell({actor: actor, spell: spell, target: target}) {
-    if (!actor) {
-        ui.notifications.warn("Please select the caster");
-        return false;
-    }
-    let actorData = actor.data;
-    let hasSpell = actorData.items.find(i => i.name.toLowerCase() === spell.toLowerCase());
-    if (hasSpell === null) {
-        ui.notifications.warn(`${actorData.name} does not know how to cast ${spell}`);
-        return false;
-    }
-    if (hasSpell.data.data.prepared) {
-        if (target) {
-            if (game.user.targets.size === 0) {
-                ui.notifications.warn("Spell requires a target.");
-                return false;
-            }
-        }
-        let message = await barredFromCasting(actorData);
-        if (message === "ok") {
-            return true;
-        } else {
-            ui.notifications.warn(message);
-            return false;
-        }
-    } else {
-        ui.notifications.warn(`${actorData.name} does not have ${spell} prepared`);
-        return false;
-    }
 }
 
 /**

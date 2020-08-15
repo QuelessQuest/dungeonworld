@@ -101,12 +101,12 @@ export function getTargets(actor) {
  * @param flavor
  * @param templateData
  * @param title
- * @param template
  * @param chatData
  * @returns {Promise<unknown>}
  */
 export async function processChoice({
                                         title = "",
+                                        flavor = "",
                                         rollData = {},
                                         templateData = {},
                                         chatData = {},
@@ -116,7 +116,7 @@ export async function processChoice({
     return new Promise(resolve => {
         const dialog = new Dialog({
             title: title,
-            content: "flavor",
+            content: flavor,
             buttons: getButtons(rollData, templateData, chatData, spell, resolve),
         }, {width: 450, classes: ["dungeonworld", "dwmacros", "dialog", "column"]});
         dialog.render(true);
@@ -142,7 +142,7 @@ function getButtons(rollData, templateData, chatData, spell, resolve) {
                 templateData.startingWords = rollData.option0.startW ? injectVariable(rollData.option0.startW, spell) : "";
                 templateData.middleWords = rollData.option0.midW ? injectVariable(rollData.option0.midW, spell) : "";
                 templateData.endWords = rollData.option0.endW ? injectVariable(rollData.option0.endW, spell) : "";
-                chatData.content = await renderTemplate(CONFIG.DW.template, templateData);
+                chatData.content = await renderTemplate(DW.template, templateData);
                 await ChatMessage.create(chatData);
                 resolve(rollData.option0.ret);
             }
@@ -157,7 +157,7 @@ function getButtons(rollData, templateData, chatData, spell, resolve) {
                 templateData.startingWords = rollData.option1.startW ? injectVariable(rollData.option1.startW, spell) : "";
                 templateData.middleWords = rollData.option1.midW ? injectVariable(rollData.option1.midW, spell) : "";
                 templateData.endWords = rollData.option1.endW ? injectVariable(rollData.option1.endW, spell) : "";
-                chatData.content = await renderTemplate(CONFIG.DW.template, templateData);
+                chatData.content = await renderTemplate(DW.template, templateData);
                 await ChatMessage.create(chatData);
                 resolve(rollData.option1.ret);
             }
@@ -172,7 +172,7 @@ function getButtons(rollData, templateData, chatData, spell, resolve) {
                 templateData.startingWords = rollData.option2.startW ? injectVariable(rollData.option2.startW, spell) : "";
                 templateData.middleWords = rollData.option2.midW ? injectVariable(rollData.option2.midW, spell) : "";
                 templateData.endWords = rollData.option2.endW ? injectVariable(rollData.option2.endW, spell) : "";
-                chatData.content = await renderTemplate(CONFIG.DW.template, templateData);
+                chatData.content = await renderTemplate(DW.template, templateData);
                 await ChatMessage.create(chatData);
                 resolve(rollData.option2.ret);
             }
@@ -186,8 +186,8 @@ function getButtons(rollData, templateData, chatData, spell, resolve) {
             callback: async () => {
                 templateData.startingWords = rollData.option3.startW ? injectVariable(rollData.option3.startW, spell) : "";
                 templateData.middleWords = rollData.option3.midW ? injectVariable(rollData.option3.midW, spell) : "";
-                templateData.endWords = rollData.option3.endW ? injectVariable(rollData.option3.endW , spell): "";
-                chatData.content = await renderTemplate(CONFIG.DW.template, templateData);
+                templateData.endWords = rollData.option3.endW ? injectVariable(rollData.option3.endW, spell) : "";
+                chatData.content = await renderTemplate(DW.template, templateData);
                 await ChatMessage.create(chatData);
                 resolve(rollData.option3.ret);
             }
@@ -199,57 +199,20 @@ function getButtons(rollData, templateData, chatData, spell, resolve) {
 
 /**
  * RENDER DICE RESULTS
- * @param options
- * @param template
- * @param templateData
- * @param speaker
- * @param flavor
  * @param title
- * @returns {Promise<*>}
+ * @param total
+ * @param itemData
+ * @param templateData
+ * @param spell
+ * @returns {Promise<unknown|*>}
  */
 export async function renderDiceResults({
-                                            options = {},
-                                            template = "",
+                                            title = "",
+                                            total = 0,
+                                            itemData = {},
                                             templateData = {},
-                                            speaker = null,
-                                            flavor = "",
-                                            title: title
+                                            spell = ""
                                         }) {
-
-    speaker = speaker || ChatMessage.getSpeaker();
-    let chatData = {
-        speaker: speaker,
-    }
-
-    let details = options.details;
-    templateData.dialogType = options.dialogType;
-
-    if (options.result instanceof Array) {
-        return await processChoice({
-            options: options.result,
-            flavor: flavor,
-            templateData: templateData,
-            template: template,
-            title: title,
-            chatData: chatData
-        });
-    } else {
-        templateData.startingWords = details.startingWords ? details.startingWords : "";
-        templateData.middleWords = details.middleWords ? details.middleWords : "";
-        templateData.endWords = details.endWords ? details.endWords : "";
-        chatData.content = await renderTemplate(template, templateData);
-        await ChatMessage.create(chatData);
-        return options.result;
-    }
-}
-
-export async function renderDiceResults2({
-                                             title = "",
-                                             total = 0,
-                                             itemData = {},
-                                             templateData = {},
-                                             spell = ""
-                                         }) {
 
     let chatData = {
         speaker: ChatMessage.getSpeaker(),
@@ -279,54 +242,10 @@ export async function renderDiceResults2({
         templateData.startingWords = rollData.startW ? injectVariable(rollData.startW, spell) : "";
         templateData.middleWords = rollData.midW ? injectVariable(rollData.midW, spell) : "";
         templateData.endWords = rollData.endW ? injectVariable(rollData.endW, spell) : "";
-        chatData.content = await renderTemplate(CONFIG.DW.template, templateData);
+        chatData.content = await renderTemplate(DW.template, templateData);
         await ChatMessage.create(chatData);
         return rollData.ret;
     }
-}
-
-export async function resolveMove(actor, move, result) {
-    let moveData = move.data.data;
-    if (moveData.details.damage.enabled) {
-        await doDamage({
-            item: move,
-            damageMod: result,
-            actor: actor,
-            targetData: getTargets(actor),
-            title: move.name
-        })
-    }
-    if (moveData.details.heal.enabled) {
-        await util.doHeal({
-            item: move,
-            actor: actor,
-            targetData: getTargets(actor),
-            baseHeal: result,
-            title: spell.name
-        });
-    }
-}
-
-/**
- * VALIDATE MOVE
- * Determine if the user has the move in question
- * @param actor
- * @param move
- * @param target
- * @returns {Promise<boolean>}
- */
-export async function validateMove({actor: actor, move: move, target: target}) {
-    if (!actor) {
-        ui.notifications.warn("Please select a character");
-        return false;
-    }
-    let actorData = actor.data;
-    let hasMove = actorData.items.find(i => i.name.toLowerCase() === move.toLowerCase());
-    if (hasMove === null) {
-        ui.notifications.warn(`${actorData.name} does not know ${move}`);
-        return false;
-    }
-    return true;
 }
 
 /**
@@ -386,7 +305,7 @@ export async function doDamage({
         let tName = targetData.targetActor ? targetData.targetActor.name : "";
 
         let templateData = {
-            dialogType: CONFIG.DW.dialogTypes.damage,
+            dialogType: DW.dialogTypes.damage,
             sourceColor: gColors.source,
             sourceName: sName,
             targetColor: gColors.target,
@@ -405,7 +324,7 @@ export async function doDamage({
             await TokenMagic.addFiltersOnTargeted(effect === "Default" ? "Default Damage" : effect);
         }
 
-        renderTemplate(CONFIG.DW.template, templateData).then(content => {
+        renderTemplate(DW.template, templateData).then(content => {
             let chatData = {
                 speaker: ChatMessage.getSpeaker(),
                 content: content
@@ -474,7 +393,7 @@ export async function doHeal({
         let tName = targetActor ? targetActor.name : "";
 
         let templateData = {
-            dialogType: CONFIG.DW.dialogTypes.heal,
+            dialogType: DW.dialogTypes.heal,
             sourceColor: gColors.source,
             sourceName: sName,
             targetColor: gColors.target,
@@ -487,7 +406,7 @@ export async function doHeal({
             rollDw: rolled
         }
 
-        renderTemplate(CONFIG.DW.template, templateData).then(content => {
+        renderTemplate(DW.template, templateData).then(content => {
             let chatData = {
                 speaker: ChatMessage.getSpeaker(),
                 content: content
@@ -502,10 +421,17 @@ export async function doHeal({
     }
 }
 
+/**
+ * INJECT VARIABLE
+ * Replaces #v in a string with the value of the variable
+ * @param str
+ * @param variable
+ * @returns {string|*}
+ */
 export function injectVariable(str, variable) {
     let aLoc = str.indexOf("#v");
     if (aLoc >= 0) {
-            return str.substr(0, aLoc) + variable + str.substr(aLoc + 2);
+        return str.substr(0, aLoc) + variable + str.substr(aLoc + 2);
     } else
         return str;
 }

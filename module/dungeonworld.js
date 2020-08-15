@@ -19,7 +19,6 @@ import { DwRegisterHelpers } from "./handlebars.js";
 import { DwUtility } from "./utility.js";
 import { CombatSidebarDw } from "./combat/combat.js";
 import * as sh from "./actions/spellHelper.js";
-import * as util from "./actions/dwUtils.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */

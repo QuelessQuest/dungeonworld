@@ -1661,65 +1661,6 @@
         ]
     },
     {
-        "name": "bless",
-        "params": [
-            {
-                "filterType": "zapshadow",
-                "alphaTolerance": 0.5,
-                "filterId": "bless"
-            },
-            {
-                "filterType": "xglow",
-                "auraType": 1,
-                "color": 7388159,
-                "thickness": 2,
-                "scale": 0.25,
-                "time": 0,
-                "auraIntensity": 0.5,
-                "subAuraIntensity": 2,
-                "threshold": 0.25,
-                "discard": false,
-                "animated": {
-                    "time": {
-                        "active": true,
-                        "speed": 0.0006,
-                        "animType": "move"
-                    }
-                },
-                "filterId": "bless"
-            }
-        ]
-    },
-    {
-        "name": "cure-wounds",
-        "params": [
-            {
-                "filterType": "zapshadow",
-                "alphaTolerance": 0.5,
-                "filterId": "cure-wounds"
-            },
-            {
-                "filterType": "outline",
-                "autoDestroy": true,
-                "padding": 10,
-                "color": 16777215,
-                "thickness": 1,
-                "quality": 10,
-                "animated": {
-                    "thickness": {
-                        "active": true,
-                        "loopDuration": 4000,
-                        "loops": 1,
-                        "animType": "syncCosOscillation",
-                        "val1": 1,
-                        "val2": 8
-                    }
-                },
-                "filterId": "cure-wounds"
-            }
-        ]
-    },
-    {
         "name": "Magic Weapon",
         "params": [
             {
@@ -1818,6 +1759,116 @@
                     }
                 },
                 "filterId": "Shapeshifter"
+            }
+        ]
+    },
+    {
+        "name": "Bless",
+        "params": [
+            {
+                "filterType": "zapshadow",
+                "alphaTolerance": 0.5,
+                "filterId": "Bless"
+            },
+            {
+                "filterType": "xglow",
+                "auraType": 1,
+                "color": 7388159,
+                "thickness": 2,
+                "scale": 0.25,
+                "time": 0,
+                "auraIntensity": 0.5,
+                "subAuraIntensity": 2,
+                "threshold": 0.25,
+                "discard": false,
+                "animated": {
+                    "time": {
+                        "active": true,
+                        "speed": 0.0006,
+                        "animType": "move"
+                    }
+                },
+                "filterId": "Bless"
+            }
+        ]
+    },
+    {
+        "name": "Cure Wounds",
+        "params": [
+            {
+                "filterType": "zapshadow",
+                "alphaTolerance": 0.5,
+                "filterId": "Cure Wounds"
+            },
+            {
+                "filterType": "outline",
+                "autoDestroy": true,
+                "padding": 10,
+                "color": 16777215,
+                "thickness": 1,
+                "quality": 10,
+                "animated": {
+                    "thickness": {
+                        "active": true,
+                        "loopDuration": 4000,
+                        "loops": 1,
+                        "animType": "syncCosOscillation",
+                        "val1": 1,
+                        "val2": 8
+                    }
+                },
+                "filterId": "Cure Wounds"
+            }
+        ]
+    },
+    {
+        "name": "Default Damage",
+        "params": [
+            {
+                "filterType": "adjustment",
+                "autoDestroy": true,
+                "saturation": 1,
+                "brightness": 0.5,
+                "contrast": 1,
+                "gamma": 1,
+                "red": 4,
+                "green": 0.5,
+                "blue": 0.5,
+                "alpha": 0.5,
+                "animated": {
+                    "alpha": {
+                        "active": true,
+                        "loopDuration": 250,
+                        "loops": 1,
+                        "animType": "syncCosOscillation",
+                        "val1": 1,
+                        "val2": 1
+                    }
+                },
+                "filterId": "Default Damage"
+            }
+        ]
+    },
+    {
+        "name": "Electric Damage",
+        "params": [
+            {
+                "filterType": "electric",
+                "color": 16777215,
+                "time": 0,
+                "blend": 1,
+                "intensity": 5,
+                "autoDestroy": true,
+                "animated": {
+                    "time": {
+                        "active": true,
+                        "speed": 0.002,
+                        "loopDuration": 1500,
+                        "loops": 1,
+                        "animType": "move"
+                    }
+                },
+                "filterId": "Electric Damage"
             }
         ]
     }

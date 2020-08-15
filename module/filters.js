@@ -88,4 +88,8 @@ export class DwFilters {
     static async importFilters() {
         await TokenMagic.importPresetLibraryFromPath("/systems/dungeonworld/assets/dwFilters.json");
     }
+
+    static async deleteFilter(filter) {
+        await TokenMagic.deletePreset(filter);
+    }
 }

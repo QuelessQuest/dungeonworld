@@ -1,7 +1,7 @@
 import { DwClassList } from "../config.js";
 import { DwUtility } from "../utility.js";
-import * as sh from "../actions/spellHelper.js";
-import * as util from "../actions/dwUtils.js";
+import { resolveCasting } from "../actions/spellHelper.js";
+import { resolveMove, move } from "../actions/moves.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -778,29 +778,33 @@ export class DwActorSheet extends ActorSheet {
     if (item.data.type === "spell") {
       let castASpell = this.actor.data.items.find(i => i.name.toLowerCase() === "cast a spell");
       let z = this.actor.getOwnedItem(castASpell._id);
-      let rst = await DWBase.doMove(this.actor, z, item.name);
-      await sh.resolveCasting(this.actor, item, rst);
+      let rst = await move(this.actor, z, item.name);
+      await resolveCasting(this.actor, item, rst);
       return;
     }
 
     if (item.data.data.rollType) {
-      let rst = await DWBase.doMove(this.actor, item);
-      await util.resolveMove(this.actor, item, rst);
+      let rst = await move(this.actor, item);
+      await resolveMove(this.actor, item, rst);
 
     } else {
-      let template = 'systems/dungeonworld/templates/chat/chat-move.html';
-      let templateData = {
-        title: item.name,
-        details: item.data.data.description
+      if (item.data.data.details.script) {
+        DWBase[item.data.data.details.script](this.actor);
+      } else {
+        let template = 'systems/dungeonworld/templates/chat/chat-move.html';
+        let templateData = {
+          title: item.name,
+          details: item.data.data.description
+        }
+        let chatData = {
+          user: game.user._id,
+          speaker: ChatMessage.getSpeaker({actor: this.actor})
+        };
+        renderTemplate(template, templateData).then(content => {
+          chatData.content = content;
+          ChatMessage.create(chatData);
+        });
       }
-      let chatData = {
-        user: game.user._id,
-        speaker: ChatMessage.getSpeaker({ actor: this.actor })
-      };
-      renderTemplate(template, templateData).then(content => {
-        chatData.content = content;
-        ChatMessage.create(chatData);
-      });
     }
   }
 
