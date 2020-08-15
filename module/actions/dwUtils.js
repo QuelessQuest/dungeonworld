@@ -48,7 +48,7 @@ export async function coloredChat({
                                       middleWords = "",
                                       endWords = ""
                                   }) {
-    let template = "modules/dwmacros/templates/chat/defaultWithColor.html";
+    let template = "systems/dungeonworld/templates/chat/default-with-color.html";
 
     let gColors = getColors(actor, target);
 

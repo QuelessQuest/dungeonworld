@@ -1,7 +1,6 @@
 import * as sh from './actions/spellHelper.js'
 import * as dm from './actions/druidMoves.js'
 import {DwFilters} from "./filters.js";
-import * as move from "./actions/moves.js";
 
 export function Base() {
 
@@ -89,10 +88,6 @@ export function Base() {
      * BASIC MOVES ========================================
      */
 
-    async function doMove(actor, item, spell) {
-        return move.move(actor, item, spell);
-    }
-
     return {
         cancelSpell: cancelSpell,
         prepareSpells: prepareSpells,
@@ -100,7 +95,6 @@ export function Base() {
         showToken: showToken,
         showActor: showActor,
         notDead: notDead,
-        doMove: doMove,
         createFilters: createFilters,
         exportFilters: exportFilters,
         importFilters: importFilters,
