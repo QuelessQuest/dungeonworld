@@ -283,6 +283,13 @@ function rollItemMacro(itemName) {
     } else {
         if (item.data.data.details.script) {
             DWBase[item.data.data.details.script](actor, item);
+        } else if (item.data.data.details.move) {
+            let theMove = this.actor.data.items.find(i => i.name.toLowerCase() === item.data.data.details.move);
+            let moveItem = this.actor.getOwnedItem(theMove._id);
+            move(this.actor, moveItem, item.name).then(rst => {
+                if (rst !== "abort")
+                    resolveMove(this.actor, item, rst).then();
+            });
         } else {
             let template = 'systems/dungeonworld/templates/chat/chat-move.html';
             let templateData = {

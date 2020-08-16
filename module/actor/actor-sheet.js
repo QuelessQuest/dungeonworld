@@ -776,6 +776,15 @@ export class DwActorSheet extends ActorSheet {
         } else {
             if (item.data.data.details.script) {
                 DWBase[item.data.data.details.script](this.actor, item);
+            } else if (item.data.data.details.move) {
+                console.log("MOVE");
+                console.log("->"+ item.data.data.details.move + "<-");
+                let theMove = this.actor.data.items.find(i => i.name.toLowerCase() === item.data.data.details.move.toLowerCase());
+                console.log(theMove);
+                let moveItem = this.actor.getOwnedItem(theMove._id);
+                let rst = await move(this.actor, moveItem, item.name);
+                if (rst !== "abort")
+                    await resolveMove(this.actor, item, rst);
             } else {
                 let template = 'systems/dungeonworld/templates/chat/chat-move.html';
                 let templateData = {

@@ -57,7 +57,8 @@ export async function move(actor, item, spell = "") {
     let sus = 0;
     let ongoing = 0;
 
-    // This is a spell. Handle special spell processing
+    // =================================================
+    // Spell Processing
     if (item.name.toLowerCase() === "cast a spell") {
         let ok = await barredFromCasting(actor);
         if ("ok" !== ok) {
@@ -79,6 +80,7 @@ export async function move(actor, item, spell = "") {
             formula += `+${ongoing}`;
         }
     }
+    // =================================================
 
     if (mod && mod !== 0) {
         formula += `+${mod}`;
