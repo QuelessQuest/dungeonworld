@@ -134,8 +134,8 @@
 .tag {
   position: relative;
   padding: 3px 6px 3px 6px;
-  background: #acc4c0;
-  color: #728f8b;
+  background: #728f8b;
+  color: #fff;
   margin: 5px 5px 0 0;
   border-radius: 4px;
   text-transform: capitalize;
@@ -196,6 +196,26 @@
 
 .dw-spell-dialog .bottom-margin {
   margin-bottom: 10px; }
+
+.dw-spell-dialog .flexlabel {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 75px;
+  flex: 0 0 75px; }
+
+.dw-spell-dialog .flexinput {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1; }
+
+.dw-spell-dialog .flexshrink {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto; }
+
+.dw-spell-dialog .choice {
+  padding-top: 10px;
+  border-top: 1px solid;
+  margin-top: 10px; }
 
 .dw-spell-dialog .prepSpell {
   -webkit-box-align: center;

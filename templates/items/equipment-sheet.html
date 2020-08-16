@@ -34,7 +34,10 @@
             </div>
             <div class="resource choice flexrow">
                 <div class="flexlabel">{{localize "DW.Uses"}}</div>
-                <input type="text" name="data.uses" value="{{data.uses}}" data-dtype="Number"/>
+                <div class="flexinput"><input type="text" name="data.uses" value="{{data.uses}}" data-dtype="Number"/></div>
+                <div class="flexlabel">Consumed?</div>
+                <div class="flexinput"><input type="checkbox" name="data.details.consume" value="1" {{#if data.details.consume}}checked{{/if}}/>
+                </div>
             </div>
             <div class="resource choice flexrow">
                 <div class="flexlabel">{{localize "DW.Weight"}}</div>
@@ -48,6 +51,13 @@
                 <div class="flexshrink">Script:</div>
                 <div class="flexinput"><input type="text" name="data.details.script" value="{{data.details.script}}" data-dtype="String" placeholder="script to run"/></div>
             </div>
+            <div class="resource flexrow">
+                <div class="flexinput"><input type="text" name="data.details.startW" value="{{data.details.startW}}" data-dtype="String" placeholder="words before"/></div>
+                <div class="flexshrink">Item Name</div>
+                <div class="flexinput"><input type="text" name="data.details.midW" value="{{data.details.midW}}" data-dtype="String" placeholder="words in the middle"/></div>
+                <div class="flexshrink">Target Name</div>
+                <div class="flexinput"><input type="text" name="data.details.endW" value="{{data.details.endW}}" data-dtype="String" placeholder="words at the end"/></div>
+            </div>
             <div class="resource choice flexrow">
                 <div class="flexlabel">{{localize "DW.MagicItem"}}</div>
                 <input type="checkbox" name="data.magic" {{checked data.magic}}/>
@@ -59,6 +69,7 @@
                     <option value="">—</option>
                     <option value="weapon">{{localize "DW.Weapon"}}</option>
                     <option value="armor">{{localize "DW.Armor"}}</option>
+                    <option value="adventuringgear">Adventuring Gear</option>
                     <option value="dungeongear">{{localize "DW.DungeonGear"}}</option>
                     <option value="poison">{{localize "DW.Poison"}}</option>
                     <option value="service">{{localize "DW.Service"}}</option>

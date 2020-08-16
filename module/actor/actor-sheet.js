@@ -2,6 +2,7 @@ import {DwClassList} from "../config.js";
 import {DwUtility} from "../utility.js";
 import {resolveCasting} from "../actions/spellHelper.js";
 import {resolveMove, move} from "../actions/moves.js";
+import {consume} from "../actions/items.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -760,6 +761,7 @@ export class DwActorSheet extends ActorSheet {
         const itemId = $(a).parents('.item').attr('data-item-id');
         const item = this.actor.getOwnedItem(itemId);
 
+        // This is a spell
         if (item.data.type === "spell") {
             let castASpell = this.actor.data.items.find(i => i.name.toLowerCase() === "cast a spell");
             let z = this.actor.getOwnedItem(castASpell._id);
@@ -769,14 +771,21 @@ export class DwActorSheet extends ActorSheet {
             return;
         }
 
+        // This is a move that requires a roll
         if (item.data.data.rollType) {
             let rst = await move(this.actor, item);
             if (rst !== "abort")
                 await resolveMove(this.actor, item, rst);
         } else {
-            if (item.data.data.details.script) {
-                DWBase[item.data.data.details.script](this.actor, item);
+
+            // This is an item with a script
+            if (item.data.data.details.script)  {
+                let rst = await DWBase[item.data.data.details.script](this.actor, item);
+                if (rst) await consume(this.actor, item);
+
             } else if (item.data.data.details.move) {
+
+                // I dont' remember......
                 console.log("MOVE");
                 console.log("->"+ item.data.data.details.move + "<-");
                 let theMove = this.actor.data.items.find(i => i.name.toLowerCase() === item.data.data.details.move.toLowerCase());
@@ -786,6 +795,8 @@ export class DwActorSheet extends ActorSheet {
                 if (rst !== "abort")
                     await resolveMove(this.actor, item, rst);
             } else {
+
+                // This is just text
                 let template = 'systems/dungeonworld/templates/chat/chat-move.html';
                 let templateData = {
                     title: item.name,

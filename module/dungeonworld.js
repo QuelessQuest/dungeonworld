@@ -20,6 +20,7 @@ import {DwUtility} from "./utility.js";
 import {CombatSidebarDw} from "./combat/combat.js";
 import * as sh from "./actions/spellHelper.js";
 import {move, resolveMove} from "./actions/moves.js";
+import {consume} from "./actions/items.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -282,7 +283,9 @@ function rollItemMacro(itemName) {
         });
     } else {
         if (item.data.data.details.script) {
-            DWBase[item.data.data.details.script](actor, item);
+            consume(this.actor, item).then(() => {
+                DWBase[item.data.data.details.script](this.actor, item);
+            });
         } else if (item.data.data.details.move) {
             let theMove = this.actor.data.items.find(i => i.name.toLowerCase() === item.data.data.details.move);
             let moveItem = this.actor.getOwnedItem(theMove._id);

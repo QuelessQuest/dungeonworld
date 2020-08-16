@@ -11,6 +11,20 @@ DW.dialogTypes = {
     heal: "heal"
 }
 
+DW.adventuringGear = [
+    "Torch",
+    "Mirror",
+    "Pick-Axe",
+    "Needle And Thread",
+    "Paper",
+    "Quill And Ink",
+    "Bell",
+    "Grapple",
+    "Rope",
+    "Hammer And Nails",
+    "Marbles"
+]
+
 DW.dialogClasses = {
     damage: "dieDamage",
     success: "dieSuccess",

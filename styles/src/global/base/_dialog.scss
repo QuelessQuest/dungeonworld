@@ -4,6 +4,24 @@
     margin-bottom: 10px;
   }
 
+  .flexlabel {
+    flex: 0 0 75px;
+  }
+
+  .flexinput {
+    flex: 1;
+  }
+
+  .flexshrink {
+    flex: 0 1 auto;
+  }
+
+  .choice {
+    padding-top: 10px;
+    border-top: 1px solid;
+    margin-top: 10px;
+  }
+
   .prepSpell {
     align-items: center;
     display: -webkit-box;

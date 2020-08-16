@@ -365,27 +365,40 @@ export async function doHeal({
     let itemData = item.data.data;
     let targetActor = targetData.targetActor;
     let actorData = actor.data;
-    let roll = new Roll(baseHeal, {});
-    roll.roll();
-    let rolled = await roll.render();
-    let damage = roll.total;
-    if (damage < 1) damage = 1;
+    let healing;
+    let rolled = null;
+    let roll, maxHeal, words;
+    const parsed = Number.parseInt(baseHeal);
+    if (Number.isNaN(parsed)) {
+        roll = new Roll(baseHeal, {});
+        roll.roll();
+        rolled = await roll.render();
+        healing = roll.total;
+        await game.dice3d.showForRoll(roll);
+
+        words = itemData.details.heal;
+    } else {
+        healing = baseHeal;
+        words = itemData.details;
+        // TODO roll render equivalent
+    }
+
+    console.log("HEA");
+    console.log(healing);
+    if (healing < 1) healing = 1;
+
+    maxHeal = Math.clamped(healing, 0,
+        targetActor.data.data.attributes.hp.max - targetActor.data.data.attributes.hp.value);
 
     if (effect && effect !== "None") {
         await TokenMagic.addFiltersOnTargeted(effect === "Default" ? "Cure Wound" : effect);
     }
 
-    await game.dice3d.showForRoll(roll);
-
-    let maxHeal = Math.clamped(roll.result, 0,
-        targetActor.data.data.attributes.hp.max - targetActor.data.data.attributes.hp.value);
-
-
     if (targetActor.permission !== CONST.ENTITY_PERMISSIONS.OWNER)
         roll.toMessage({
             speaker: ChatMessage.getSpeaker(),
             flavor: `${actorData.name} hits ${targetData.targetActor.data.name}.<br>
-                            <p><em>Manually apply ${damage} damage to ${targetData.targetActor.data.name}</em></p>`
+                            <p><em>Manually apply ${healing} healing to ${targetData.targetActor.data.name}</em></p>`
         });
     else {
         let gColors = getColors(actorData, targetActor);
@@ -398,9 +411,9 @@ export async function doHeal({
             sourceName: sName,
             targetColor: gColors.target,
             targetName: tName,
-            startingWords: injectVariable(itemData.details.heal.startW, maxHeal),
-            middleWords: injectVariable(itemData.details.heal.midW, maxHeal),
-            endWords: injectVariable(itemData.details.heal.endW, maxHeal),
+            startingWords: injectVariable(words.startW, maxHeal),
+            middleWords: injectVariable(words.midW, maxHeal),
+            endWords: injectVariable(words.endW, maxHeal),
             title: title + " Healing",
             base: baseHeal,
             rollDw: rolled

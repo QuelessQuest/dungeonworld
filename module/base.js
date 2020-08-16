@@ -2,6 +2,7 @@ import * as sh from './actions/spellHelper.js';
 import * as dm from './actions/druidMoves.js';
 import * as it from './actions/items.js';
 import {DwFilters} from "./filters.js";
+import {doHeal, getTargets} from "./actions/dwUtils.js";
 
 export function Base() {
 
@@ -20,12 +21,15 @@ export function Base() {
     async function invisibility(actor) {
         return sh.invisibility(actor);
     }
+
     async function light(actor) {
         return sh.light(actor);
     }
+
     async function magicMissile(actor) {
         return sh.magicMissile(actor);
     }
+
     async function magicWeapon(actor) {
         return sh.magicWeapon(actor);
     }
@@ -89,8 +93,23 @@ export function Base() {
      * ITEMS ========================================
      */
 
+    async function aGear(actor, item) {
+        return it.adventuringGear(actor, item);
+    }
+
     async function torch(actor, item) {
         await it.torch(actor, item);
+    }
+
+    async function healingPotion(actor, item) {
+        await doHeal({
+            item: item,
+            actor: actor,
+            targetData: getTargets(actor),
+            baseHeal: 10,
+            title: "Healing Potion"
+        });
+        return true;
     }
 
     return {
@@ -110,7 +129,9 @@ export function Base() {
         magicWeapon: magicWeapon,
         shapeshifter: shapeshifter,
         deleteFilter: deleteFilter,
-        torch: torch
+        torch: torch,
+        healingPotion: healingPotion,
+        aGear: aGear
     }
 }
 

@@ -124,6 +124,13 @@
       "entity": "Item"
     },
     {
+      "name": "equipment-adventuring",
+      "label": "Equipment - Adventuring",
+      "system": "dungeonworld",
+      "path": "./packs/equipment-adventuring.db",
+      "entity": "Item"
+    },
+    {
       "name": "equipment-armor",
       "label": "Equipment - Armor",
       "system": "dungeonworld",

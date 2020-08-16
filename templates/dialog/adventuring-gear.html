@@ -1,0 +1,17 @@
+<div class="form-group dialog dw-spell-dialog" id="dw-adventuring-gear">
+    <div class="bottom-margin">
+        <label for="gear">What gear do you retrieve?</label>
+    </div>
+    <div class="bottom-margin">
+        <select name="gear" id="gear">
+            <option value="Other">Other</option>
+            {{#each aGear}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="resource choice flexrow">
+        <div class="flexshrink">Other:</div>
+        <div class="flexinput"><input type="text" name="other" id="other" data-dtype="String" placeholder="equipment"/></div>
+    </div>
+</div>

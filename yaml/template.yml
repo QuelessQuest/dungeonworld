@@ -236,6 +236,10 @@ Item:
     details:
       script: ''
       move: ''
+      startW: ''
+      midW: ''
+      endW: ''
+      consumed: 0
   spell:
     templates:
       - base
