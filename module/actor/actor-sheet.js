@@ -775,7 +775,7 @@ export class DwActorSheet extends ActorSheet {
                 await resolveMove(this.actor, item, rst);
         } else {
             if (item.data.data.details.script) {
-                DWBase[item.data.data.details.script](this.actor);
+                DWBase[item.data.data.details.script](this.actor, item);
             } else {
                 let template = 'systems/dungeonworld/templates/chat/chat-move.html';
                 let templateData = {

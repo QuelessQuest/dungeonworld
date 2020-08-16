@@ -282,7 +282,7 @@ function rollItemMacro(itemName) {
         });
     } else {
         if (item.data.data.details.script) {
-            DWBase[item.data.data.details.script](actor);
+            DWBase[item.data.data.details.script](actor, item);
         } else {
             let template = 'systems/dungeonworld/templates/chat/chat-move.html';
             let templateData = {

@@ -1,5 +1,6 @@
-import * as sh from './actions/spellHelper.js'
-import * as dm from './actions/druidMoves.js'
+import * as sh from './actions/spellHelper.js';
+import * as dm from './actions/druidMoves.js';
+import * as it from './actions/items.js';
 import {DwFilters} from "./filters.js";
 
 export function Base() {
@@ -85,8 +86,12 @@ export function Base() {
     }
 
     /**
-     * BASIC MOVES ========================================
+     * ITEMS ========================================
      */
+
+    async function torch(actor, item) {
+        await it.torch(actor, item);
+    }
 
     return {
         cancelSpell: cancelSpell,
@@ -104,7 +109,8 @@ export function Base() {
         magicMissile: magicMissile,
         magicWeapon: magicWeapon,
         shapeshifter: shapeshifter,
-        deleteFilter: deleteFilter
+        deleteFilter: deleteFilter,
+        torch: torch
     }
 }
 

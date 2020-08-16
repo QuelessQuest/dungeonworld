@@ -2,7 +2,7 @@
     <header class="sheet-header flexrow">
         <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize "DW.Common.Name"}}"/></h1>
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize " DW.Common.Name"}}"/></h1>
         </div>
     </header>
 
@@ -22,47 +22,51 @@
 
         {{!-- Details Tab --}}
         <div class="tab" data-group="primary" data-tab="details">
-          <div class="resource">
-            <label for="tag" class="control-label">{{localize "DW.Tags"}}</label>
-            <div class="help-text"><p>{{localize "DW.TagsHelp" }}</p></div>
-            <input type="hidden" name="data.tagsString" value="{{ data.tagsString }}" />
-            <input name='data.tags' class='some_class_name' placeholder='write some tags' value='{{ data.tags }}'/>
-          </div>
-          <div class="resource">
-            <label>{{localize "DW.Quantity"}}</label>
-            <input type="text" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
-          </div>
-          <div class="resource">
-            <label>{{localize "DW.Uses"}}</label>
-            <input type="text" name="data.uses" value="{{data.uses}}" data-dtype="Number"/>
-          </div>
-          <div class="resource">
-            <label>{{localize "DW.Weight"}}</label>
-            <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
-          </div>
-          <div class="resource">
-            <label>{{localize "DW.MagicItem"}}</label>
-            <input type="checkbox" name="data.magic" {{checked data.magic}}/>
-          </div>
-          <div class="resource">
-            <label>{{localize "DW.ItemType"}}</label>
-            <select name="data.itemType" data-dtype="String">
-              {{#select data.itemType}}
-              <option value="">—</option>
-              <option value="weapon">{{localize "DW.Weapon"}}</option>
-              <option value="armor">{{localize "DW.Armor"}}</option>
-              <option value="dungeongear">{{localize "DW.DungeonGear"}}</option>
-              <option value="poison">{{localize "DW.Poison"}}</option>
-              <option value="service">{{localize "DW.Service"}}</option>
-              <option value="meal">{{localize "DW.Meal"}}</option>
-              <option value="transport">{{localize "DW.Transport"}}</option>
-              <option value="landbuilding">{{localize "DW.LandBuildings"}}</option>
-              <option value="bribe">{{localize "DW.Bribe"}}</option>
-              <option value="giftsfinery">{{localize "DW.GiftsFinery"}}</option>
-              <option value="hoard">{{localize "DW.Hoard"}}</option>
-              {{/select}}
-            </select>
-          </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel control-label">{{localize "DW.Tags"}}</div>
+                <div class="help-text"><p>{{localize "DW.TagsHelp" }}</p></div>
+                <input type="hidden" name="data.tagsString" value="{{ data.tagsString }}"/>
+                <input name='data.tags' class='some_class_name' placeholder='write some tags' value='{{ data.tags }}'/>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.Quantity"}}</div>
+                <input type="text" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.Uses"}}</div>
+                <input type="text" name="data.uses" value="{{data.uses}}" data-dtype="Number"/>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.Weight"}}</div>
+                <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexshrink">Script:</div>
+                <div class="flexinput"><input type="text" name="data.details.script" value="{{data.details.script}}" data-dtype="String" placeholder="script to run"/></div>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.MagicItem"}}</div>
+                <input type="checkbox" name="data.magic" {{checked data.magic}}/>
+            </div>
+            <div class="resource choice flexrow">
+                <div class="flexlabel">{{localize "DW.ItemType"}}</div>
+                <select name="data.itemType" data-dtype="String">
+                    {{#select data.itemType}}
+                    <option value="">—</option>
+                    <option value="weapon">{{localize "DW.Weapon"}}</option>
+                    <option value="armor">{{localize "DW.Armor"}}</option>
+                    <option value="dungeongear">{{localize "DW.DungeonGear"}}</option>
+                    <option value="poison">{{localize "DW.Poison"}}</option>
+                    <option value="service">{{localize "DW.Service"}}</option>
+                    <option value="meal">{{localize "DW.Meal"}}</option>
+                    <option value="transport">{{localize "DW.Transport"}}</option>
+                    <option value="landbuilding">{{localize "DW.LandBuildings"}}</option>
+                    <option value="bribe">{{localize "DW.Bribe"}}</option>
+                    <option value="giftsfinery">{{localize "DW.GiftsFinery"}}</option>
+                    <option value="hoard">{{localize "DW.Hoard"}}</option>
+                    {{/select}}
+                </select>
+            </div>
         </div>
     </section>
 </form>
