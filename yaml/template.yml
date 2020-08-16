@@ -102,6 +102,125 @@ Item:
     requiresMove: ''
     moveType:
     moveGroup: ''
+    details:
+      script: ''
+      target: 0
+      damage:
+        enabled: 0
+        startW: ''
+        midW: ''
+        endW: ''
+      heal:
+        enabled: 0
+        startW: ''
+        midW: ''
+        endW: ''
+      effect:
+        enabled: 0
+        self: 0
+        target: 0
+      failure:
+        startW: ''
+        midW: ''
+        endW: ''
+        ret: ''
+        choice: 0
+        option0:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
+        option1:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
+        option2:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
+        option3:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
+      partial:
+        startW: ''
+        midW: ''
+        endW: ''
+        ret: ''
+        choice: 0
+        option0:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
+        option1:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
+        option2:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
+        option3:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
+      success:
+        startW: ''
+        midW: ''
+        endW: ''
+        ret: ''
+        choice: 0
+        option0:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
+        option1:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
+        option2:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
+        option3:
+          icon: ''
+          label: ''
+          ret: {}
+          startW: ''
+          midW: ''
+          endW: ''
   equipment:
     templates:
       - base
@@ -114,12 +233,43 @@ Item:
     magic: false
     itemType:
     attributes: {}
+    details:
+      script: ''
+      move: ''
   spell:
     templates:
       - base
     spellLevel: 0
     rollFormula: ''
     prepared: false
+    details:
+      active: 0
+      sustained: 0
+      bans: 0
+      script: ''
+      target: 0
+      startW: ''
+      midW: ''
+      endW: ''
+      effect:
+        enabled: 0
+        self: 0
+        target: 0
+        name: ''
+      damage:
+        script: ''
+        amt: ''
+        effect: ''
+        startW: ''
+        midW: ''
+        endW: ''
+      heal:
+        script: ''
+        amt: ''
+        effect: ''
+        startW: ''
+        midW: ''
+        endW: ''
   bond:
     templates:
       - base
