@@ -1,0 +1,12 @@
+<div class="form-group dialog dw-spell-dialog" id="dw-healing-potion">
+    <div class="bottom-margin">
+        <label for="debility">You currently have one or more debilities. Do you with to cure a debility? or Heal? </label>
+    </div>
+    <div class="bottom-margin">
+        <select name="debility" id="debility">
+            {{#each debility}}
+            <option value="{{this.data.debilityLabel}},{{this.name}}">{{this.data.debilityLabel}}</option>
+            {{/each}}
+        </select>
+    </div>
+</div>

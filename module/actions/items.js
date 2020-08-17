@@ -1,4 +1,5 @@
 import {DW} from "../config.js";
+import {doHeal, getTargets, getColors} from "./dwUtils.js";
 
 /**
  * CONSUME
@@ -10,14 +11,14 @@ export async function consume(actor, item) {
     let itemData = item.data.data;
 
     if (itemData.details.consume) {
-       let uses = itemData.uses - 1;
-       if (uses > 0) {
-           let updatedItem = duplicate(item);
-           updatedItem.data.uses = uses;
-           await actor.updateOwnedItem(updatedItem);
-       } else {
+        let uses = itemData.uses - 1;
+        if (uses > 0) {
+            let updatedItem = duplicate(item);
+            updatedItem.data.uses = uses;
+            await actor.updateOwnedItem(updatedItem);
+        } else {
             await actor.deleteOwnedItem(item.id);
-       }
+        }
     }
 }
 
@@ -28,7 +29,7 @@ export async function adventuringGear(actor, thing) {
     }
 
     const content = await renderTemplate("systems/dungeonworld/templates/dialog/adventuring-gear.html", templateData);
-    let equip =  await new Promise((resolve, reject) => {
+    let equip = await new Promise((resolve, reject) => {
         new Dialog({
             title: "Adventuring Gear",
             content: content,
@@ -67,9 +68,98 @@ export async function adventuringGear(actor, thing) {
     let item = items.find(i => i.data.name === equip);
     if (item) {
         await actor.createOwnedItem(item.data);
+    } else {
+        // TODO - Create item
     }
 
     return equip;
+}
+
+/**
+ * HEALING POTION
+ * @param actor
+ * @param item
+ * @returns {Promise<void>}
+ */
+export async function healingPotion(actor, item) {
+
+    let dbs = [];
+    for (let attr of Object.keys(actor.data.data.abilities)) {
+        if (actor.data.data.abilities[attr].debility) {
+            dbs.push({
+                name: attr,
+                data: actor.data.data.abilities[attr]
+            });
+        }
+    }
+
+    if (dbs.length > 0) {
+        let templateData = {
+            debility: dbs
+        }
+
+        const content = await renderTemplate("systems/dungeonworld/templates/dialog/healing-potion.html", templateData);
+        return await new Promise((resolve) => {
+            new Dialog({
+                title: "Healing Potion",
+                content: content,
+                buttons: {
+                    heal: {
+                        icon: '<i class="fas fa-heart"></i>',
+                        label: "Heal",
+                        callback: () => {
+                            doHeal({
+                                item: item,
+                                actor: actor,
+                                targetData: getTargets(actor),
+                                baseHeal: 10,
+                                title: "Healing Potion"
+                            });
+                            resolve(true);
+                        }
+                    },
+                    cancel: {
+                        icon: '<i class="fas fa-prescription-bottle-alt"></i>',
+                        label: "Cure",
+                        callback: async html => {
+                            let db = html.find("#debility")[0].value;
+                            let info = db.split(',');
+                            let f = dbs.find(f => f.name === info[1]);
+
+                            let templateData = {
+                                dialogType: DW.dialogTypes.heal,
+                                sourceColor: getColors(actor).source,
+                                sourceName: actor.name,
+                                middleWords: `is cured of being ${f.data.debilityLabel}`,
+                                title: item.name + " Cure"
+                            }
+
+                            renderTemplate(DW.template, templateData).then(content => {
+                                let chatData = {
+                                    speaker: ChatMessage.getSpeaker(),
+                                    content: content
+                                };
+
+                                ChatMessage.create(chatData);
+                                actor.update({"data": {"abilities": {[f.name]: {"debility": false}}}});
+                            });
+
+                            resolve(true);
+                        }
+                    }
+                }
+            }).render(true);
+        });
+    } else {
+        await doHeal({
+            item: item,
+            actor: actor,
+            targetData: getTargets(actor),
+            baseHeal: 10,
+            title: "Healing Potion"
+        });
+        return true;
+    }
 }
 
 /**

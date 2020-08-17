@@ -102,14 +102,7 @@ export function Base() {
     }
 
     async function healingPotion(actor, item) {
-        await doHeal({
-            item: item,
-            actor: actor,
-            targetData: getTargets(actor),
-            baseHeal: 10,
-            title: "Healing Potion"
-        });
-        return true;
+        return it.healingPotion(actor, item);
     }
 
     return {

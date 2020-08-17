@@ -383,8 +383,6 @@ export async function doHeal({
         // TODO roll render equivalent
     }
 
-    console.log("HEA");
-    console.log(healing);
     if (healing < 1) healing = 1;
 
     maxHeal = Math.clamped(healing, 0,
