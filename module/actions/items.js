@@ -22,6 +22,12 @@ export async function consume(actor, item) {
     }
 }
 
+/**
+ * ADVENTURING GEAR
+ * @param actor
+ * @param thing
+ * @returns {Promise<unknown>}
+ */
 export async function adventuringGear(actor, thing) {
 
     let templateData = {
@@ -29,7 +35,7 @@ export async function adventuringGear(actor, thing) {
     }
 
     const content = await renderTemplate("systems/dungeonworld/templates/dialog/adventuring-gear.html", templateData);
-    let equip = await new Promise((resolve, reject) => {
+    let equip = await new Promise((resolve) => {
         new Dialog({
             title: "Adventuring Gear",
             content: content,
@@ -73,6 +79,25 @@ export async function adventuringGear(actor, thing) {
     }
 
     return equip;
+}
+
+/**
+ * BANDAGES
+ * @param actor
+ * @param item
+ * @returns {Promise<void>}
+ */
+export async function bandages(actor, item) {
+    await doHeal({
+        item: item,
+        actor: actor,
+        targetData: getTargets(actor),
+        baseHeal: 4,
+        title: "Bandages"
+    });
+    return new Promise(resolve => {
+        resolve(true);
+    });
 }
 
 /**
@@ -158,8 +183,29 @@ export async function healingPotion(actor, item) {
             baseHeal: 10,
             title: "Healing Potion"
         });
-        return true;
+        return new Promise(resolve => {
+            resolve(true);
+        });
     }
+}
+
+/**
+ * POULTICES AND HERBS
+ * @param actor
+ * @param item
+ * @returns {Promise<void>}
+ */
+export async function poultices(actor, item) {
+    await doHeal({
+        item: item,
+        actor: actor,
+        targetData: getTargets(actor),
+        baseHeal: 7,
+        title: "Poultices And Herbs"
+    });
+    return new Promise(resolve => {
+        resolve(true);
+    });
 }
 
 /**
