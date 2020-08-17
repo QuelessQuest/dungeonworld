@@ -78,7 +78,7 @@ export async function adventuringGear(actor, thing) {
         let itemData = {
             name: equip,
             type: "equipment",
-            img: "systems/dungeonworld/assets/items/hn.jpg",
+            img: "systems/dungeonworld/assets/items/nw.jpg",
             data: {
                 description: "Recently pulled from an Adventures Gear",
                 itemType: "adventuringgear"
