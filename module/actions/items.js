@@ -75,7 +75,19 @@ export async function adventuringGear(actor, thing) {
     if (item) {
         await actor.createOwnedItem(item.data);
     } else {
-        // TODO - Create item
+        let itemData = {
+            name: equip,
+            type: "equipment",
+            img: "systems/dungeonworld/assets/items/hn.jpg",
+            data: {
+                description: "Recently pulled from an Adventures Gear",
+                itemType: "adventuringgear"
+            }
+        }
+        await actor.createOwnedItem(itemData);
+        itemData.id = randomID();
+        itemData._id = randomID()
+        ItemDirectory.cls.create(itemData);
     }
 
     return equip;
