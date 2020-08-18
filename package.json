@@ -21,6 +21,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
-    "gulp-yaml": "^2.0.4"
+    "gulp-yaml": "^2.0.4",
+    "gulp-zip": "^5.0.2"
   }
 }
