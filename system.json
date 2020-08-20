@@ -2,7 +2,7 @@
   "name": "dungeonworld",
   "title": "Dungeon World",
   "description": "A Dungeon World system for FoundryVTT!",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "minimumCoreVersion": "0.6.5",
   "compatibleCoreVersion": "0.7.0",
   "templateVersion": 2,
@@ -138,6 +138,13 @@
       "entity": "Item"
     },
     {
+      "name": "equipment-class",
+      "label": "Equipment - Class",
+      "system": "dungeonworld",
+      "path": "./packs/equipment-class.db",
+      "entity": "Item"
+    },
+    {
       "name": "equipment-rations",
       "label": "Equipment - Rations",
       "system": "dungeonworld",
@@ -159,6 +166,20 @@
       "entity": "Item"
     },
     {
+      "name": "equipment-poisons",
+      "label": "Equipment - Poisons",
+      "system": "dungeonworld",
+      "path": "./packs/equipment-poisons.db",
+      "entity": "Item"
+    },
+    {
+      "name": "equipment-magic",
+      "label": "Equipment - Magic",
+      "system": "dungeonworld",
+      "path": "./packs/equipment-magic.db",
+      "entity": "Item"
+    },
+    {
       "name": "equipment-weapons",
       "label": "Equipment - Weapons",
       "system": "dungeonworld",
@@ -169,7 +190,7 @@
       "label": "Rollable Tables",
       "entity": "RollTable",
       "name": "rollable-tables",
-      "path": "packs/rollable-tables.db",
+      "path": "./packs/rollable-tables.db",
       "system": "dungeonworld",
       "package": "world",
       "absPath": "./packs/rollable-tables.db"
@@ -178,7 +199,7 @@
       "label": "GM Moves/Principals",
       "entity": "JournalEntry",
       "name": "gm-movesprincipals",
-      "path": "packs/gm-movesprincipals.db",
+      "path": "./packs/gm-movesprincipals.db",
       "system": "dungeonworld",
       "package": "world",
       "absPath": "./packs/gm-movesprincipals.db"
@@ -187,7 +208,7 @@
       "label": "Charts",
       "entity": "JournalEntry",
       "name": "charts",
-      "path": "packs/charts.db",
+      "path": "./packs/charts.db",
       "system": "dungeonworld",
       "package": "world",
       "absPath": "./packs/charts.db"
@@ -196,7 +217,7 @@
       "label": "Monsters",
       "entity": "Actor",
       "name": "monsters",
-      "path": "packs/monsters.db",
+      "path": "./packs/monsters.db",
       "system": "dungeonworld",
       "package": "world",
       "absPath": "./packs/monsters.db"
@@ -232,5 +253,5 @@
   "socket": true,
   "url": "https://github.com/QuelessQuest/dungeonworld",
   "manifest": "https://raw.githubusercontent.com/QuelessQuest/dungeonworld/master/system.json",
-  "download": "https://github.com/QuelessQuest/dungeonworld/releases/download/v008/dungeonworld.0.0.8.zip"
+  "download": "https://github.com/QuelessQuest/dungeonworld/releases/download/v009/dungeonworld.0.0.9.zip"
 }

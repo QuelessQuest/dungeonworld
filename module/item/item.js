@@ -28,9 +28,8 @@ export class ItemDw extends Item {
   }
 
   async _getEquipmentObjects(force_reload = false) {
-    let obj = null;
-    let itemData = this.data;
 
+    let itemData = this.data;
     let items = await DwUtility.getEquipment(force_reload);
     let equipment = [];
 

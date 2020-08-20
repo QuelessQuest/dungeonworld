@@ -72,7 +72,6 @@ export class DwActorSheet extends ActorSheet {
                         levelup = true;
                     }
                 }
-
                 // Set the template variable.
                 data.data.levelup = levelup && data.data.classlist.includes(data.data.details.class);
 
@@ -322,7 +321,10 @@ export class DwActorSheet extends ActorSheet {
         let pack_id = `dungeonworld.${char_class}-moves`;
         let pack = game.packs.get(pack_id);
 
+        console.log("GOT MOVES");
+
         let compendium = pack ? await pack.getContent() : [];
+        console.log(compendium);
 
         let class_item = class_list_items.find(i => i.data.name === orig_class_name);
         let blurb = class_item ? class_item.data.data.description : null;
@@ -381,6 +383,7 @@ export class DwActorSheet extends ActorSheet {
             }
         });
 
+        console.log("GOT MORE STUFF");
         // Retrieve the actor's current moves so that we can hide them.
         const actorMoves = this.actor.data.items.filter(i => i.type === 'move');
 
@@ -408,6 +411,9 @@ export class DwActorSheet extends ActorSheet {
         moves.sort((a, b) => {
             return a.data.data.requiresLevel - b.data.data.requiresLevel;
         });
+
+        console.log("THE MOVES");
+        console.log(moves);
 
         let starting_moves = [];
         let starting_move_groups = [];
@@ -457,6 +463,7 @@ export class DwActorSheet extends ActorSheet {
                 // Get the item spells as the priority.
                 let spells_items = game.items.entities.filter(i => {
                     // Return true for custom spell items that have a class.
+                    console.log("A");
                     return i.type === 'spell'
                         && i.data.data.class
                         // Check if this spell has either `classname` or `the classname` as its class.
@@ -959,6 +966,7 @@ export class DwActorSheet extends ActorSheet {
         // Reduce duplicates.
         let tagNames = [];
         for (let tag of tags) {
+            console.log("B");
             let tagName = tag.data.name.toLowerCase();
             if (tagNames.includes(tagName) !== false) {
                 tags = tags.filter(item => item._id !== tag._id);
@@ -969,6 +977,7 @@ export class DwActorSheet extends ActorSheet {
 
         // Sort the tagnames list.
         tagNames.sort((a, b) => {
+            console.log("C");
             const aSort = a.toLowerCase();
             const bSort = b.toLowerCase();
             if (aSort < bSort) {
