@@ -7,3 +7,12 @@
 
 $font-stack-base: 'Alegreya', serif;
 $font-stack-secondary: 'Metamorphous', serif;
+
+@font-face {
+  font-family: 'Newcomen';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/systems/dungeonworld/assets/NewcomenRegular.woff2') format('woff2');
+}
+
+$font-dw: 'Newcomen', serif;

@@ -92,6 +92,11 @@
     flex-wrap: nowrap;
     align-items: stretch;
     justify-content: space-between;
+
+    button.default {
+      box-shadow: 0 0 2 2px rgba($c-navy-up, 1);
+      background: $c-navy;
+    }
   }
 
   .dialog-button {

@@ -23,6 +23,15 @@
   @import 'global/components/combat';
 }
 
+#menu {
+  background: #365e56c0;
+  box-shadow: 0 0 30px #728f8b;
+
+  #menu-items li:hover {
+    text-shadow: 0 0 10px $c-navy-up;
+  }
+}
+
 .dwmacros .dialog-buttons {
   -ms-flex-direction: column !important;
   flex-direction: column !important;
@@ -49,13 +58,10 @@
     .window-content {
       position: relative;
       background: $c-white;
-      background-image: linear-gradient(#c7dad7, #c7dad7),
-      url('../../assets/heath-alseike-vector-edge.svg');
+      background-image: url('../../assets/back3.png');
       background-repeat: no-repeat;
-      background-size: 100% 264px,
+      background-size: 100% 330px,
       100%;
-      background-position: 0 0,
-      0 262px;
       background-attachment: local;
 
       form {

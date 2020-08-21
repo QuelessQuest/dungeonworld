@@ -161,6 +161,7 @@ export class DwActorSheet extends ActorSheet {
         actorData.advancedMoves = advancedMoves;
         // Spells
         actorData.spells = spells;
+        actorData.hasSpells = spells[0].length > 0;
         // Equipment
         actorData.equipment = equipment;
         // Bonds

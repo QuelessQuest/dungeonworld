@@ -156,7 +156,9 @@
             <nav class="sheet-tabs tabs" data-group="primary">
                 <a class="item" data-tab="description">{{localize "DW.Description"}}</a>
                 <a class="item" data-tab="moves">{{localize "DW.Moves"}}</a>
+                {{#if actor.hasSpells}}
                 <a class="item" data-tab="spells">{{localize "DW.Spells"}}</a>
+                {{/if}}
                 <a class="item" data-tab="equipment">{{localize "DW.Equipment"}}</a>
             </nav>
 
@@ -262,6 +264,7 @@
                 </div>
 
                 {{!-- Owned Spells Tab --}}
+                {{#if actor.hasSpells}}
                 <div class="tab spells" data-group="primary" data-tab="spells">
                     <div class="cell cell--spells">
                         <section class="sheet-notifications" style="margin-top:10px;">
@@ -306,6 +309,7 @@
                         </ol>
                     </div>
                 </div>
+                {{/if}}
 
                 {{!-- Owned Equipment Tab --}}
                 <div class="tab equipment" data-group="primary" data-tab="equipment">

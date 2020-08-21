@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Metamorphous&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@font-face {
+  font-family: 'Newcomen';
+  font-style: normal;
+  font-weight: 400;
+  src: url("/systems/dungeonworld/assets/NewcomenRegular.woff2") format("woff2"); }
+
 @-webkit-keyframes jiggle {
   0% {
     -webkit-transform: rotate(0deg);
@@ -16,6 +22,7 @@
   100% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); } }
+
 @keyframes jiggle {
   0% {
     -webkit-transform: rotate(0deg);
@@ -333,6 +340,10 @@
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between; }
+    .vtt .window-app .dialog-buttons button.default {
+      -webkit-box-shadow: 0 0 2 2px #acc4c0;
+      box-shadow: 0 0 2 2px #acc4c0;
+      background: #728f8b; }
   .vtt .window-app .dialog-button {
     -webkit-box-flex: 1;
     -ms-flex: 1;
@@ -395,7 +406,7 @@
   font-size: 12px; }
 
 .vtt #chat-log .cell__title {
-  font-family: "Metamorphous", serif;
+  font-family: "Newcomen", serif;
   font-weight: bold;
   font-size: 16px; }
 
@@ -404,7 +415,7 @@
 .vtt #chat-log h3,
 .vtt #chat-log h4,
 .vtt #chat-log h5 {
-  font-family: "Metamorphous", serif;
+  font-family: "Newcomen", serif;
   font-weight: bold; }
 
 .vtt #chat-log .words {
@@ -624,6 +635,13 @@
 .vtt #combat #combat-tracker {
   background: rgba(0, 0, 0, 0.25); }
 
+#menu {
+  background: #365e56c0;
+  -webkit-box-shadow: 0 0 30px #728f8b;
+  box-shadow: 0 0 30px #728f8b; }
+  #menu #menu-items li:hover {
+    text-shadow: 0 0 10px #acc4c0; }
+
 .dwmacros .dialog-buttons {
   -ms-flex-direction: column !important;
   -webkit-box-orient: vertical !important;
@@ -645,12 +663,9 @@
   .dungeonworld.actor .window-content {
     position: relative;
     background: #fff;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#c7dad7), to(#c7dad7)), url("../../assets/heath-alseike-vector-edge.svg");
-    background-image: -o-linear-gradient(#c7dad7, #c7dad7), url("../../assets/heath-alseike-vector-edge.svg");
-    background-image: linear-gradient(#c7dad7, #c7dad7), url("../../assets/heath-alseike-vector-edge.svg");
+    background-image: url("../../assets/back3.png");
     background-repeat: no-repeat;
-    background-size: 100% 264px, 100%;
-    background-position: 0 0, 0 262px;
+    background-size: 100% 330px, 100%;
     background-attachment: local; }
     .dungeonworld.actor .window-content form {
       position: relative;
@@ -661,18 +676,18 @@
   .dungeonworld.sheet .input--title {
     font-weight: bold;
     font-size: 18px;
-    font-family: "Metamorphous", serif; }
+    font-family: "Newcomen", serif; }
   .dungeonworld.sheet label,
   .dungeonworld.sheet h1,
   .dungeonworld.sheet h2 {
-    font-family: "Metamorphous", serif;
+    font-family: "Newcomen", serif;
     font-weight: bold;
     border-color: inherit; }
   .dungeonworld.sheet h3,
   .dungeonworld.sheet h4,
   .dungeonworld.sheet h5,
   .dungeonworld.sheet h6 {
-    font-family: "Alegreya", serif;
+    font-family: "Metamorphous", serif;
     font-weight: bold; }
   .dungeonworld.sheet .sheet-wrapper {
     display: -webkit-box;
@@ -819,7 +834,7 @@
     padding: 5px;
     margin-bottom: 5px;
     font-weight: bold;
-    font-family: "Metamorphous", serif; }
+    font-family: "Newcomen", serif; }
     .dungeonworld.sheet .cell__title a,
     .dungeonworld.sheet .cell__title button,
     .dungeonworld.sheet .cell__subtitle a,
